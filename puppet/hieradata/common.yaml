@@ -1,0 +1,109 @@
+---
+vagrantfile-local:
+    vm:
+        box: ubuntu-precise12042-x64-vbox43
+        box_url: 'https://puphpet.s3.amazonaws.com/ubuntu-precise12042-x64-vbox43.box'
+        hostname: null
+        network:
+            private_network: 192.168.168.168
+            forwarded_port:
+                MQWu9YjK2M5p:
+                    host: ''
+                    guest: ''
+        provider:
+            virtualbox:
+                modifyvm:
+                    name: precise64
+                    natdnshostresolver1: on
+                    memory: '1024'
+                setextradata:
+                    VBoxInternal2/SharedFoldersEnableSymlinksCreate/v-root: 1
+        provision:
+            puppet:
+                manifests_path: puppet/manifests
+                options:
+                    - --verbose
+                    - '--hiera_config /vagrant/hiera.yaml'
+                    - '--parser future'
+        synced_folder:
+            St5xj8vQFJRa:
+                id: vagrant-root
+                source: ./
+                target: /var/www
+                nfs: 'true'
+        usable_port_range: 2200..2250
+    ssh:
+        host: null
+        port: null
+        private_key_path: null
+        username: vagrant
+        guest_port: null
+        keep_alive: true
+        forward_agent: false
+        forward_x11: false
+        shell: 'bash -l'
+    vagrant:
+        host: ':detect'
+server:
+    packages: {  }
+    dot_files:
+        -
+            bash_aliases: null
+    _prevent_empty: ''
+apache:
+    modules:
+        - php
+        - rewrite
+    vhosts:
+        RmuZfBpXztlO:
+            servername: muzar.localhost
+            docroot: /var/www/muzar/web
+            port: '80'
+            setenv:
+                - 'APP_ENV dev'
+            override:
+                - All
+    user: www-data
+    group: www-data
+    default_vhost: true
+    mpm_module: prefork
+php:
+    version: '54'
+    composer: '1'
+    modules:
+        php:
+            - cli
+            - imagick
+            - intl
+            - mcrypt
+            - memcache
+            - sqlite
+        pear: {  }
+        pecl:
+            - pecl_http
+    ini:
+        display_errors: On
+        error_reporting: '-1'
+        session.save_path: /var/lib/php/session
+    timezone: Europe/Prague
+xdebug:
+    install: '1'
+    settings:
+        xdebug.default_enable: '1'
+        xdebug.remote_autostart: '0'
+        xdebug.remote_connect_back: '1'
+        xdebug.remote_enable: '1'
+        xdebug.remote_handler: dbgp
+        xdebug.remote_port: '9000'
+mysql:
+    root_password: root
+    databases:
+        X6AAUkVKNWBz:
+            grant:
+                - ALL
+            name: muzar
+            host: localhost
+            user: muzar
+            password: muzar
+            sql_file: ''
+
