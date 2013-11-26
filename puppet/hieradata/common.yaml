@@ -96,13 +96,17 @@ xdebug:
         xdebug.remote_handler: dbgp
         xdebug.remote_port: '9000'
 mysql:
+    override_options:
+        mysqld:
+            bind_address: 0.0.0.0
+
     root_password: root
     databases:
         X6AAUkVKNWBz:
             grant:
                 - ALL
             name: muzar
-            host: localhost
+            host: %
             user: muzar
             password: muzar
             sql_file: ''

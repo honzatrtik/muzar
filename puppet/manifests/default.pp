@@ -1,5 +1,6 @@
 ## Begin Server manifest
 
+
 if $server_values == undef {
   $server_values = hiera('server', false)
 }
