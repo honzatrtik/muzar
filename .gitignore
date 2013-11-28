@@ -5,13 +5,13 @@ vendor/*
 .idea/*
 .DS_Store
 
-/web/bundles/
-/app/bootstrap.php.cache
-/app/cache/*
-/app/config/parameters.yml
-/app/logs/*
+web/bundles/
+app/bootstrap.php.cache
+app/cache/*
+app/config/parameters.yml
+app/logs/*
 !app/cache/.gitkeep
 !app/logs/.gitkeep
-/build/
-/vendor/
-/bin/
+build/
+vendor/
+bin/

@@ -189,6 +189,7 @@ if ! defined(File[$webroot_location]) {
   }
 }
 
+
 class { 'apache':
   user          => $apache_values['user'],
   group         => $apache_values['group'],
@@ -497,4 +498,3 @@ define mysql_nginx_default_conf (
     notify       => Class['nginx::service'],
   }
 }
-
