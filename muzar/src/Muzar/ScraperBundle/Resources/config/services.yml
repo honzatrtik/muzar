@@ -1,0 +1,6 @@
+parameters:
+    muzar_scraper.parser.class: Muzar\ScraperBundle\HtmlParser
+
+services:
+    muzar_scraper.parser:
+        class: %muzar_scraper.parser.class%

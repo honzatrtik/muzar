@@ -1,0 +1,4 @@
+muzar_scraper:
+    resource: "@MuzarScraperBundle/Resources/config/routing.yml"
+    prefix:   /
+

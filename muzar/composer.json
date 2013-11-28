@@ -19,7 +19,8 @@
         "sensio/framework-extra-bundle": "~2.3",
         "sensio/generator-bundle": "~2.3",
         "incenteev/composer-parameter-handler": "~2.0",
-        "phpunit/phpunit": "3.7.28"
+        "phpunit/phpunit": "3.7.28",
+		"fabpot/goutte": "v1.0.3"
     },
     "scripts": {
         "post-install-cmd": [
