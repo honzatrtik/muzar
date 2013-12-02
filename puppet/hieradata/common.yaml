@@ -57,12 +57,14 @@ apache:
     vhosts:
         RmuZfBpXztlO:
             servername: muzar.localhost
-            docroot: /var/www/muzar.localhost
+            docroot: /var/www/muzar.localhost/web
             port: '80'
             setenv:
                 - 'APP_ENV dev'
             override:
                 - All
+            docroot_owner: '501'
+            docroot_group: '80'
     user: www-data
     group: www-data
     default_vhost: true
