@@ -13,23 +13,39 @@ set :linked_dirs,     ['app/logs', 'web/uploads', 'vendor']
 
 namespace :deploy do
 
-  desc 'Restart application'
-  task :restart do
-#    on roles(:app), in: :sequence, wait: 5 do
-#      # Your restart mechanism here, for example:
-#      # execute :touch, release_path.join('tmp/restart.txt')
-#    end
+  desc 'Fix directory permissions'
+  task :permissions do
+    on roles(:app), in: :sequence, wait: 5 do
+      execute :chmod, '-R', 'g+w', release_path
+      execute :chmod, '-R', 'g+w', "#{shared_path}"
+    end
   end
 
-#  after :published, :restart
+  desc 'Restart'
+  task :restart do
+    on roles(:app), in: :sequence, wait: 5 do
+      :permissions
+    end
+  end
 
-#  after :restart, :clear_cache do
-#    on roles(:web), in: :groups, limit: 3, wait: 10 do
-#      # Here we can do anything such as:
-#      # within release_path do
-#      #   execute :rake, 'cache:clear'
-#      # end
-#    end
-#  end
+
+  namespace :symfony do
+
+  	desc 'Symfony: cache clear'
+    task :'cache-clear' do
+      on roles(:app), in: :sequence, wait: 5 do
+        console = "#{release_path}/app/console"
+        execute console, 'cache:clear', '--env=prod'
+      end
+    end
+
+  end
+
 
 end
+
+
+
+
+
+after 'deploy:restart', 'deploy:permissions'
