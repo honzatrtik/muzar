@@ -8,7 +8,7 @@ set :deploy_via,    :copy
 set :format, :pretty
 set :log_level, :debug
 
-# set :linked_files,      ['app/config/parameters.yml']
+set :linked_files,      ['app/config/parameters.yml']
 set :linked_dirs,     ['app/logs', 'web/uploads', 'vendor']
 
 namespace :deploy do
@@ -18,6 +18,8 @@ namespace :deploy do
     on roles(:app), in: :sequence, wait: 5 do
       execute :chmod, '-R', 'g+w', release_path
       execute :chmod, '-R', 'g+w', "#{shared_path}"
+      execute :chmod, '-R', 'u+s,g+s', "#{release_path}/app/cache"
+      execute :chmod, '-R', 'u+s,g+s', "#{shared_path}/app/logs"
     end
   end
 
