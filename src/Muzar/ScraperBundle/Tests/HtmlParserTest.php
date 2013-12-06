@@ -36,6 +36,7 @@ class HtmlParserTest extends \PHPUnit_Framework_TestCase
 
 		$expectedParams = array(
 			'type' => 'ruzne',
+			'name' => 'ALIEN ROCK - Kytara, klávesy',
 			'category' => '• Hudebníci a skupiny',
 			'region' => 'Olomoucký kraj',
 			'price' => 'dohodou',

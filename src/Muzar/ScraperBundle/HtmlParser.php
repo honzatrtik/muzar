@@ -34,6 +34,12 @@ class HtmlParser
 			$params['region'] = trim($node->first()->text());
 		}
 
+		$node = $crawler->filter('input[name="nazev"]');
+		if ($node->count())
+		{
+			$params['name'] = trim($node->first()->attr('value'));
+		}
+
 		$node = $crawler->filter('input[name="cena"]');
 		if ($node->count())
 		{
