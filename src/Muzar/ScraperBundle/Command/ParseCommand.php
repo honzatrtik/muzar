@@ -48,7 +48,7 @@ class ParseCommand extends ContainerAwareCommand
 		/** @var EntityManager $em */
 		$em = $this->getContainer()->get('doctrine')->getManager();
 
-		/** @var \Muzar\ScraperBundle\Repository\Ad $repository */
+		/** @var \Muzar\ScraperBundle\Entity\AdRepository $repository */
 		$repository = $em->getRepository('\Muzar\ScraperBundle\Entity\Ad');
 
 		$count = $repository->getQueryUnparsed()->select('COUNT(a.id)')->getQuery()->getSingleScalarResult();

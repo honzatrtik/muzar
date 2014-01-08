@@ -4,12 +4,12 @@
  * Time: 18:35
  */
 
-namespace Muzar\ScraperBundle\Repository;
+namespace Muzar\ScraperBundle\Entity;
 
 
 use Doctrine\ORM\EntityRepository;
 
-class Ad  extends EntityRepository
+class AdRepository  extends EntityRepository
 {
 	/**
 	 * @return \Doctrine\ORM\QueryBuilder

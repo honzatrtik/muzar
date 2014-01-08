@@ -1,3 +1,7 @@
+muzar_product_catalog:
+    resource: "@MuzarProductCatalogBundle/Resources/config/routing.yml"
+    prefix:   /
+
 muzar_scraper:
     resource: "@MuzarScraperBundle/Resources/config/routing.yml"
     prefix:   /
