@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 
 /**
- * @ORM\Entity(repositoryClass="\Muzar\ScraperBundle\Repository\Ad")
+ * @ORM\Entity(repositoryClass="\Muzar\ScraperBundle\Entity\AdRepository")
  * @ORM\Table(name="scraperAd",uniqueConstraints={@ORM\UniqueConstraint(name="scraperAd_link_UQ",columns={"link"})})
  */
 class Ad
