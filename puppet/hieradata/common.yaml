@@ -80,6 +80,7 @@ php:
             - mcrypt
             - memcache
             - sqlite
+            - curl
         pear: {  }
         pecl:
             - pecl_http

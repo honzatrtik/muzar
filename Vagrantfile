@@ -26,7 +26,8 @@ Vagrant.configure("2") do |config|
     puppet.options = ["--verbose", "--hiera_config /vagrant/hiera.yaml", "--parser future"]
   end
 
-
+  config.vm.provision :shell, :path => "shell/composer-stuff.sh"
+  config.vm.provision :shell, :path => "shell/doctrine-drop-update.sh"
 
 
   config.ssh.username = "vagrant"
