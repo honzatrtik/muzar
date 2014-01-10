@@ -11,8 +11,11 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(
  * 		name="product",
  *		indexes={
- * 			@ORM\Index(name="product_source_IDX", columns={"source"}),
+ * 			@ORM\Index(name="product_manufacturer_IDX", columns={"manufacturer"}),
  * 			@ORM\Index(name="product_ean_IDX", columns={"ean"})
+ * 		},
+ *		uniqueConstraints={
+ * 			@ORM\UniqueConstraint(name="product_name_UQ",columns={"name"})
  * 		}
  * )
  * @ORM\Entity(
@@ -37,20 +40,20 @@ class Product
 	 **/
 	private $categories;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="source", type="string", length=128)
-     */
-    private $source;
-
 
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255)
+     * @ORM\Column(name="name", type="string", length=128)
      */
     private $name;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="manufacturer", type="string", length=128)
+     */
+    private $manufacturer;
 
     /**
      * @var string
@@ -104,29 +107,6 @@ class Product
         return $this->id;
     }
 
-    /**
-     * Set source
-     *
-     * @param string $source
-     * @return Product
-     */
-    public function setSource($source)
-    {
-        $this->source = $source;
-
-        return $this;
-    }
-
-    /**
-     * Get source
-     *
-     * @return string 
-     */
-    public function getSource()
-    {
-        return $this->source;
-    }
-
 
     /**
      * Set productName
@@ -150,6 +130,24 @@ class Product
     {
         return $this->name;
     }
+
+
+	/**
+	 * @param string $manufacturer
+	 */
+	public function setManufacturer($manufacturer)
+	{
+		$this->manufacturer = $manufacturer;
+		return $this;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getManufacturer()
+	{
+		return $this->manufacturer;
+	}
 
 
 

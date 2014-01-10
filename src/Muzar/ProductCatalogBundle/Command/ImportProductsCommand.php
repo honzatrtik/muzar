@@ -69,8 +69,8 @@ class ImportProductsCommand extends ContainerAwareCommand
 
 			$em->persist($product);
 			$product
-				->setSource('kytary.cz')
 				->setName(empty($data['PRODUCT']) ? NULL : $data['PRODUCT'])
+				->setManufacturer(empty($data['MANUFACTURER']) ? NULL : $data['MANUFACTURER'])
 				->setDescription(empty($data['DESCRIPTION']) ? NULL : $data['DESCRIPTION'])
 				->setEan(empty($data['EAN']) ? NULL : $data['EAN'])
 				->setImageUrl(empty($data['IMGURL']) ? NULL : $data['IMGURL'])

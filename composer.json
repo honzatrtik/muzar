@@ -20,7 +20,8 @@
         "sensio/generator-bundle": "~2.3",
         "incenteev/composer-parameter-handler": "~2.0",
         "phpunit/phpunit": "3.7.28",
-		"fabpot/goutte": "v1.0.3"
+		"fabpot/goutte": "v1.0.3",
+        "friendsofsymfony/elastica-bundle": "v2.1.3"
     },
     "scripts": {
         "post-install-cmd": [

@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="scraperAdProperty",uniqueConstraints={@ORM\UniqueConstraint(name="scraperAdProperty_scraperAdId_name_UQ",columns={"scraperAdId", "name"})})
+ * @ORM\Table(name="scraper_ad_property",uniqueConstraints={@ORM\UniqueConstraint(name="scraper_ad_property_scraper_ad_id_name_UQ",columns={"scraper_ad_id", "name"})})
  */
 class AdProperty
 {
@@ -24,7 +24,7 @@ class AdProperty
 
 	/**
 	 * @ORM\ManyToOne(targetEntity="Ad")
-	 * @ORM\JoinColumn(name="scraperAdId", referencedColumnName="id", nullable=false, onDelete="CASCADE")
+	 * @ORM\JoinColumn(name="scraper_ad_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
 	 * @var Ad
 	 **/
 	protected $ad;
