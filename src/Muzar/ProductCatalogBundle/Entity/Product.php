@@ -37,6 +37,10 @@ class Product
 	/**
 	 * ArrayCollection
 	 * @ORM\ManyToMany(targetEntity="Category", inversedBy="products")
+	 * @ORM\JoinTable(name="imported_product_category",
+	 *       joinColumns={@ORM\JoinColumn(name="category_id", referencedColumnName="id")},
+	 *       inverseJoinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id")}
+	 * )
 	 **/
 	private $categories;
 
