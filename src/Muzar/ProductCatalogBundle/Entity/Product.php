@@ -9,13 +9,13 @@ use Doctrine\ORM\Mapping as ORM;
  * Product
  *
  * @ORM\Table(
- * 		name="product",
+ * 		name="imported_product",
  *		indexes={
- * 			@ORM\Index(name="product_manufacturer_IDX", columns={"manufacturer"}),
- * 			@ORM\Index(name="product_ean_IDX", columns={"ean"})
+ * 			@ORM\Index(name="imported_product_manufacturer_IDX", columns={"manufacturer"}),
+ * 			@ORM\Index(name="imported_product_ean_IDX", columns={"ean"})
  * 		},
  *		uniqueConstraints={
- * 			@ORM\UniqueConstraint(name="product_name_UQ",columns={"name"})
+ * 			@ORM\UniqueConstraint(name="imported_product_name_UQ",columns={"name"})
  * 		}
  * )
  * @ORM\Entity(

@@ -9,9 +9,9 @@ use Doctrine\ORM\Mapping as ORM;
  * Category
  *
  * @ORM\Table(
- * 		name="category",
+ * 		name="imported_category",
  *		uniqueConstraints={
- * 			@ORM\UniqueConstraint(name="category_name_UQ",columns={"name"})
+ * 			@ORM\UniqueConstraint(name="imported_category_name_UQ",columns={"name"})
  * 		}
  * )
  * @ORM\Entity(
