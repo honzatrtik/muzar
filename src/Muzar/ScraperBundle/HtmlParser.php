@@ -61,8 +61,6 @@ class HtmlParser
 			{
 				$params['email'] = $matches[1] . '@' . $matches[3];
 			}
-
-
 		}
 
 		// telefon

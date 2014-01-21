@@ -1,0 +1,10 @@
+name: root
+children:
+  - name: Kytary
+    children:
+      - name: Elektricke kytary
+      - name: Akusticke kytary
+  - name: Baskytary
+    children:
+      - name: Elektricke basy
+      - name: Kontrabasy
