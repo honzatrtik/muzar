@@ -66,3 +66,34 @@ code {
 	float: left;
 	margin-left: 15px;
 }
+
+
+/********leve menu**************/
+
+.list-group > ul
+{
+	list-style: none outside none;
+}
+
+ul .list-group-item
+{
+	padding: 5px 10px;
+
+}
+
+ul ul .list-group-item
+{
+	border: none;
+	padding: 5px;
+}
+
+.list-group-item .badge
+{
+	float: right;
+}
+
+ul ul .list-group-item .badge
+{
+	color: #999999;
+	background-color: #ffffff;
+}
