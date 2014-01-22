@@ -1,1 +1,18 @@
-Hello {{ name }}!
+{% extends "MuzarBazaarBundle::base.html.twig" %}
+
+{% block content %}
+    <div class="col-xs-12 col-sm-6 col-md-4">
+        <div class="thumbnail">
+            <img src="http://placehold.it/300x200?text=obrazek">
+
+            <div class="caption">
+                <h4>Boss Combo Drive BC 2</h4>
+
+                <span class="text-muted">Ostravsky kraj</span>
+                <span class="pull-right"><strong>3 000 Kc</strong></span>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
