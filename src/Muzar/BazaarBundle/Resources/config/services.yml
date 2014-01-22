@@ -1,0 +1,11 @@
+parameters:
+
+
+services:
+    muzar_bazaar.nsm.category.config:
+        class: DoctrineExtensions\NestedSet\Config
+        arguments: [@doctrine.orm.entity_manager, 'Muzar\BazaarBundle\Entity\Category']
+
+    muzar_bazaar.nsm.category:
+        class: DoctrineExtensions\NestedSet\Manager
+        arguments: [@muzar_bazaar.nsm.category.config]

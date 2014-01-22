@@ -52,6 +52,24 @@ class HtmlParser
 			$params['currency'] = trim($node->first()->attr('value'));
 		}
 
+		// email
+		$node = $crawler->filterXPath('//*[@id = "bflm"]/following-sibling::script');
+		if ($node->count())
+		{
+			$text = $node->text();
+			if (preg_match('/\("bflm"\)\.value\=\'(.*)\'(.*)\'(.*)\'\;/', $text, $matches))
+			{
+				$params['email'] = $matches[1] . '@' . $matches[3];
+			}
+		}
+
+		// telefon
+		$node = $crawler->filter('input[name="telefon"]');
+		if ($node->count())
+		{
+			$params['phone'] = trim($node->first()->attr('value'));
+		}
+
 		// Pocet obrazku
 		$node = $crawler->filter('.FormularHodnotaM .InzeratObr');
 		$params['images'] = trim($node->count());

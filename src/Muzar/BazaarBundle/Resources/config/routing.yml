@@ -1,0 +1,3 @@
+muzar_bazaar_homepage:
+    pattern:  /hello/{name}
+    defaults: { _controller: MuzarBazaarBundle:Default:index }

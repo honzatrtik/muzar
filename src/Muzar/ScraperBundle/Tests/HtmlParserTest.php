@@ -41,8 +41,14 @@ class HtmlParserTest extends \PHPUnit_Framework_TestCase
 			'region' => 'Olomoucký kraj',
 			'price' => 'dohodou',
 			'currency' => 'CZK',
-			'images' => 1
+			'images' => '1',
+			'email' => 'alien@alienrock.cz',
+			'phone' => '775622371',
 		);
+
+		sort($params);
+		sort($expectedParams);
+
 
 		$this->assertEquals($expectedParams, $params);
 
