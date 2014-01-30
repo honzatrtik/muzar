@@ -70,13 +70,71 @@
 
 	<!-- Begin page content -->
 	<div class="container">
+
+		<!-- Modal -->
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-show="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="myModalLabel">Inzerát je ve špatné kategorii?</h4>
+					</div>
+					<div class="modal-body">
+						<p>
+							Myslíte si, že tenhle inzerát by měl být v jiné kategorii? Navrhněte nám, kam by měl podle vás správně patřit.
+						</p>
+
+						<div class="row no-margin">
+							<div class="col-xs-12 col-sm-4 col-md-4">
+								<div class="form-group">
+									<label>Hlavní kategorie</label>
+									<select class="form-control">
+										<option>Kytary</option>
+										<option>Basy</option>
+										<option>Bici</option>
+									</select>
+								</div>
+							</div>
+							<div class="col-xs-12 col-sm-4 col-md-4">
+								<div class="form-group">
+									<label>Podkategorie</label>
+									<select class="form-control">
+										<option>Akusticke kytary</option>
+										<option>Elektro-akustiky</option>
+									</select>
+								</div>
+							</div>
+							<div class="col-xs-12 col-sm-4 col-md-4">
+								<div class="form-group">
+									<label>Podkategorie</label><span class="help-block-inline">(Volitelné)</span>
+									<select class="form-control">
+										<option>Jumbo</option>
+										<option>Elektro-akustiky</option>
+									</select>
+
+								</div>
+							</div>
+						</div>
+
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary">Odeslat návrh</button>
+					</div>
+				</div>
+				<!-- /.modal-content -->
+			</div>
+			<!-- /.modal-dialog -->
+		</div>
+		<!-- /.modal -->
+
+
 		<div class="row">
 			<ol class="breadcrumb">
 				<li><a href="#">Home</a></li>
 				<li><a href="#">Kytarové nástroje</a></li>
 				<li><a href="#">Elektrické kytary</a></li>
 				<li class="active">Fender kytara 1980 japonec</li>
-				<a href="" class="pull-right text-muted">Spatná kategorie?</a>
+				<a href="" class="pull-right text-muted" data-toggle="modal" data-target="#myModal">Spatná kategorie?</a>
 			</ol>
 
 		</div>
@@ -113,18 +171,23 @@
 				<div class="thumbnail">
 
 					<h3 class="pull-left">Cena: 50 000Kč</h3>
+
 					<a href="" class="btn btn-primary btn-lg pull-right">Kontaktovat</a>
 					<div class="clearfix"></div>
+
+					<h5><i class="glyphicon glyphicon-envelope"></i> Možnost poslat poštou </h5>
+
+
 
 
 					<h4>Prodávající:</h4>
 					Pavel Novák<br>
-					Nová ves 12<br>
+					Třinec<br>
 					<span class="text-muted">Ostravsky kraj</span><br>
 					Tel: 736252366<br>
 					<br>
 
-					<span class="glyphicon glyphicon-time"></span> před 5 hodinami <span class="glyphicon glyphicon-eye-open"></span> 250x
+					<span class="glyphicon glyphicon-time"></span> vloženo před 5 hodinami <span class="glyphicon glyphicon-eye-open"></span> detail zobrazen 250x
 
 				</div>
 
@@ -132,7 +195,40 @@
 
 			<div class="col-xs-12 col-sm-4 col-md-4">
 				<img data-src="holder.js/350x400/text:Reklama" alt="...">
+				<a href="" data-toggle="modal" data-target="#modalSpam">Nahlasit inzerat</a>
 			</div>
+
+			<!-- Modal -->
+			<div class="modal fade" id="modalSpam" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-show="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<h4 class="modal-title" id="">Nahlásit inzerát</h4>
+						</div>
+						<div class="modal-body">
+							<p>
+								Myslíte si, že by tu tento inzerát němel být? Napište nám důvod proč a my ho zkontrolujeme a případně smažeme.
+							</p>
+
+							<div class="row no-margin">
+								<div class="col-xs-12 col-sm-12 col-md-12">
+									<div class="form-group">
+										<textarea class="form-control" rows="4" placeholder="Důvod, proč by tu tento inzerát něměl být."></textarea>
+									</div>
+								</div>
+							</div>
+
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-primary">Odeslat nahlášení</button>
+						</div>
+					</div>
+					<!-- /.modal-content -->
+				</div>
+				<!-- /.modal-dialog -->
+			</div>
+			<!-- /.modal -->
 
 			<div class="col-xs-12 col-sm-8 col-md-8">
 				<h3>Popis</h3>
@@ -160,6 +256,6 @@
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-<script src="../../dist/js/bootstrap.min.js"></script>
+<script src="dist/js/bootstrap.min.js"></script>
 </body>
 </html>
