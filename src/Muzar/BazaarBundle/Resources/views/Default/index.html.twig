@@ -1,18 +1,21 @@
 {% extends "MuzarBazaarBundle::base.html.twig" %}
 
-{% block content %}
-    <div class="col-xs-12 col-sm-6 col-md-4">
-        <div class="thumbnail">
-            <img src="http://placehold.it/300x200?text=obrazek">
 
-            <div class="caption">
-                <h4>Boss Combo Drive BC 2</h4>
-
-                <span class="text-muted">Ostravsky kraj</span>
-                <span class="pull-right"><strong>3 000 Kc</strong></span>
-            </div>
-        </div>
-    </div>
-
+{% block sidebar %}
+    <div id="menu"></div>
 {% endblock %}
 
+{% block content %}
+    <div id="ad-list"></div>
+{% endblock %}
+
+{% block javascripts %}
+
+    <script src="{{ asset('muzarjs/bower_components/requirejs/require.js') }}"{% if app.debug %} data-main="{{ asset('muzarjs/muzar.js') }}"{% endif %} type="text/javascript"></script>
+    <script src="{{ asset('muzarjs/requirejsconfig.js') }}" type="text/javascript"></script>
+
+    {% if not app.debug %}
+        <script src="{{ asset('muzarjs/muzar.production.js') }}" type="text/javascript"></script>
+    {% endif %}
+
+{% endblock %}

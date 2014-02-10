@@ -34,8 +34,10 @@
         <div class="row">
 
             {% block header %}
-                <div class="col-md-6 col-sm-6"><img src="http://placehold.it/555x150&text=Muzar"></div>
-                <div class="col-md-6 col-sm-6"><img src="http://placehold.it/555x150&text=rocks!"></div>
+                <div id="header">
+                    <div class="col-md-6 col-sm-6"><img src="http://placehold.it/555x150&text=Muzar"></div>
+                    <div class="col-md-6 col-sm-6"><img src="http://placehold.it/555x150&text=rocks!"></div>
+                </div>
             {% endblock %}
 
         </div>
@@ -45,11 +47,8 @@
                 {% block sidebar %}{% endblock %}
             </div>
 
-
-            <div class="col-xs-12 col-sm-8 col-md-9">
-
+            <div id="content" class="col-xs-12 col-sm-8 col-md-9">
                 {% block content %}{% endblock %}
-
             </div>
         </div>
     </div>

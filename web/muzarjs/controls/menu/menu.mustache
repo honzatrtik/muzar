@@ -1,0 +1,14 @@
+{{#if children.length}}
+<ul>
+
+	{{#children}}
+	<li class="category" {{data 'category'}} {{(el) -> scope._context.attr('element', el)}}>
+		{{saveElementToContext}}
+        <a class="list-group-item" href="#">{{name}} <span class="badge">{{newSince}}</span></a>
+		{{> controls/menu/menu}}
+    </li>
+	{{/children}}
+
+</ul>
+{{/if}}
+
