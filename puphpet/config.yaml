@@ -71,12 +71,16 @@ apache:
                 - 'APP_ENV dev'
             override:
                 - All
+            directories:
+                - path: /var/www/muzar.localhost/web
+                  custom_fragment: EnableSendfile off
     user: www-data
     group: www-data
     default_vhost: true
     mpm_module: prefork
     mod_pagespeed: 0
     mod_spdy: 0
+    custom_fragment: 'EnableSendfile Off'
 php:
     version: '54'
     composer: '1'
