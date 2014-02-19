@@ -10,7 +10,7 @@ define([
 	var $content= $('#content');
 	var control;
 
-	QUnit.module("Menu module", {
+	QUnit.module("MenuControl", {
 		setup: function() {
 			control = new MenuControl($content, {
 				model: new CategoryModel('http://muzarcz.apiary.io/category')
@@ -21,9 +21,9 @@ define([
 		}
 	});
 
-	QUnit.asyncTest("MenuControl.render", function () {
+	QUnit.asyncTest("render", function () {
 
-		control.load({}, function() {
+		control.load().done(function() {
 
 			F('#content ul').exists(200).then(function() {
 				QUnit.equal($('#content > ul').length, 1, '"> ul" exists');
@@ -40,13 +40,11 @@ define([
 
 		});
 
-
-
 	});
 
-	QUnit.asyncTest("MenuControl.setSelected & MenuControl.getSelected", function () {
+	QUnit.asyncTest("setSelected & getSelected", function () {
 
-		control.load({}, function() {
+		control.load().done(function() {
 			control.setSelected('elektricke-kytary');
 			QUnit.equal(control.getSelected(), 'elektricke-kytary');
 			QUnit.start();
@@ -54,9 +52,9 @@ define([
 
 	});
 
-	QUnit.asyncTest("MenuControl.getSelectedCategory", function () {
+	QUnit.asyncTest("getSelectedCategory", function () {
 
-		control.load({}, function() {
+		control.load().done(function() {
 			control.setSelected('elektricke-kytary');
 			QUnit.equal(control.getSelectedCategory().strId, 'elektricke-kytary');
 			QUnit.start();
@@ -65,9 +63,9 @@ define([
 	});
 
 
-	QUnit.asyncTest("MenuControl.getSelectedElement", function () {
+	QUnit.asyncTest("getSelectedElement", function () {
 
-		control.load({}, function() {
+		control.load().done(function() {
 			control.setSelected('elektricke-kytary');
 			QUnit.equal(control.getSelectedElement().data('category').strId, 'elektricke-kytary');
 			QUnit.start();
@@ -75,9 +73,9 @@ define([
 
 	});
 
-	QUnit.asyncTest("MenuControl events", function () {
+	QUnit.asyncTest("events", function () {
 
-		control.load({}, function() {
+		control.load().done(function() {
 
 			var $li = $('#content ul li').eq(1);
 

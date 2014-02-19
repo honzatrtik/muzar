@@ -63,22 +63,25 @@ module.exports = function(grunt) {
 			rmbuilddir   : {
 				cmd : 'rm -rf .build'
 			},
-			compileviews : {
-				cmd: 'node_modules/can-compile/bin/can-compile -o .build/views.js'
+			test   : {
+				cmd : 'phantomjs runner.js muzar_test.html'
 			}
 		},
 		requirejs : {
 			compile : {
 				options : {
-					paths: {
-						can      : 'app/bower_components/canjs/amd/can',
-						jquery   : 'app/bower_components/jquery/jquery',
-						mustache : '.build/mustache',
-						ejs      : '.build/ejs'
-					},
-					name : 'generated',
-					out : 'production.js'
+					baseUrl: './',
+					name: 'muzar',
+					out: 'build/muzar.js',
+					mainConfigFile: './requirejsconfig.js'
 				}
+			}
+		},
+		cancompile: {
+			dist: {
+				src: ['controls/**/*.mustache'],
+				out: '.build/views.js',
+				wrapper: 'define(["can/view/mustache"], function(can) { {{{content}}} });'
 			}
 		},
 		connect: {
@@ -89,10 +92,21 @@ module.exports = function(grunt) {
 					keepalive : true
 				}
 			}
+		},
+		watch: {
+			scripts: {
+				files: ['controls/**/*.*', 'models/**/*.*', 'tests/**/*.*', 'view/**/*.*', 'util/**/*.*'],
+				tasks: ['exec:test'],
+				options: {
+					debounceDelay: 1000,
+					interval: 1000
+				}
+			}
 		}
 	});
 
 	grunt.registerTask('extractViews', function(){
+
 		var file           = fs.readFileSync('.build/views.js'),
 			ast            = esprima.parse(file),
 			views          = ast.body[0].expression.callee.body.body,
@@ -102,20 +116,21 @@ module.exports = function(grunt) {
 			var filename = view.expression.arguments[0].value;
 			generatedViews[filename] = escodegen.generate(view);
 
-		})
+		});
+
 		fs.writeFileSync('.build/views.json', JSON.stringify(generatedViews));
-	})
+	});
 
 	grunt.registerTask('createRenderers', function(){
-		fs.writeFileSync('.build/mustache.js', getRenderer('mustache', process.cwd()));
-		fs.writeFileSync('.build/ejs.js', getRenderer('ejs', process.cwd()));
-	})
+		fs.writeFileSync('.build/mustache.js', getRenderer('mustache', process.cwd() + '/controls'));
+	});
 
 	grunt.registerTask('build', function(){
 		grunt.task.run(
+			'exec:test',
 			'exec:rmbuilddir',
 			'exec:mkbuilddir',
-			'exec:compileviews',
+			'cancompile',
 			'extractViews',
 			'createRenderers',
 			'requirejs:compile',
@@ -125,8 +140,10 @@ module.exports = function(grunt) {
 
 	grunt.loadNpmTasks('grunt-contrib-requirejs');
 	grunt.loadNpmTasks('grunt-exec');
-	grunt.registerTask('default', 'build');
+	grunt.loadNpmTasks('can-compile');
 	grunt.loadNpmTasks('grunt-contrib-connect');
+	grunt.loadNpmTasks('grunt-contrib-watch');
+	grunt.registerTask('default', 'build');
 
 
 };

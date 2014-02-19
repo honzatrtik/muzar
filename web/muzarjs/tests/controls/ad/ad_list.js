@@ -6,7 +6,7 @@ define([
 
 ], function(F, $, AdListControl) {
 
-	QUnit.module("Ad module", {
+	QUnit.module("AdListControl", {
 		setup: function(){
 		},
 		teardown: function(){
@@ -14,17 +14,35 @@ define([
 		}
 	});
 
-	QUnit.test("AdListControl", function () {
+	QUnit.asyncTest("load", function () {
+
+		var $content = $('#content');
+		var control = new AdListControl($content, {});
+		control.load().done(function() {
+
+			QUnit.ok($('#content div').length > 0, 'Control has > 0 children');
+			QUnit.start();
+
+		});
+
+	});
+
+	QUnit.asyncTest("loadNext", function () {
 
 		var $content = $('#content');
 
-		var control = new AdListControl($content, {});
-		control.load();
+		var control = new AdListControl($content, {
 
-		F('#content div').exists(2000).then(function() {
-			QUnit.ok($('#content div').length > 0, 'Control has > 0 children')
 		});
+		control.load().done(function() {
 
+			var length = control.options.list.length;
+			control.loadNext().done(function() {
+				QUnit.ok(control.options.list.length > length);
+				QUnit.start();
+			});
+
+		});
 
 	});
 

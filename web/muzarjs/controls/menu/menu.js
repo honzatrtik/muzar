@@ -1,10 +1,10 @@
 define([
-
 	'can/util/string',
 	'models/category',
 	'mustache!controls/menu/menu',
 	'can/control',
-	'can/map'
+	'can/map',
+	'view/helpers'
 
 ], function (can, CategoryModel, renderer) {
 
@@ -19,16 +19,27 @@ define([
 
 			self.options.categories = new can.List();
 			self.options.categoriesMap = new can.Map();
+			self.options.selected = can.compute();
 
-			options.selected = can.compute(options.selected);
-			options.selected.bind('change', function(event, newSelected, oldSelected) {
-				if (oldSelected) {
+			self.options.selected.bind('change', function(event, newSelected, oldSelected) {
+				if (oldSelected && self.getCategory(oldSelected)) {
 					self.getCategory(oldSelected).element.removeClass('selected');
 				}
-				self.getCategory(newSelected).element.addClass('selected');
+
+				if (self.getCategory(newSelected)) {
+					self.getCategory(newSelected).element.addClass('selected');
+				}
+
+				can.route.attr('category', newSelected);
 			});
+
 		},
 
+		'{can.route} change': function(event, attr, how, newSelected, oldSelected) {
+			if (attr == 'category') {
+				this.options.setSelected(newSelected);
+			}
+		},
 
 		'ul li click': function(li, event) {
 			event.preventDefault();
@@ -37,10 +48,15 @@ define([
 		},
 
 		setSelected: function(category) {
+			this.selected = category;
 			if (this.options.categoriesMap.attr(category))
 			{
 				this.options.selected(category);
 			}
+		},
+
+		getSelectedCompute: function() {
+			return this.options.selected;
 		},
 
 		getSelected: function() {
@@ -62,15 +78,16 @@ define([
 				: null;
 		},
 
-		load: function(params, success) {
+		load: function(params) {
 			var self = this;
-			this.options.model.get(params || {}, function(categories) {
+			return this.options.model.get(params || {}, function(categories) {
+
 				self.options.categories.replace(categories);
 				self._createCategoriesMap();
 
 				self.render();
+				self.setSelected(self.selected);
 
-				can.isFunction(success) && success();
 			});
 		},
 

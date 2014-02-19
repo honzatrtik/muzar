@@ -1,9 +1,14 @@
-define(['models/ad', 'controls/item/item_list', 'mustache!./ad_list'], function (AdModel, ItemListControl, renderer) {
+define([
+	'models/ad',
+	'controls/item/item_list',
+	'mustache!./ad',
+	'view/helpers'
+], function (AdModel, ItemListControl, itemRenderer) {
 
 	return ItemListControl.extend({
 		defaults: {
 			model: AdModel,
-			renderer: renderer
+			itemRenderer: itemRenderer
 		}
 	}, {
 	});

@@ -7,14 +7,14 @@ define([
 
 ], function(F, $, CategoryModel, can) {
 
-	QUnit.module("CategoryModel module", {
+	QUnit.module("CategoryModel", {
 		setup: function(){
 		},
 		teardown: function(){
 		}
 	});
 
-	QUnit.asyncTest("CategoryModel.get", function () {
+	QUnit.asyncTest("get", function () {
 
 		var m = new CategoryModel('http://muzarcz.apiary.io/category');
 

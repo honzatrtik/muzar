@@ -10,7 +10,7 @@ define([
 
 ], function(F, $, ItemListControl, can, renderer) {
 
-	QUnit.module("Item module", {
+	QUnit.module("ItemListControl", {
 		setup: function(){
 		},
 		teardown: function(){
@@ -18,7 +18,7 @@ define([
 		}
 	});
 
-	QUnit.test("ItemListControl", function () {
+	QUnit.asyncTest("load", function () {
 
 		var $content = $('#content');
 
@@ -40,14 +40,16 @@ define([
 			model: can.Model.extend({
 				findAll: 'GET /item'
 			}, {}),
-			renderer: renderer
+			itemRenderer: can.view.mustache('<div class="item">{{id}}-{{name}}</div>')
 		});
 
-		control.load();
+		control.load().done(function() {
 
-		F('#content .item').exists().then(function() {
 			QUnit.equal($content.find('.item').length, 100, 'Control has 100 .item children.');
+			QUnit.start();
+
 		});
+
 
 	});
 
