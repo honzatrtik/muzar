@@ -76,10 +76,9 @@
 			<div class="col-xs-12 col-sm-12 col-md-12">
 
 				<ul class="nav nav-tabs nav-justified">
-					<li class="active"><a href="#">Moje inzeráty</a></li>
-					<li><a href="#">Zprávy <span class="label label-danger">1</span> </a></li>
-					<li><a href="#">Uložené filtry</a></li>
-					<li><a href="#">Nastavení</a></li>
+					<li class="active"><a href="admin-inzeraty.html">Moje inzeráty</a></li>
+					<li><a href="admin-%20hlidaciPes.html">Uložená upozornění na email</a></li>
+					<li><a href="admin-%20nastaveni.html">Nastavení</a></li>
 				</ul>
 
 
@@ -98,12 +97,24 @@
 						<td>
 							<button class="btn btn-default" type="submit">Upravit</button>
 						</td>
-						<td>
-							<button class="btn btn-default" type="submit">Smazat</button>
-						</td>
+
 						<td>
 							<button class="btn btn-default" disabled="disabled" type="submit" title="Inzerat muzete znovu vystavit az po vyprseni platnosti">Znovu vystavit</button>
 							<br><span class="small text-muted">Platný do 12.12.2013</span>
+						</td>
+
+						<td>
+							<!-- Split button -->
+							<div class="btn-group">
+								<button type="button" class="btn btn-default">Prodáno</button>
+								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+									<span class="caret"></span>
+									<span class="sr-only">Toggle Dropdown</span>
+								</button>
+								<ul class="dropdown-menu" role="menu">
+									<li><a href="#">Smazat inzerát</a></li>
+								</ul>
+							</div>
 						</td>
 					</tr>
 					<tr>
@@ -117,12 +128,24 @@
 						<td>
 							<button class="btn btn-default" type="submit">Upravit</button>
 						</td>
-						<td>
-							<button class="btn btn-default" type="submit">Smazat</button>
-						</td>
+
 						<td>
 							<button class="btn btn-default" disabled="disabled" type="submit" title="Inzerat muzete znovu vystavit az po vyprseni platnosti">Znovu vystavit</button>
 							<br><span class="small text-muted">Platný do 12.12.2013</span>
+						</td>
+
+						<td>
+							<!-- Split button -->
+							<div class="btn-group">
+								<button type="button" class="btn btn-default">Prodáno</button>
+								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+									<span class="caret"></span>
+									<span class="sr-only">Toggle Dropdown</span>
+								</button>
+								<ul class="dropdown-menu" role="menu">
+									<li><a href="#">Smazat inzerát</a></li>
+								</ul>
+							</div>
 						</td>
 					</tr>
 					<tr>
@@ -136,12 +159,24 @@
 						<td>
 							<button class="btn btn-default" type="submit">Upravit</button>
 						</td>
-						<td>
-							<button class="btn btn-default" type="submit">Smazat</button>
-						</td>
+
 						<td>
 							<button class="btn btn-default" disabled="disabled" type="submit" title="Inzerat muzete znovu vystavit az po vyprseni platnosti">Znovu vystavit</button>
 							<br><span class="small text-muted">Platný do 12.12.2013</span>
+						</td>
+
+						<td>
+							<!-- Split button -->
+							<div class="btn-group">
+								<button type="button" class="btn btn-default">Prodáno</button>
+								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+									<span class="caret"></span>
+									<span class="sr-only">Toggle Dropdown</span>
+								</button>
+								<ul class="dropdown-menu" role="menu">
+									<li><a href="#">Smazat inzerát</a></li>
+								</ul>
+							</div>
 						</td>
 					</tr>
 					</tbody>
@@ -163,6 +198,6 @@
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-<script src="../../dist/js/bootstrap.min.js"></script>
+<script src="dist/js/bootstrap.min.js"></script>
 </body>
 </html>

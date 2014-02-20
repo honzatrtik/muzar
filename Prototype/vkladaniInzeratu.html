@@ -71,198 +71,184 @@
 <!-- Begin page content -->
 <div class="container">
 
-	<div class="row">
 
-		<div class="col-xs-12 col-sm-8 col-md-8">
+	<div class="col-xs-12 col-sm-12 col-md-8">
 
-			<h3>
-				Co prodávám
-			</h3>
+		<h3>
+			Co prodávám
+		</h3>
 
-			<div class="boxik">
-				<form>
-					<div class="col-xs-12 col-sm-6 col-md-6">
+		<div class="boxik">
+			<form>
+				<div class="col-xs-12 col-sm-12 col-md-12">
+					<div class="form-group">
+						<label>Název prodávané věci</label>
+						<input type="email" class="form-control" placeholder="např. Gibson 1956 Les Paul Goldtop">
+					</div>
+				</div>
+
+				<div class="col-xs-12 col-sm-12 col-md-12">
+					<div class="form-group">
+						Návrh kategorie:<br>
+						<b>
+							Kytary > Elektrické kytary > LP
+						</b>
+
+						<button type="submit" class="btn btn-success">Umístit</button>
+					</div>
+				</div>
+
+				<div class="row no-margin">
+					<div class="col-xs-12 col-sm-4 col-md-4">
 						<div class="form-group">
-							<label>Kategorie</label>
+							<label>Hlavní kategorie</label>
 							<select class="form-control">
-								<option>Kytary</option>
+								<option>-</option>
 								<option>Basy</option>
 								<option>Bici</option>
 							</select>
 						</div>
-					</div>
-					<div class="col-xs-12 col-sm-6 col-md-6">
+						</div>
+					<div class="col-xs-12 col-sm-4 col-md-4">
 						<div class="form-group">
 							<label>Podkategorie</label>
-							<select class="form-control">
-								<option>Elektricke kytary</option>
+							<select class="form-control" disabled="disabled">
+								<option>-</option>
 								<option>Akusticke kytary</option>
 								<option>Elektro-akustiky</option>
 							</select>
 						</div>
-					</div>
-
-					<div class="col-xs-12 col-sm-12 col-md-12">
+						</div>
+					<div class="col-xs-12 col-sm-4 col-md-4">
 						<div class="form-group">
-							<label>Název prodávané věci</label>
-							<input type="email" class="form-control" placeholder="např. Gibson 1956 Les Paul Goldtop">
+							<label>Přesné zařazení</label><span class="help-block-inline">(Volitelné)</span>
+							<select class="form-control" disabled="disabled">
+								<option>-</option>
+								<option>Akusticke kytary</option>
+								<option>Elektro-akustiky</option>
+							</select>
+
 						</div>
 					</div>
+				</div>
 
-					<div class="col-xs-12 col-sm-12 col-md-12">
+				<div class="col-xs-12 col-sm-12 col-md-12">
+
+					<div class="row">
 						<div class="form-group">
-							<div class="row">
+							<div class="col-xs-12 col-sm-6 col-md-6">
 								<label>Cena</label>
 							</div>
-							<div class="row">
-								<div class="col-xs-12 col-sm-6 col-md-6">
-									<input type="email" class="form-control" placeholder="např. 1000"> Kč
-								</div>
-								<div class="col-xs-12 col-sm-6 col-md-6">
-									<input type="checkbox"> Cena dohodou </input>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-xs-12 col-sm-12 col-md-12">
-									<input type="checkbox"> Jsem ochoten zboží poslat poštou </input>
-								</div>
-							</div>
 						</div>
 					</div>
-
-					<div class="col-xs-12 col-sm-12 col-md-12">
+					<div class="row">
 						<div class="form-group">
-							<label>Popis prodávané věci</label>
-							<textarea class="form-control" rows="3" placeholder="např. Stáří, opotřebení"></textarea>
+							<div class="col-xs-12 col-sm-4 col-md-4">
+								<input type="email" class="form-control" placeholder="např. 1000">
+								<span class="pull-right">Kč</span>
+							</div>
+							<div class="col-xs-12 col-sm-3 col-md-3">
+								<input type="checkbox"> Cena dohodou </input>
+							</div>
+							<div class="col-xs-12 col-sm-5 col-md-5">
+								<input type="checkbox"> Jsem ochoten zboží poslat poštou </input>
+							</div>
 						</div>
 					</div>
+				</div>
 
-
-				</form>
-			</div>
-		</div>
-
-		<div class="col-xs-12 col-sm-8 col-md-8">
-
-			<h3>
-				Fotky a ukázky
-			</h3>
-
-			<div class="boxik">
-				<form>
+				<div class="col-xs-12 col-sm-12 col-md-12">
 					<div class="form-group">
-						<label for="exampleInputFile">Fotky</label>
-						<input type="file" id="exampleInputFile">
-
-						<p class="help-block">Nahrajte obrázky ve formátu jpg nebo png.</p>
+						<label>Popis prodávané věci</label>
+						<textarea class="form-control" rows="3" placeholder="např. Stáří, opotřebení"></textarea>
 					</div>
-				</form>
+				</div>
 
+
+			</form>
+		</div>
+	</div>
+
+	<div class="col-xs-12 col-sm-8 col-md-8">
+
+		<h3>
+			Fotky
+		</h3>
+
+		<div class="boxik">
+
+			<div class="row col-xs-12 col-sm-12 col-md-12">
+
+				<div class="boxik col-xs-12 col-sm-4 col-md-4">
+					<p></p>
+					<p class="help-block">Profilová fotka</p>
+					<h1>+</h1>
+					<p></p>
+				</div>
+			</div>
+
+			<div class="col-xs-12 col-sm-12 col-md-12">
+				<p class="help-block">Nahrajte obrázky ve formátu jpg nebo png.</p>
+			</div>
+
+		</div>
+	</div>
+
+	<div class="col-xs-12 col-sm-8 col-md-8">
+
+		<h3>
+			Kontakt
+		</h3>
+
+		<div class="boxik">
+
+
+			<div class="row no-margin">
+				<div class="col-xs-12 col-sm-6 col-md-6">
+					<div class="form-group">
+						<label>Email</label><span class="help-block-inline">(pro odpovědi)</span>
+						<input class="form-control" type="email" placeholder="Na ten vám budou chodit všechny odpovědi">
+					</div>
+				</div>
+			</div>
+
+			<div class="col-xs-12 col-sm-12 col-md-12">
+				<div class="form-group">
+					<label>Mesto nebo obec</label>
+
+					<div class="col-xs-10 col-sm-10 col-md-10">
+						<input type="text" class="form-control" placeholder="staci zdata par prvnich pismen do naseptavace">
+					</div>
+					<div class="col-xs-2 col-sm-2 col-md-2">
+						<button class="btn btn-default" type="submit">Moje poloha</button>
+					</div>
+				</div>
+			</div>
+
+			<div class="row no-margin">
+
+				<div class="col-xs-12 col-sm-6 col-md-6">
+					<div class="form-group">
+						<label>Jmeno nebo přezívka</label><span class="help-block-inline">(Volitelné)</span>
+						<input class="form-control" type="text" placeholder="Ať kupujicí ví, s kým má tu čest">
+					</div>
+				</div>
+				<div class="col-xs-12 col-sm-6 col-md-6">
+					<div class="form-group">
+						<label>Telefon</label><span class="help-block-inline">(Volitelné)</span>
+						<input class="form-control" type="text" placeholder="Pro rychlejší komunikaci">
+					</div>
+				</div>
 			</div>
 		</div>
-
-		<div class="col-xs-12 col-sm-8 col-md-8">
-
-			<h3>
-				Kontakt
-			</h3>
-
-			<div class="boxik">
-				<form class="form" role="form">
-
-
-					<div class="col-xs-12 col-sm-12 col-md-12">
-						<div class="form-group">
-							<label>Mesto nebo obec</label>
-							<input type="email" class="form-control" placeholder="staci zdata par prvnich pismen do naseptavace">
-							<button class="btn btn-default" type="submit">Moje poloha</button>
-						</div>
-					</div>
-
-					<div class="col-xs-12 col-sm-12 col-md-12">
-						<div class="form-group">
-							<label>Telefon</label>
-							<input id="exampleInputEmail2" class="form-control" type="email" placeholder="Pro rychlejší komunikaci">
-						</div>
-					</div>
-					<div class="col-xs-12 col-sm-12 col-md-12">
-						<div class="form-group">
-							<label>Email</label>
-							<input id="exampleInputEmail2" class="form-control" type="email" placeholder="Na ten vám budou chodit všechny odpovědi">
-						</div>
-					</div>
-
-
-				</form>
-			</div>
-		</div>
-
-		<div class="col-xs-12 col-sm-8 col-md-8">
-			<div class="boxik">
-				<h3>
-					Ty jsi tu nový, co?
-				</h3>
-
-				<form>
-					<div class="col-xs-12 col-sm-12 col-md-12">
-						<div class="form-group">
-							<p class="help-block">Nech nam tady heslo, aby jsi mohl upravovat/mazat vsechny sve inzeraty.</p>
-
-							<label>Heslo</label>
-							<input type="email" class="form-control" placeholder="min 6 znaku">
-
-
-						</div>
-					</div>
-
-
-					<div class="col-xs-12 col-sm-12 col-md-12">
-						<input type="checkbox"> Souhlasím s podmínkami služby</input>
-					</div>
-
-					<div class="col-xs-12 col-sm-12 col-md-12">
-						<input type="checkbox"> Chci jednou tydne dostavat email s vyberem toho nejlepsiho z Muzar.cz. Nahled.</input>
-
-					</div>
-				</form>
-			</div>
-		</div>
-
-		<div class="col-xs-12 col-sm-8 col-md-8">
-			<div class="boxik">
-				<h3>
-					Tebe uz jsme tu videli
-				</h3>
-
-				<form>
-					<div class="col-xs-12 col-sm-12 col-md-12">
-						<div class="form-group">
-							<p class="help-block">S emailem trta@bandzone.cz jsi se uz u nas registroval.<br>
-								Napis nam tve heslo, at muzeme pridat tento inzerat k tvemu uctu a ty ho budes moci upravit/smazat. </p>
-
-							<label>Heslo</label>
-							<input type="email" class="form-control" placeholder="min 6 znaku">
-
-							<p class="help-block">Heslo jsem zapomnel.</p>
-
-						</div>
-					</div>
-
-
-				</form>
-			</div>
-		</div>
-
-		<div class="col-xs-12 col-sm-8 col-md-8">
-			<button type="button" class="btn btn-primary btn-lg">Přidat inzerat</button>
-		</div>
-
-
 	</div>
 
 
-</div>
-</div>
+	<div class="col-xs-12 col-sm-8 col-md-8">
+		<button type="button" class="btn btn-primary btn-lg">Přidat inzerat</button>
+	</div>
+
+	</div>
 </div>
 
 <div id="footer">
@@ -276,6 +262,6 @@
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-<script src="../../dist/js/bootstrap.min.js"></script>
+<script src="dist/js/bootstrap.min.js"></script>
 </body>
 </html>
