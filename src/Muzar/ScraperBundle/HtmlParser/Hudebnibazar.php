@@ -4,11 +4,11 @@
  * Time: 15:41
  */
 
-namespace Muzar\ScraperBundle;
+namespace Muzar\ScraperBundle\HtmlParser;
 
 use Symfony\Component\DomCrawler\Crawler;
 
-class HtmlParser
+class Hudebnibazar implements HtmlParserInterface
 {
 
 	public function parse(Crawler $crawler)
@@ -68,6 +68,13 @@ class HtmlParser
 		if ($node->count())
 		{
 			$params['phone'] = trim($node->first()->attr('value'));
+		}
+
+		// telefon
+		$node = $crawler->filter('textarea[name="prispevek"]');
+		if ($node->count())
+		{
+			$params['text'] = trim($node->first()->text());
 		}
 
 		// Pocet obrazku

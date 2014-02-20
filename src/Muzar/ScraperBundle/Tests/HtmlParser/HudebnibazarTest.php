@@ -4,12 +4,12 @@
  * Time: 15:42
  */
 
-namespace Muzar\ScraperBundle\Tests;
+namespace Muzar\ScraperBundle\Tests\HtmlParser;
 
-use Muzar\ScraperBundle\HtmlParser;
+use Muzar\ScraperBundle\HtmlParser\Hudebnibazar;
 use Symfony\Component\DomCrawler\Crawler;
 
-class HtmlParserTest extends \PHPUnit_Framework_TestCase
+class HudebnibazarTest extends \PHPUnit_Framework_TestCase
 {
 
 	protected function setUp()
@@ -19,17 +19,22 @@ class HtmlParserTest extends \PHPUnit_Framework_TestCase
 
 
 	/**
-	 * @return HtmlParser
+	 * @return \Muzar\ScraperBundle\HtmlParser\Hudebnibazar
 	 */
 	protected function getParser()
 	{
-		return new HtmlParser();
+		return new Hudebnibazar();
+	}
+
+	public function testIsInterface()
+	{
+		$this->assertInstanceOf('\Muzar\ScraperBundle\HtmlParser\HtmlParserInterface', $this->getParser());
 	}
 
 	public function testParse()
 	{
 		$parser = $this->getParser();
-		$params = $parser->parse(new Crawler(file_get_contents(__DIR__ . '/page.html')));
+		$params = $parser->parse(new Crawler(file_get_contents(__DIR__ . '/hudebnibazar.html')));
 
 		$this->assertInternalType('array', $params);
 
@@ -43,6 +48,7 @@ class HtmlParserTest extends \PHPUnit_Framework_TestCase
 			'currency' => 'CZK',
 			'images' => '1',
 			'email' => 'alien@alienrock.cz',
+			'text' => 'Zavedená kapela Alien rock přijme mezi sebe zpívajícího klávesáka a sólového kytaristu (ideálně zpívající). Kdo by měl zájem, nechť nás kontaktuje na alien@alienrock.cz',
 			'phone' => '775622371',
 		);
 

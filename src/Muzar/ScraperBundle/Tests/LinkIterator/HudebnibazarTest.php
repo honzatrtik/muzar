@@ -4,11 +4,11 @@
  * Time: 15:42
  */
 
-namespace Muzar\ScraperBundle\Tests;
+namespace Muzar\ScraperBundle\Tests\LinkIterator;
 
-use Muzar\ScraperBundle\RssLinkIterator;
+use Muzar\ScraperBundle\LinkIterator\Hudebnibazar;
 
-class RssLinkIteratorTest extends \PHPUnit_Framework_TestCase
+class HudebnibazarTest extends \PHPUnit_Framework_TestCase
 {
 
 	protected function setUp()
@@ -19,19 +19,19 @@ class RssLinkIteratorTest extends \PHPUnit_Framework_TestCase
 
 	public function testIsIterator()
 	{
-		$it = new RssLinkIterator(__DIR__ . '/rss.xml');
+		$it = new Hudebnibazar(__DIR__ . '/rss.xml');
 		$this->assertInstanceOf('\Iterator', $it);
 	}
 
 	public function testCount()
 	{
-		$it = new RssLinkIterator(__DIR__ . '/rss.xml');
+		$it = new Hudebnibazar(__DIR__ . '/rss.xml');
 		$this->assertCount(50, iterator_to_array($it));
 	}
 
 	public function testItems()
 	{
-		$it = new RssLinkIterator(__DIR__ . '/rss.xml');
+		$it = new Hudebnibazar(__DIR__ . '/rss.xml');
 		foreach($it as $link => $pubDate)
 		{
 			$this->assertInstanceOf('\DateTime', $pubDate);

@@ -28,6 +28,11 @@ class Ad
 	protected $link;
 
 	/**
+	 * @ORM\Column(type="string")
+	 */
+	protected $source;
+
+	/**
 	 * @ORM\Column(type="datetime", nullable=true)
 	 * @var \DateTime
 	 */
@@ -85,6 +90,25 @@ class Ad
 	{
 		return $this->link;
 	}
+
+	/**
+	 * @param mixed $source
+	 */
+	public function setSource($source)
+	{
+		$this->source = $source;
+		return $this;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getSource()
+	{
+		return $this->source;
+	}
+
+
 
 	/**
 	 * @param \DateTime $parsed

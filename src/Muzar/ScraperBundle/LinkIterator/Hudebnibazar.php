@@ -4,11 +4,13 @@
  * Time: 15:41
  */
 
-namespace Muzar\ScraperBundle;
+namespace Muzar\ScraperBundle\LinkIterator;
 
 
-class RssLinkIterator implements \Iterator
+class Hudebnibazar implements \Iterator
 {
+	const DEFAULT_URL = 'http://hudebnibazar.cz/rss/rss.php';
+
 	/**
 	 * @var \XMLReader;
 	 */
@@ -36,7 +38,7 @@ class RssLinkIterator implements \Iterator
 	protected $key;
 
 
-	function __construct($url)
+	function __construct($url = self::DEFAULT_URL)
 	{
 		$this->url = $url;
 	}
@@ -114,7 +116,10 @@ class RssLinkIterator implements \Iterator
 			if ($xml->link && $xml->pubDate)
 			{
 				$this->current = new \DateTime((string) $xml->pubDate);
-				$this->key = (string) $xml->link;
+
+				// Zjitime si edit link
+				parse_str(parse_url($xml->link, PHP_URL_QUERY), $vars);
+				$this->key = (string) 'http://hudebnibazar.cz/formular.php?ID=' . $vars['ID'];
 			}
 		}
 		catch (\RuntimeException $e)
