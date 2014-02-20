@@ -37,9 +37,12 @@ class Midicz implements HtmlParserInterface
 		$node = $crawler->filter('.priceBox');
 		if ($node->count())
 		{
-			list($price, $currency) = explode(' ', trim($node->first()->text()));
-			$params['price'] = $price;
-			$params['currency'] = $currency;
+			$exploded = explode(' ', trim($node->first()->text()));
+			$params['price'] = $exploded[0];
+			if (isset($exploded[1]))
+			{
+				$params['currency'] = $exploded[1];
+			}
 		}
 
 

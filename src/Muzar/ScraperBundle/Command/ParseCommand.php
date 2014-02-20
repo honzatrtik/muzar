@@ -109,7 +109,7 @@ class ParseCommand extends ContainerAwareCommand
 				$parser = $this->getParser($ad->getSource());
 				$crawler = $goutte->request('GET', $ad->getLink());
 				$params = $parser->parse($crawler);
-				foreach($params as $name => $value)
+				foreach(array_filter($params) as $name => $value)
 				{
 					$ad->addPropertyByName($name, $value);
 				}
