@@ -11,6 +11,9 @@ set :log_level, :debug
 set :linked_files,      ['app/config/parameters.yml']
 set :linked_dirs,     ['app/logs', 'web/uploads', 'vendor']
 
+
+set :composer_install_flags, '--no-dev --quiet --optimize-autoloader'
+
 namespace :deploy do
 
   desc 'Fix directory permissions'
