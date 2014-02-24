@@ -70,6 +70,16 @@ swiftmailer:
     spool:     { type: memory }
 
 
+sensio_framework_extra:
+    view:
+        annotations: false
+
+fos_rest:
+    view:
+        view_response_listener: true
+
 services:
     goutte:
         class:  Goutte\Client
+    json_schema_validator:
+        class: JsonSchema\Validator

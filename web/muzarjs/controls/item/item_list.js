@@ -11,7 +11,7 @@ define([
 
 	return can.Control.extend({
 		defaults: {
-			maxLength: 24
+			maxLength: 1024
 		}
 	}, {
 		init: function(element, options) {

@@ -26,7 +26,7 @@ Vagrant.configure("2") do |config|
   data['vm']['synced_folder'].each do |i, folder|
     if folder['source'] != '' && folder['target'] != '' && folder['id'] != ''
       nfs = (folder['nfs'] == "true") ? "nfs" : nil
-      config.vm.synced_folder "#{folder['source']}", "#{folder['target']}", id: "#{folder['id']}", type: nfs, group: "www-data"
+      config.vm.synced_folder "#{folder['source']}", "#{folder['target']}", id: "#{folder['id']}", type: nfs, group: "www-data", owner: "www-data"
     end
   end
 
@@ -64,9 +64,6 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.provision :shell, :path => "puphpet/shell/execute-files.sh"
-
-  config.vm.provision :shell, :path => "shell/composer-stuff.sh"
-  config.vm.provision :shell, :path => "shell/doctrine-drop-update.sh"
 
   if !data['ssh']['host'].nil?
     config.ssh.host = "#{data['ssh']['host']}"

@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Muzar\BazaarBundle\Entity\ItemRepository")
  * @ORM\Table(name="item")
  */
 class Item
@@ -37,6 +37,9 @@ class Item
 	 * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
 	 */
 	protected $price;
+
+
+	protected $imageUrl;
 
 	/**
 	 * @ORM\Column(type="datetime")
@@ -134,7 +137,10 @@ class Item
 		return $this->price;
 	}
 
-
+	public function getImageUrl()
+	{
+		return sprintf('http://placehold.it/300x300&text=%s', urlencode($this->name));
+	}
 
 	/**
 	 * @param \DateTime $created

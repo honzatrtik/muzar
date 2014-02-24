@@ -27,7 +27,7 @@ vagrantfile-local:
                 id: vagrant-root
                 source: ./
                 target: /var/www/muzar.localhost
-                nfs: 'true'
+                nfs: false
         usable_port_range: 2200..2250
     ssh:
         host: null

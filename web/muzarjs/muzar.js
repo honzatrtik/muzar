@@ -21,7 +21,7 @@ requirejs(['controls/menu/menu', 'controls/ad/ad_list', 'models/category', 'util
 
 
 	var menu = new MenuControl($('#menu'), {
-		model: new CategoryModel('http://muzarcz.apiary.io/category')
+		model: new CategoryModel('/app_dev.php/api/categories')
 	});
 
 	can.route.ready();

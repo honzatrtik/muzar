@@ -1,0 +1,16 @@
+Muzar\BazaarBundle\Entity\Item:
+    exclusion_policy: ALL
+    properties:
+        id:
+            expose: true
+        name:
+            expose: true
+        description:
+            expose: true
+        price:
+            expose: true
+        created:
+            expose: true
+        imageUrl:
+            expose: true
+
