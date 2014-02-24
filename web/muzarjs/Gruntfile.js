@@ -64,7 +64,7 @@ module.exports = function(grunt) {
 				cmd : 'rm -rf .build'
 			},
 			test   : {
-				cmd : 'phantomjs runner.js muzar_test.html'
+				cmd : 'phantomjs runner.js http://muzar.localhost//muzarjs/muzar_test.html'
 			}
 		},
 		requirejs : {

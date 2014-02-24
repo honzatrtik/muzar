@@ -2,10 +2,10 @@ define([
 
 	'funcunit',
 	'jquery',
-	'models/category',
+	'models/apiary/category',
 	'can/util/string'
 
-], function(F, $, CategoryModel, can) {
+], function(F, $, model, can) {
 
 	QUnit.module("CategoryModel", {
 		setup: function(){
@@ -16,9 +16,7 @@ define([
 
 	QUnit.asyncTest("get", function () {
 
-		var m = new CategoryModel('http://muzarcz.apiary.io/category');
-
-		m.get({}, function(data) {
+		model.get({}, function(data) {
 			QUnit.ok(data, 'Some data was passed.');
 			QUnit.ok(data.length, 'data instanceof Array');
 

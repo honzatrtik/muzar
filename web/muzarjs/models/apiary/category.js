@@ -7,7 +7,7 @@
 
 	], function (Category) {
 
-		return new Category('http://muzar.localhost/app_dev.php/api/categories');
+		return new Category('http://muzarcz.apiary.io/categories');
 
 	});
 

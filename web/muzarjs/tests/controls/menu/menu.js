@@ -3,9 +3,9 @@ define([
 	'funcunit',
 	'jquery',
 	'controls/menu/menu',
-	'models/category'
+	'models/apiary/category'
 
-], function(F, $, MenuControl, CategoryModel) {
+], function(F, $, MenuControl, model) {
 
 	var $content= $('#content');
 	var control;
@@ -13,7 +13,7 @@ define([
 	QUnit.module("MenuControl", {
 		setup: function() {
 			control = new MenuControl($content, {
-				model: new CategoryModel('http://muzarcz.apiary.io/category')
+				model: model
 			});
 		},
 		teardown: function(){

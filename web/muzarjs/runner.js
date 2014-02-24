@@ -19,7 +19,7 @@
 
 	var args = require('system').args,
 		timeoutRef,
-		timeLimit = 10000;
+		timeLimit = 20000;
 
 	// arg[0]: scriptName, args[1...]: arguments
 	if (args.length !== 2) {
