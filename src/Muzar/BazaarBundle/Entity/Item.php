@@ -8,11 +8,14 @@ namespace Muzar\BazaarBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as JMS;
 
 
 /**
  * @ORM\Entity(repositoryClass="Muzar\BazaarBundle\Entity\ItemRepository")
  * @ORM\Table(name="item")
+ *
+ * @JMS\ExclusionPolicy("all")
  */
 class Item
 {
@@ -20,30 +23,33 @@ class Item
 	 * @ORM\Column(type="integer")
 	 * @ORM\Id
 	 * @ORM\GeneratedValue(strategy="AUTO")
+	 * @JMS\Expose()
 	 */
 	protected $id;
 
 	/**
 	 * @ORM\Column(type="string", length=1024)
+	 * @JMS\Expose()
 	 */
 	protected $name;
 
 	/**
 	 * @ORM\Column(type="string", nullable=true)
+	 * @JMS\Expose()
 	 */
 	protected $description;
 
 	/**
 	 * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
+	 * @JMS\Expose()
 	 */
 	protected $price;
 
 
-	protected $imageUrl;
-
 	/**
 	 * @ORM\Column(type="datetime")
 	 * @var \DateTime
+	 * @JMS\Expose()
 	 */
 	protected $created;
 
@@ -137,10 +143,18 @@ class Item
 		return $this->price;
 	}
 
+
+	/**
+	 * @JMS\VirtualProperty
+	 * @JMS\SerializedName("image_url")
+	 * @return string
+	 */
 	public function getImageUrl()
 	{
-		return sprintf('http://placehold.it/300x300&text=%s', urlencode($this->name));
+		return sprintf('http://placehold.it/300x200/%03X&text=%s', mt_rand(0, 0xF), urlencode($this->getId()));
 	}
+
+
 
 	/**
 	 * @param \DateTime $created

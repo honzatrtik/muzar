@@ -46,5 +46,29 @@ define([
 
 	});
 
+	QUnit.asyncTest("route change", function () {
+
+		var $content = $('#content');
+
+		var control = new AdListControl($content, {});
+
+
+		control.load().done(function() {
+
+
+			can.route.attr('limit', 1);
+
+			F('#content').wait(function(){
+				return  $('#content .item').length == 1;
+			}, 2000, function() {
+				QUnit.ok(true);
+				QUnit.start();
+			});
+
+
+		});
+
+	});
+
 
 });

@@ -36,12 +36,15 @@ define([
 		});
 
 
+		var model = can.Model.extend({
+			findAll: 'GET /item'
+		}, {});
+
 		var control = new ItemListControl($content, {
-			model: can.Model.extend({
-				findAll: 'GET /item'
-			}, {}),
-			itemRenderer: can.view.mustache('<div class="item">{{id}}-{{name}}</div>')
+			model: model,
+			itemRenderer: can.view.mustache('<div>{{id}}-{{name}}</div>')
 		});
+
 
 		control.load().done(function() {
 

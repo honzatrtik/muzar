@@ -1,16 +1,10 @@
-(function() {
+define([
 
+	'models/category_class'
 
-	define([
+], function (Category) {
 
-		'models/category_class'
+	return new Category('http://muzarcz.apiary.io/categories');
 
-	], function (Category) {
-
-		return new Category('http://muzarcz.apiary.io/categories');
-
-	});
-
-
-})();
+});
 

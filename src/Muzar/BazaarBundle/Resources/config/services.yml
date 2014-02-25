@@ -3,6 +3,8 @@ parameters:
     muzar_bazaar.controller.item.class: Muzar\BazaarBundle\Controller\ItemController
     muzar_bazaar.controller.category.class: Muzar\BazaarBundle\Controller\CategoryController
 
+    muzar_bazaar.model_service.item.class: Muzar\BazaarBundle\Entity\ItemService
+
 
 services:
     muzar_bazaar.nsm.category.config:
@@ -15,11 +17,13 @@ services:
         class: DoctrineExtensions\NestedSet\Manager
         arguments: [@muzar_bazaar.nsm.category.config]
 
-
+    muzar_bazaar.model_service.item:
+        class: "%muzar_bazaar.model_service.item.class%"
+        arguments: [@doctrine.orm.entity_manager, @muzar_bazaar.nsm.category]
 
     muzar_bazaar.controller.item:
         class: "%muzar_bazaar.controller.item.class%"
-        arguments: [@router, @doctrine.orm.entity_manager]
+        arguments: [@router, @muzar_bazaar.model_service.item]
 
     muzar_bazaar.controller.category:
         class: "%muzar_bazaar.controller.category.class%"

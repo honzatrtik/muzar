@@ -8,8 +8,6 @@ namespace Muzar\BazaarBundle\Entity;
 
 
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Mapping as ORM;
-
 
 class ItemRepository extends EntityRepository
 {

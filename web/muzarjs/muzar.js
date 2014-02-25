@@ -1,4 +1,13 @@
-requirejs(['controls/menu/menu', 'controls/ad/ad_list', 'models/category', 'util/scroll_top_restorer', 'can', 'jquery'], function(MenuControl, AdListControl, CategoryModel, ScrollTopRestorer, can, $){
+requirejs([
+
+	'can',
+	'jquery',
+	'controls/menu/menu',
+	'controls/ad/ad_list',
+	'models/category',
+	'util/scroll_top_restorer'
+
+], function(can, $, MenuControl, AdListControl, categoryModel, ScrollTopRestorer){
 
 	can.ajaxPrefilter(function(options, originalOptions, request){
 		request.fail(function() {
@@ -11,6 +20,7 @@ requirejs(['controls/menu/menu', 'controls/ad/ad_list', 'models/category', 'util
 	var adList = new AdListControl($('#ad-list'));
 
 
+	// Udrzuje pozici po nacteni dalsi stranky vypisu
 	var listener = new ScrollTopRestorer($('body'));
 	can.bind.call(adList, 'beforeListSpliced', function() {
 		listener.saveHeight();
@@ -21,21 +31,18 @@ requirejs(['controls/menu/menu', 'controls/ad/ad_list', 'models/category', 'util
 
 
 	var menu = new MenuControl($('#menu'), {
-		model: new CategoryModel('/app_dev.php/api/categories')
+		model: categoryModel
 	});
 
 	can.route.ready();
 
-	menu.load({}).done(function() {
+	if (!can.route.attr('category')) {
+		// Pokud nemame kategorii, nacteme vsechno
+		adList.load();
+	}
 
-		adList.load({});
-		menu.getSelectedCompute().bind('change', function(event, category) {
-			adList.load({
-				category: category
-			});
-		});
+	menu.load({});
 
-	});
 
 
 

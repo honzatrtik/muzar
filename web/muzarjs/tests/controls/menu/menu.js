@@ -35,8 +35,9 @@ define([
 					QUnit.ok($(li).data('category'), 'Every "> ul > li" has data key "category".');
 				});
 
+				QUnit.start();
 			});
-			QUnit.start();
+
 
 		});
 
@@ -79,20 +80,22 @@ define([
 
 			var $li = $('#content ul li').eq(1);
 
-			F($li).click(500).then(function() {
-				QUnit.ok($li.hasClass('selected'), 'Clicked element has class "selected"');
-				QUnit.ok(control.getSelectedElement().hasClass('selected'), 'Selected element has class "selected"');
-				QUnit.equal(control.getSelectedElement()[0], $li[0], 'Clicked and selected elements are same.');
+			can.route.attr('limit', 2);
+			can.route.attr('startId', 800);
 
-				QUnit.start();
-			});
+			$li.trigger('click');
 
+			QUnit.ok($li.hasClass('selected'), 'Clicked element has class "selected"');
+			QUnit.ok(control.getSelectedElement().hasClass('selected'), 'Selected element has class "selected"');
+			QUnit.equal(control.getSelectedElement()[0], $li[0], 'Clicked and selected elements are same.');
 
+			QUnit.ok(!can.route.attr('limit'));
+			QUnit.ok(!can.route.attr('startId'));
+
+			QUnit.start();
 		});
 
 	});
-
-
 
 
 });

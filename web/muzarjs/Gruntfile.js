@@ -10,8 +10,8 @@ var getRenderer = function(ext, cwd){
 		"	Rndrr.load = function(name, parentRequire, load, config) {\n"+
 		"		var path = parentRequire.toUrl(name + '." + ext + "'),\n"+
 		"			fs, views, output;\n"+
-		"		if(config.isBuild){\n"+
-		"			path   = path.replace(/\\.|\\//g, '_').replace(/^_+|_+$/g, '');\n"+
+		"		if(config.isBuild){\n" +
+		"			path   = path.replace('" + cwd + "', '').replace(/\\.|\\//g, '_').replace(/^_+|_+$/g, '');\n"+
 		"			fs     = require.nodeRequire('fs'),\n"+
 		"			views  = JSON.parse(fs.readFileSync('" + cwd + "/.build/views.json')),\n"+
 		"			output = 'define([\\'can/view/" + ext + "\\', \\'can/observe\\'], function(can){ return ' + views[path] + ' });'\n"+
@@ -73,24 +73,18 @@ module.exports = function(grunt) {
 					baseUrl: './',
 					name: 'muzar',
 					out: 'build/muzar.js',
-					mainConfigFile: './requirejsconfig.js'
+					mainConfigFile: './requirejsconfig.js',
+					findNestedDependencies: true,
+					paths: {
+						mustache: '.build/mustache'
+					}
 				}
 			}
 		},
 		cancompile: {
 			dist: {
 				src: ['controls/**/*.mustache'],
-				out: '.build/views.js',
-				wrapper: 'define(["can/view/mustache"], function(can) { {{{content}}} });'
-			}
-		},
-		connect: {
-			server: {
-				options: {
-					port: 9001,
-					base: '.',
-					keepalive : true
-				}
+				out: '.build/views.js'
 			}
 		},
 		watch: {
@@ -122,7 +116,7 @@ module.exports = function(grunt) {
 	});
 
 	grunt.registerTask('createRenderers', function(){
-		fs.writeFileSync('.build/mustache.js', getRenderer('mustache', process.cwd() + '/controls'));
+		fs.writeFileSync('.build/mustache.js', getRenderer('mustache', process.cwd()));
 	});
 
 	grunt.registerTask('build', function(){
@@ -141,7 +135,6 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-requirejs');
 	grunt.loadNpmTasks('grunt-exec');
 	grunt.loadNpmTasks('can-compile');
-	grunt.loadNpmTasks('grunt-contrib-connect');
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.registerTask('default', 'build');
 

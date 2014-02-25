@@ -22,6 +22,7 @@ define([
 			self.options.selected = can.compute();
 
 			self.options.selected.bind('change', function(event, newSelected, oldSelected) {
+
 				if (oldSelected && self.getCategory(oldSelected)) {
 					self.getCategory(oldSelected).element.removeClass('selected');
 				}
@@ -35,15 +36,20 @@ define([
 
 		},
 
-		'{can.route} change': function(event, attr, how, newSelected, oldSelected) {
+		'{can.route} change': function(route, event, attr, how, newSelected, oldSelected) {
 			if (attr == 'category') {
-				this.options.setSelected(newSelected);
+				this.setSelected(newSelected);
 			}
 		},
 
-		'ul li click': function(li, event) {
+		'.category click': function(li, event) {
 			event.preventDefault();
 			event.stopPropagation();
+
+			// Resetujeme jen pri uzivatelske interakci
+			can.route.removeAttr('limit');
+			can.route.removeAttr('startId');
+
 			this.setSelected(li.data('category').attr('strId'));
 		},
 

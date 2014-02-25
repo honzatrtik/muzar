@@ -6,7 +6,7 @@
 
 
 {{#each items}}
-<div {{saveElement}}>
+<div class="item" {{saveElement}}>
 	{{{itemRenderer}}}
 </div>
 {{/each}}
@@ -17,7 +17,10 @@
     <button type="submit" class="btn btn-default">Zobrazit dalsi</button>
 	{{items.length}} / {{items.meta.total}}
 </div>
+{{else}}
+<div>
+	<small>Žádné další položky</small>
+</div>
 {{/if}}
-
 
 

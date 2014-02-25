@@ -75,6 +75,8 @@ sensio_framework_extra:
         annotations: false
 
 fos_rest:
+    serializer:
+        serialize_null: true
     view:
         view_response_listener: true
 
@@ -83,3 +85,11 @@ services:
         class:  Goutte\Client
     json_schema_validator:
         class: JsonSchema\Validator
+
+#jms_serializer:
+#    metadata:
+#        auto_detection: true
+#        directories:
+#            Muzar\BazaarBundle:
+#                namespace_prefix: Muzar\BazaarBundle
+#                path: "@MuzarBazaarBundle/Resources/config/serializer"

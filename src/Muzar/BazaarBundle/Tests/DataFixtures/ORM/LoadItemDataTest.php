@@ -25,11 +25,8 @@ class LoadItemDataTest extends ApiTestCase
 	 */
 	public function setUp()
 	{
-		static::$kernel = static::createKernel();
-		static::$kernel->boot();
-
 		/** @var EntityManager em */
-		$this->em = static::$kernel->getContainer()
+		$this->em = $this->getKernel()->getContainer()
 			->get('doctrine')
 			->getManager()
 		;
@@ -37,9 +34,7 @@ class LoadItemDataTest extends ApiTestCase
 		$this->runCommand('doctrine:schema:drop', array(
 			'--force' => TRUE
 		));
-		$this->runCommand('doctrine:schema:create', array(
-			'--force' => TRUE
-		));
+		$this->runCommand('doctrine:schema:create', array());
 
 	}
 
@@ -65,9 +60,7 @@ class LoadItemDataTest extends ApiTestCase
 		$this->runCommand('doctrine:schema:drop', array(
 			'--force' => TRUE
 		));
-		$this->runCommand('doctrine:schema:create', array(
-			'--force' => TRUE
-		));
+		$this->runCommand('doctrine:schema:create', array());
 
 		$this->em->close();
 	}

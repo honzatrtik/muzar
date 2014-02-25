@@ -1,53 +1,49 @@
-(function() {
+define([
 
+	'can'
 
-	define([
+], function (can) {
 
-		'can'
+	return can.Construct.extend({
 
-	], function (can) {
+		init: function(url) {
+			this.url = url;
+		},
 
-		return can.Construct.extend({
+		get: function(params, success, error) {
 
-			init: function(url) {
-				this.url = url;
-			},
+			var self = this;
+			var def = can.ajax({
+				url: this.url,
+				data: params
+			});
 
-			get: function(params, success, error) {
+			def.done(function(data) {
+				can.isFunction(success) && success(self.parse(data.data || []));
+			}).fail(function() {
+				can.isFunction(error) && error.apply(this, arguments);
+			});
 
-				var self = this;
-				var def = can.ajax({
-					url: this.url,
-					data: params
-				});
+			return def;
 
-				def.done(function(data) {
-					can.isFunction(success) && success(self.parse(data.data || []));
-				}).fail(function() {
-					can.isFunction(error) && error.apply(this, arguments);
-				});
+		},
 
-				return def;
+		parse: function(children) {
 
-			},
+			var self = this;
+			return can.each(children, function(value, index) {
+				if (value.children) {
+					self.parse(value.children)
+				} else {
+					value.children = [];
+				}
+			});
 
-			parse: function(children) {
-
-				var self = this;
-				return can.each(children, function(value, index) {
-					if (value.children) {
-						self.parse(value.children)
-					} else {
-						value.children = [];
-					}
-				});
-
-			}
-
-		});
+		}
 
 	});
 
+});
 
-})();
+
 

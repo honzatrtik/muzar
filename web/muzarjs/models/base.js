@@ -1,4 +1,9 @@
-define(['can/util/string', 'can/model'], function (can) {
+define([
+
+	'can/util/string',
+	'can/model'
+
+], function (can) {
 
 	var BaseModel = can.Model.extend({
 

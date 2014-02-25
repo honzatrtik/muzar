@@ -7,8 +7,14 @@ use Muzar\BazaarBundle\Tests\ApiTestCase;
 
 class CategoryControllerTest extends ApiTestCase
 {
+	protected function setUp()
+	{
+		parent::setUp();
+		$this->runCommandDropCreateFixtures();
+	}
 
-    public function testAll()
+
+	public function testAll()
     {
 		$response = $this->request('GET', '/api/categories');
 		$json = $this->assertJsonResponse($response, 200);

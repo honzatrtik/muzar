@@ -1,7 +1,7 @@
 define([
 
 	'can/util/string',
-	'mustache!./item_list',
+	'mustache!controls/item/item_list',
 	'can/control',
 	'can/model',
 	'can/view/mustache',
@@ -14,8 +14,12 @@ define([
 			maxLength: 1024
 		}
 	}, {
+
 		init: function(element, options) {
+			this.loading = false;
 			this.options.spliced = can.compute(false);
+			this.options.list = new this.options.model.List();
+			this.on();
 		},
 
 		'{list} length': function(list, event, length) {
@@ -29,27 +33,47 @@ define([
 
 				can.trigger(this, 'afterListSpliced');
 			}
+		},
+
+
+		'{can.route} change': function(route, event, attr, how, newVal, oldVal) {
+
+			// Reload if different
+			var timeoutId;
+			var self = this;
+			var reload =  (attr == 'category')
+				|| (attr == 'limit' && this.options.list.length != newVal)
+				|| (attr == 'startId' && this.options.list.attr('0.id') != newVal);
+
+
+			if (reload) {
+				clearTimeout(timeoutId);
+				timeoutId = setTimeout(function() {
+					self.load();
+				}, 100);
+			}
 
 		},
+
 
 		'.next-link click': function(element, event) {
 			event.preventDefault();
 			this.loadNext();
 		},
 
+
 		'.reload-link click': function(element, event) {
 			event.preventDefault();
 			this.load();
 		},
 
+
 		load: function() {
 
+			this.loading = true;
+
 			var self = this;
-
-			return this.options.model.findAll(this.options.params, function(list) {
-
-				can.route.removeAttr('startId');
-				can.route.removeAttr('limit');
+			return this.options.model.findAll(can.route.attr(), function(list) {
 
 				self.options.spliced(false);
 
@@ -66,6 +90,8 @@ define([
 						}
 					}
 				}));
+
+				self.loading = false;
 
 			});
 		},

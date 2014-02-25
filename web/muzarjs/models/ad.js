@@ -1,4 +1,9 @@
-define(['can/util/string', 'models/base'], function (can, BaseModel) {
+define([
+
+	'can/util/string',
+	'models/base'
+
+], function (can, BaseModel) {
 
 	var AdModel = BaseModel.extend({
 		findAll: 'GET http://muzar.localhost/app_dev.php/api/ads',
