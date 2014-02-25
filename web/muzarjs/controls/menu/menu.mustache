@@ -2,8 +2,8 @@
 <ul>
 
 	{{#children}}
-	<li class="category"  {{data 'category'}} {{saveElement}}>
-        <a class="list-group-item" href="#">{{name}} <span class="badge">{{newSince}}</span></a>
+	<li>
+        <a class="list-group-item category" {{data 'category'}} {{saveElement}} href="#">{{name}} {{#if {{newSince}}}}<span class="badge">*</span>{{/if}}</a>
 		{{> controls/menu/menu}}
     </li>
 	{{/children}}

@@ -24,11 +24,11 @@ define([
 			self.options.selected.bind('change', function(event, newSelected, oldSelected) {
 
 				if (oldSelected && self.getCategory(oldSelected)) {
-					self.getCategory(oldSelected).element.removeClass('selected');
+					self.getCategory(oldSelected).element.removeClass('active');
 				}
 
 				if (self.getCategory(newSelected)) {
-					self.getCategory(newSelected).element.addClass('selected');
+					self.getCategory(newSelected).element.addClass('active');
 				}
 
 				can.route.attr('category', newSelected);

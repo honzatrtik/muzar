@@ -48,8 +48,10 @@ define([
 
 		control.load().done(function() {
 
-			QUnit.equal($content.find('.item').length, 100, 'Control has 100 .item children.');
-			QUnit.start();
+			setTimeout(function() {
+				QUnit.equal($content.find('.item').length, 100, 'Control has 100 .item children.');
+				QUnit.start();
+			}, 50);
 
 		});
 

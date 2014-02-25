@@ -3,7 +3,7 @@ define([
 	'funcunit',
 	'jquery',
 	'controls/menu/menu',
-	'models/apiary/category'
+	'models/category'
 
 ], function(F, $, MenuControl, model) {
 
@@ -28,11 +28,11 @@ define([
 			F('#content ul').exists(200).then(function() {
 				QUnit.equal($('#content > ul').length, 1, '"> ul" exists');
 
-				var $lis = $('#content > ul > li ');
-				QUnit.ok($lis.length > 0, '"> ul > li" at least 1 exists');
+				var $items = $('#content ul li .category');
+				QUnit.ok($items.length > 0, '"> ul > li > .category" at least 1 exists');
 
-				$lis.each(function(i, li) {
-					QUnit.ok($(li).data('category'), 'Every "> ul > li" has data key "category".');
+				$items.each(function(i, item) {
+					QUnit.ok($(item).data('category'), 'Every "> ul > li > .category" has data key "category".');
 				});
 
 				QUnit.start();
@@ -78,16 +78,16 @@ define([
 
 		control.load().done(function() {
 
-			var $li = $('#content ul li').eq(1);
+			var $item = $('#content ul li .category').eq(1);
 
 			can.route.attr('limit', 2);
 			can.route.attr('startId', 800);
 
-			$li.trigger('click');
+			$item.trigger('click');
 
-			QUnit.ok($li.hasClass('selected'), 'Clicked element has class "selected"');
-			QUnit.ok(control.getSelectedElement().hasClass('selected'), 'Selected element has class "selected"');
-			QUnit.equal(control.getSelectedElement()[0], $li[0], 'Clicked and selected elements are same.');
+			QUnit.ok($item.hasClass('active'), 'Clicked element has class "active"');
+			QUnit.ok(control.getSelectedElement().hasClass('active'), 'Selected element has class "active"');
+			QUnit.equal(control.getSelectedElement()[0], $item[0], 'Clicked and selected elements are same.');
 
 			QUnit.ok(!can.route.attr('limit'));
 			QUnit.ok(!can.route.attr('startId'));
