@@ -8,6 +8,7 @@ namespace Muzar\BazaarBundle\Entity;
 
 use DoctrineExtensions\NestedSet;
 use Doctrine\ORM\EntityManager;
+use FOS\ElasticaBundle;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ItemService 
@@ -21,12 +22,16 @@ class ItemService
 	/** @var  NestedSet\Manager */
 	protected $nsm;
 
-	function __construct(EntityManager $em, NestedSet\Manager $nsm)
+	/** @var  ElasticaBundle\Doctrine\RepositoryManager */
+	protected $rm;
+
+
+	function __construct(EntityManager $em, NestedSet\Manager $nsm, ElasticaBundle\Manager\RepositoryManager $rm)
 	{
 		$this->em = $em;
 		$this->nsm = $nsm;
+		$this->rm = $rm;
 	}
-
 
 	public function getItems($categoryStrId = self::DEFAULT_CATEGORY_STR_ID, $maxResults = self::DEFAULT_MAX_RESULTS, $startId = NULL)
 	{
@@ -78,9 +83,34 @@ class ItemService
 		$categoryStrIds[] = $category->getStrId();
 
 
-		$builder = $repository->createQueryBuilder($alias);
+		$builder = $repository->createStatusActiveQueryBuilder($alias);
 		return $builder
 			->join($alias . '.categories', $categoryAlias)
-			->where($builder->expr()->in($categoryAlias . '.strId', $categoryStrIds));
+			->andWhere($builder->expr()->in($categoryAlias . '.strId', $categoryStrIds));
+	}
+
+
+	public function getItemsFulltext($query, $maxResults = self::DEFAULT_MAX_RESULTS, $startId = NULL)
+	{
+		/** @var ElasticaBundle\Repository $repository */
+		$repository = $this->rm->getRepository('Muzar\BazaarBundle\Entity\Item');
+
+		$q = \Elastica\Query::create($query);
+		$q->addSort(array(
+			'id' => array(
+				'order' => 'asc',
+			)
+		));
+		$q->setLimit($maxResults);
+		if ($startId)
+		{
+			$filter = new \Elastica\Filter\Range('id', array(
+				'lte' => $startId
+			));
+			$q->setFilter($filter);
+		}
+
+		return $repository->find($q);
+
 	}
 } 

@@ -19,7 +19,7 @@ services:
 
     muzar_bazaar.model_service.item:
         class: "%muzar_bazaar.model_service.item.class%"
-        arguments: [@doctrine.orm.entity_manager, @muzar_bazaar.nsm.category]
+        arguments: [@doctrine.orm.entity_manager, @muzar_bazaar.nsm.category, @fos_elastica.manager]
 
     muzar_bazaar.controller.item:
         class: "%muzar_bazaar.controller.item.class%"

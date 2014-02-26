@@ -4,6 +4,8 @@ namespace Muzar\BazaarBundle\Tests\Entity;
 
 use Doctrine\ORM\EntityManager;
 use DoctrineExtensions\NestedSet\Manager;
+use FOS\ElasticaBundle\Manager\RepositoryManager;
+use Muzar\BazaarBundle\Entity\Item;
 use Muzar\BazaarBundle\Entity\ItemService;
 use Muzar\BazaarBundle\Tests\ApiTestCase;
 
@@ -26,7 +28,10 @@ class ItemServiceTest extends ApiTestCase
 		/** @var Manager $nsm */
 		$nsm = $this->getKernel()->getContainer()->get('muzar_bazaar.nsm.category');
 
-		$this->service = new ItemService($em, $nsm);
+		/** @var RepositoryManager $sm */
+		$rm = $this->getKernel()->getContainer()->get('fos_elastica.manager');
+
+		$this->service = new ItemService($em, $nsm, $rm);
 
 		$this->runCommandDropCreateFixtures();
 
@@ -52,4 +57,13 @@ class ItemServiceTest extends ApiTestCase
 		$items = $this->service->getItems(ItemService::DEFAULT_CATEGORY_STR_ID, PHP_INT_MAX);
 		$this->assertEquals($this->service->getItemsTotal(ItemService::DEFAULT_CATEGORY_STR_ID), count($items));
     }
+
+	public function testFulltext()
+	{
+		$items = $this->service->getItemsFulltext('kytara', 1024); // Jinak  preteceme
+		foreach($items as $item)
+		{
+			$this->assertInstanceOf('Muzar\BazaarBundle\Entity\Item', $item);
+		}
+	}
 }

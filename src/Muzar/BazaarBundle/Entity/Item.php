@@ -13,12 +13,22 @@ use JMS\Serializer\Annotation as JMS;
 
 /**
  * @ORM\Entity(repositoryClass="Muzar\BazaarBundle\Entity\ItemRepository")
- * @ORM\Table(name="item")
+ * @ORM\Table(name="item", indexes={@ORM\Index(name="item_status_idx",columns={"status"})})
  *
  * @JMS\ExclusionPolicy("all")
  */
 class Item
 {
+	const STATUS_ACTIVE = 'active';
+	const STATUS_EXPIRED = 'expired';
+	const STATUS_SOLD = 'sold';
+
+	protected static $states = array(
+		self::STATUS_ACTIVE,
+		self::STATUS_EXPIRED,
+		self::STATUS_SOLD,
+	);
+
 	/**
 	 * @ORM\Column(type="integer")
 	 * @ORM\Id
@@ -26,6 +36,12 @@ class Item
 	 * @JMS\Expose()
 	 */
 	protected $id;
+
+	/**
+	 * @ORM\Column(type="string", length=32)
+	 * @JMS\Expose()
+	 */
+	protected $status = self::STATUS_ACTIVE;
 
 	/**
 	 * @ORM\Column(type="string", length=1024)
@@ -82,6 +98,38 @@ class Item
 	{
 		return $this->id;
 	}
+
+
+	/**
+	 * @return bool
+	 */
+	public function isActive()
+	{
+		return $this->getStatus() === self::STATUS_ACTIVE;
+	}
+
+
+	/**
+	 * @param mixed $status
+	 */
+	public function setStatus($status)
+	{
+		if (!in_array($status, self::$states))
+		{
+			throw new \InvalidArgumentException(sprintf('Status must be one of: %s.', implode(', ', self::$states)));
+		}
+		$this->status = $status;
+		return $this;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getStatus()
+	{
+		return $this->status;
+	}
+
 
 
 	/**

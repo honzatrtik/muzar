@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="category",indexes={@ORM\Index(name="str_id_idx",columns={"str_id"})})
+ * @ORM\Table(name="category",indexes={@ORM\Index(name="category_str_id_idx",columns={"str_id"})})
  */
 class Category implements Node
 {
