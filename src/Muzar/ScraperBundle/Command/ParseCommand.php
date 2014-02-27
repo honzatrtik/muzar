@@ -11,8 +11,7 @@ use Doctrine\ORM\EntityManager;
 use Goutte\Client;
 use Muzar\ScraperBundle\Entity\Ad;
 use Muzar\ScraperBundle\Entity\AdProperty;
-use Muzar\ScraperBundle\HtmlParser;
-use Muzar\ScraperBundle\RssLinkIterator;
+use Muzar\ScraperBundle\HtmlParser\HtmlParserInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -25,28 +24,72 @@ class ParseCommand extends ContainerAwareCommand
 	const MAX_LINKS = 10;
 	const USLEEP_DELAY = 50;
 
+
+	/**
+	 * @var EntityManager
+	 */
+	protected $em;
+
+	/**
+	 * @var Client
+	 */
+	protected $client;
+
+	/** @var HtmlParserInterface[]  */
+	protected $parsers = array();
+
+
+	function __construct(EntityManager $em, Client $client, array $parsers)
+	{
+		$this->client = $client;
+		$this->em = $em;
+		foreach($parsers as $name => $parser)
+		{
+			$this->addParser($name, $parser);
+		}
+
+		parent::__construct();
+	}
+
+
+	protected function addParser($name, HtmlParserInterface $parser)
+	{
+		$this->parsers[$name] = $parser;
+		return $this;
+	}
+
+	/**
+	 * @param $name
+	 * @return HtmlParserInterface
+	 * @throws \OutOfBoundsException
+	 */
+	protected function getParser($name)
+	{
+		if (!isset($this->parsers[$name]))
+		{
+			throw new \OutOfBoundsException(sprintf('Parser for source "%s" is not set.', $name));
+		}
+		return $this->parsers[$name];
+	}
+
+
 	protected function configure()
 	{
 		$this
 			->setName('muzar:scraper:parse')
 			->addOption('max', 'm', InputOption::VALUE_OPTIONAL, 'Max links to parse.', self::MAX_LINKS)
-			->setDescription('Scrape data from links scraped from hudebnibazar.cz')
+			->setDescription('Scrape data from scraped links.')
 		;
 	}
+
 
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
 
 		$max = $input->getOption('max');
 
-		/** @var Client $goutte */
-		$goutte = $this->getContainer()->get('goutte');
-
-		/** @var HtmlParser $parser */
-		$parser = $this->getContainer()->get('muzar_scraper.parser');
-
-		/** @var EntityManager $em */
-		$em = $this->getContainer()->get('doctrine')->getManager();
+		$goutte = $this->client;
+		$em = $this->em;
 
 		/** @var \Muzar\ScraperBundle\Entity\AdRepository $repository */
 		$repository = $em->getRepository('\Muzar\ScraperBundle\Entity\Ad');
@@ -63,15 +106,10 @@ class ParseCommand extends ContainerAwareCommand
 
 			try
 			{
-				// Zjitime si edit link
-				parse_str(parse_url($ad->getLink(), PHP_URL_QUERY), $vars);
-				$id = $vars['ID'];
-
-				$link = 'http://hudebnibazar.cz/formular.php?ID=' . $id;
-
-				$crawler = $goutte->request('GET', $link);
+				$parser = $this->getParser($ad->getSource());
+				$crawler = $goutte->request('GET', $ad->getLink());
 				$params = $parser->parse($crawler);
-				foreach($params as $name => $value)
+				foreach(array_filter($params) as $name => $value)
 				{
 					$ad->addPropertyByName($name, $value);
 				}

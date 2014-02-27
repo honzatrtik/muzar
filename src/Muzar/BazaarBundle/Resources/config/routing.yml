@@ -1,3 +1,16 @@
 muzar_bazaar_homepage:
-    pattern:  /hello/{name}
+    pattern:  /
     defaults: { _controller: MuzarBazaarBundle:Default:index }
+
+
+muzar_bazaar_item:
+    resource: "@MuzarBazaarBundle/Controller/ItemController.php"
+    prefix:   /api
+    defaults: { _format: json }
+    type:     annotation
+
+muzar_bazaar_category:
+    resource: "@MuzarBazaarBundle/Controller/CategoryController.php"
+    prefix:   /api
+    defaults: { _format: json }
+    type:     annotation

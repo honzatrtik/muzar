@@ -33,7 +33,7 @@ twig:
 assetic:
     debug:          "%kernel.debug%"
     use_controller: false
-    bundles:        [ ]
+    bundles:        [ MuzarBazaarBundle ]
     #java: /usr/bin/java
     filters:
         cssrewrite: ~
@@ -70,6 +70,62 @@ swiftmailer:
     spool:     { type: memory }
 
 
+sensio_framework_extra:
+    view:
+        annotations: false
+
+fos_rest:
+    serializer:
+        serialize_null: true
+    view:
+        view_response_listener: true
+
 services:
     goutte:
         class:  Goutte\Client
+    json_schema_validator:
+        class: JsonSchema\Validator
+
+fos_elastica:
+    clients:
+        default: { host: muzar.localhost, port: 9200 }
+    serializer:
+        callback_class: FOS\ElasticaBundle\Serializer\Callback
+        serializer: serializer
+    indexes:
+        website:
+            client: default
+            settings:
+                index:
+                    analysis:
+                        analyzer:
+                            czech:
+                                type: czech
+            types:
+                item:
+                    mappings:
+                        id: { type: long }
+                        name:
+                            boost: 5
+                        description:
+                            boost: 3
+                        created:
+                    persistence:
+                        driver: orm
+                        model: Muzar\BazaarBundle\Entity\Item
+                        provider:
+                            query_builder_method: createStatusActiveQueryBuilder
+                        finder: ~
+                        listener:
+                            is_indexable_callback: isActive
+                    serializer:
+                        groups: [elastica, Default]
+
+
+#jms_serializer:
+#    metadata:
+#        auto_detection: true
+#        directories:
+#            Muzar\BazaarBundle:
+#                namespace_prefix: Muzar\BazaarBundle
+#                path: "@MuzarBazaarBundle/Resources/config/serializer"

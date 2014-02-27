@@ -1,0 +1,31 @@
+{{#if spliced}}
+    <div class="reload-link text-center col-xs-12 col-sm-12 col-md-12">
+        <button type="submit" class="btn btn-default">Na zacatek</button>
+    </div>
+{{/if}}
+
+
+{{#each items}}
+<div class="item" {{saveElement}}>
+	{{{itemRenderer}}}
+</div>
+{{/each}}
+
+
+{{#if items.meta.nextLink}}
+<div class="row">
+	<div class="next-link text-center col-xs-12 col-sm-12 col-md-12">
+		<button type="submit" class="btn btn-primary btn-lg">Zobrazit dalsi inzeraty</button>
+
+		<div class="pull-right">{{items.length}} / {{items.meta.total}}</div>
+	</div>
+</div>
+{{else}}
+<div class="row">
+    <div class="text-center col-xs-12 col-sm-12 col-md-12">
+		Žádné další položky
+	</div>
+</div>
+{{/if}}
+
+

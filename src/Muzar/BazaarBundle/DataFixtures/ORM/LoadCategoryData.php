@@ -49,6 +49,7 @@ class LoadCategoryData extends AbstractFixture implements FixtureInterface, Cont
 		$data = Yaml::parse(file_get_contents($path));
 
 		$category = new Category();
+		$category->setStrId($data['strId']);
 		$category->setName($data['name']);
 
 		// Root node pro kategorie
@@ -75,6 +76,7 @@ class LoadCategoryData extends AbstractFixture implements FixtureInterface, Cont
 			foreach($parentData['children'] as $childData)
 			{
 				$child = new Category();
+				$child->setStrId($childData['strId']);
 				$child->setName($childData['name']);
 
 				$childNode = $parentNode->addChild($child);

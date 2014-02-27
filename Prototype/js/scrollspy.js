@@ -28,7 +28,7 @@
     var process  = $.proxy(this.process, this)
 
     this.$element       = $(element).is('body') ? $(window) : $(element)
-    this.$body          = $('body')
+    this.$element          = $('body')
     this.$scrollElement = this.$element.on('scroll.bs.scroll-spy.data-api', process)
     this.options        = $.extend({}, ScrollSpy.DEFAULTS, options)
     this.selector       = (this.options.target
@@ -53,7 +53,7 @@
     this.targets = $([])
 
     var self     = this
-    var $targets = this.$body
+    var $targets = this.$element
       .find(this.selector)
       .map(function () {
         var $el   = $(this)
@@ -73,7 +73,7 @@
 
   ScrollSpy.prototype.process = function () {
     var scrollTop    = this.$scrollElement.scrollTop() + this.options.offset
-    var scrollHeight = this.$scrollElement[0].scrollHeight || this.$body[0].scrollHeight
+    var scrollHeight = this.$scrollElement[0].scrollHeight || this.$element[0].scrollHeight
     var maxScroll    = scrollHeight - this.$scrollElement.height()
     var offsets      = this.offsets
     var targets      = this.targets

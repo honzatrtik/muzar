@@ -7,10 +7,12 @@
 namespace Muzar\BazaarBundle\Tests\DataFixtures\ORM;
 
 use Doctrine\Common\DataFixtures\ReferenceRepository;
+use Doctrine\ORM\EntityManager;
 use Muzar\BazaarBundle\DataFixtures\ORM\LoadCategoryData;
+use Muzar\BazaarBundle\Tests\ApiTestCase;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class LoadCategoryDataTest extends WebTestCase
+class LoadCategoryDataTest extends ApiTestCase
 {
 	/**
 	 * @var \Doctrine\ORM\EntityManager
@@ -22,13 +24,18 @@ class LoadCategoryDataTest extends WebTestCase
 	 */
 	public function setUp()
 	{
-		static::$kernel = static::createKernel();
-		static::$kernel->boot();
 
-		$this->em = static::$kernel->getContainer()
+		/** @var EntityManager em */
+		$this->em =  $this->getKernel()->getContainer()
 			->get('doctrine')
 			->getManager()
 		;
+
+		$this->runCommand('doctrine:schema:drop', array(
+			'--force' => TRUE
+		));
+		$this->runCommand('doctrine:schema:create', array());
+
 	}
 
 
@@ -49,6 +56,12 @@ class LoadCategoryDataTest extends WebTestCase
 	protected function tearDown()
 	{
 		parent::tearDown();
+
+		$this->runCommand('doctrine:schema:drop', array(
+			'--force' => TRUE
+		));
+		$this->runCommand('doctrine:schema:create', array());
+
 		$this->em->close();
 	}
 }

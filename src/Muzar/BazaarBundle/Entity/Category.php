@@ -12,11 +12,13 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
+ * @ORM\Table(name="category",indexes={@ORM\Index(name="category_str_id_idx",columns={"str_id"})})
  */
 class Category implements Node
 {
 	/**
-	 * @ORM\Id @ORM\Column(type="integer")
+	 * @ORM\Id
+	 * @ORM\Column(type="integer")
 	 * @ORM\GeneratedValue
 	 */
 	private $id;
@@ -30,6 +32,12 @@ class Category implements Node
 	 * @ORM\Column(type="integer")
 	 */
 	private $rgt;
+
+	/**
+	 * @ORM\Column(type="string", length=128)
+	 */
+	private $strId;
+
 
 	/**
 	 * @ORM\Column(type="string", length=128)
@@ -79,6 +87,23 @@ class Category implements Node
 	{
 		$this->rgt = $rgt;
 		return $this;
+	}
+
+	/**
+	 * @param mixed $strId
+	 */
+	public function setStrId($strId)
+	{
+		$this->strId = $strId;
+		return $this;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getStrId()
+	{
+		return $this->strId;
 	}
 
 	public function getName()

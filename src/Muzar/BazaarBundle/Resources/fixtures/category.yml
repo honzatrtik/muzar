@@ -1,10 +1,17 @@
+strId: root
 name: root
 children:
-  - name: Kytary
+  - strId: kytary
+    name: Kytary
     children:
-      - name: Elektricke kytary
-      - name: Akusticke kytary
-  - name: Baskytary
+      - strId: elektricke-kytary
+        name: Elektricke kytary
+      - strId: akusticke-a-klasicke-kytary
+        name: Akustické a klasické kytary
+  - strId: baskytary
+    name: Baskytary
     children:
-      - name: Elektricke basy
-      - name: Kontrabasy
+      - strId: elektricke-basy
+        name: Elektricke basy
+      - strId: kontrabasy
+        name: Kontrabasy
