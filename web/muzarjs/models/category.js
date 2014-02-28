@@ -4,7 +4,7 @@ define([
 
 ], function (Category) {
 
-	return new Category('http://muzar.localhost/app.php/api/categories');
+	return new Category('http://muzar.localhost/app_dev.php/api/categories');
 
 });
 
