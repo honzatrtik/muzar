@@ -4,7 +4,7 @@
   "dependencies": {
     "require-can-renderers" : "git://github.com/retro/require-can-renderers.git",
 "requirejs" : "~2.1.6",
-    "canjs" : "~2.0.4",
+    "canjs" : "~2.0.5",
     "jquery" : "~1.9.1"
   }
 }

@@ -77,14 +77,16 @@ module.exports = function(grunt) {
 					findNestedDependencies: true,
 					paths: {
 						mustache: '.build/mustache'
-					}
+					},
+					include: ['controls/views/all', 'models/all']
 				}
 			}
 		},
 		cancompile: {
 			dist: {
 				src: ['controls/**/*.mustache'],
-				out: '.build/views.js'
+				out: '.build/views.js',
+				tags: ['a']
 			}
 		},
 		watch: {
@@ -121,7 +123,7 @@ module.exports = function(grunt) {
 
 	grunt.registerTask('build', function(){
 		grunt.task.run(
-			'exec:test',
+//			'exec:test',
 			'exec:rmbuilddir',
 			'exec:mkbuilddir',
 			'cancompile',

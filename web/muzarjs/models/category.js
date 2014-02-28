@@ -1,10 +1,14 @@
+var subdir = (window.location.pathname.indexOf('app_dev.php') !== -1)
+	? 'dev'
+	: 'prod';
+
 define([
 
-	'models/category_class'
+	'models/' + subdir + '/category'
 
-], function (Category) {
+], function(model) {
 
-	return new Category('http://muzar.localhost/app.php/api/categories');
+	return model;
 
 });
 

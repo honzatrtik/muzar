@@ -7,9 +7,14 @@ parameters:
 
 
 services:
+
+    muzar_bazaar.model.entity_listener.category:
+        class: Muzar\BazaarBundle\Entity\CategoryListener
+        arguments: [@muzar_bazaar.nsm.category]
+
     muzar_bazaar.nsm.category.config:
         class: DoctrineExtensions\NestedSet\Config
-        arguments: [@doctrine.orm.entity_manager, 'Muzar\BazaarBundle\Entity\Category']
+        arguments: [@doctrine.orm.entity_manager, Muzar\BazaarBundle\Entity\Category]
         calls:
             - [setRootFieldName, [null]]
 
@@ -28,3 +33,10 @@ services:
     muzar_bazaar.controller.category:
         class: "%muzar_bazaar.controller.category.class%"
         arguments: [@router, @doctrine.orm.entity_manager, @muzar_bazaar.nsm.category]
+
+
+    muzar_bazaar.serializer.event_subscriber:
+        class: Muzar\BazaarBundle\Serializer\EventSubscriber
+        arguments: [@router]
+        tags:
+            - { name: jms_serializer.event_subscriber, connection: default }

@@ -1,64 +1,72 @@
 define([
-	'can/util/string',
+	'can',
 	'models/category',
-	'mustache!controls/menu/menu',
-	'can/control',
-	'can/map',
-	'view/helpers'
+	'mustache!controls/menu/templates/menu',
+	'controls/base',
+	'util/helpers'
 
-], function (can, CategoryModel, renderer) {
+], function (can, CategoryModel, renderer, BaseControl) {
 
-	return can.Control.extend({
+	return BaseControl.extend({
 
 		defaults: {
 		}
 
 	}, {
 		init: function(element, options) {
+
+			BaseControl.prototype.init.apply(this, arguments);
+
 			var self = this;
 
-			self.options.categories = new can.List();
-			self.options.categoriesMap = new can.Map();
-			self.options.selected = can.compute();
+			this.options.categories = new can.List();
+			this.options.categoriesMap = new can.Map();
+			this.options.selected = can.compute();
 
-			self.options.selected.bind('change', function(event, newSelected, oldSelected) {
+			this.options.selected.bind('change', function(event, newSelected, oldSelected) {
 
 				if (oldSelected && self.getCategory(oldSelected)) {
 					self.getCategory(oldSelected).element.removeClass('active');
 				}
 
-				if (self.getCategory(newSelected)) {
+				if (newSelected && self.getCategory(newSelected)) {
 					self.getCategory(newSelected).element.addClass('active');
+					self.options.state.removeAttr('query');
+					self.options.state.attr('category', newSelected);
+				} else {
+					self.options.state.removeAttr('category');
 				}
 
-				can.route.attr('category', newSelected);
 			});
 
 		},
 
-		'{can.route} change': function(route, event, attr, how, newSelected, oldSelected) {
-			if (attr == 'category') {
+		'{state} category': function(route, event, newSelected, oldSelected) {
+			if (newSelected) {
 				this.setSelected(newSelected);
 			}
 		},
 
-		'.category click': function(li, event) {
-			event.preventDefault();
-			event.stopPropagation();
-
-			// Resetujeme jen pri uzivatelske interakci
-			can.route.removeAttr('limit');
-			can.route.removeAttr('startId');
-
-			this.setSelected(li.data('category').attr('strId'));
+		'{state} query': function(route, event, newSelected, oldSelected) {
+			if (newSelected) {
+				this.setSelected(null);
+			}
 		},
 
 		setSelected: function(category) {
+
 			this.selected = category;
-			if (this.options.categoriesMap.attr(category))
-			{
-				this.options.selected(category);
+
+			// Muzeme selekci zrusit
+			if (!category) {
+				this.options.selected(null);
+			} else {
+				if (this.options.categoriesMap.attr(category))
+				{
+					this.options.selected(category);
+				}
 			}
+
 		},
 
 		getSelectedCompute: function() {
@@ -84,7 +92,7 @@ define([
 				: null;
 		},
 
-		load: function(params) {
+		update: function(params) {
 			var self = this;
 			return this.options.model.get(params || {}, function(categories) {
 

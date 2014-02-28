@@ -33,6 +33,15 @@ class ItemService
 		$this->rm = $rm;
 	}
 
+	public function getItem($id)
+	{
+		if (!$item = $this->em->getRepository('Muzar\BazaarBundle\Entity\Item')->find($id))
+		{
+			throw new NotFoundHttpException(sprintf('Item not found: %d.', $id));
+		}
+		return $item;
+	}
+
 	public function getItems($categoryStrId = self::DEFAULT_CATEGORY_STR_ID, $maxResults = self::DEFAULT_MAX_RESULTS, $startId = NULL)
 	{
 		$builder = $this->getItemsQueryBuilder($categoryStrId);
@@ -101,7 +110,7 @@ class ItemService
 				'order' => 'asc',
 			)
 		));
-		$q->setLimit($maxResults);
+		$q->setSize($maxResults);
 		if ($startId)
 		{
 			$filter = new \Elastica\Filter\Range('id', array(
@@ -112,5 +121,14 @@ class ItemService
 
 		return $repository->find($q);
 
+	}
+
+	public function getItemsFulltextTotal($query)
+	{
+		/** @var ElasticaBundle\Repository $repository */
+		$repository = $this->rm->getRepository('Muzar\BazaarBundle\Entity\Item');
+
+		$q = \Elastica\Query::create($query);
+		return $repository->createPaginatorAdapter($q)->getTotalHits();
 	}
 } 

@@ -1,0 +1,65 @@
+<div class="container">
+
+
+    <div class="row">
+        <ol class="breadcrumb">
+            <li><a data-route="view=ad.list&category={{strId}}" data-route-remove="true" href="#">Home</a></li>
+			{{#each categories}}
+            <li><a data-route="view=ad.list&category={{strId}}" data-route-remove="true" {{data 'category'}} href="#">{{name}}</a></li>
+			{{/each}}
+        </ol>
+
+    </div>
+
+    <div class="row">
+
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <h2 class="pull-left">{{name}}</h2>
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <div class="col-xs-12 col-sm-8 col-md-8">
+
+            <div class="thumbnail">
+                <img src="http://placehold.it/700x400" alt="">
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-4 col-md-4">
+
+
+            <div class="thumbnail">
+
+                <h3 class="pull-left">Cena: {{price}} Kč</h3>
+
+                <a href="" class="btn btn-primary btn-lg pull-right">Kontaktovat</a>
+                <div class="clearfix"></div>
+
+
+                <h4>Prodávající:</h4>
+                Pavel Novák<br>
+                Třinec<br>
+                <span class="text-muted">Ostravsky kraj</span><br>
+                Tel: 736252366<br>
+                <br>
+
+                <span class="glyphicon glyphicon-time"></span> {{created}} <span class="glyphicon glyphicon-eye-open"></span> zobrazeno 250x
+
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-4 col-md-4">
+            <img data-src="holder.js/350x400/text:Reklama" alt="...">
+        </div>
+
+
+        <div class="col-xs-12 col-sm-8 col-md-8">
+			{{description}}
+        </div>
+
+
+    </div>
+</div>

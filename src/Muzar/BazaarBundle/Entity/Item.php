@@ -72,6 +72,7 @@ class Item
 	/**
 	 * ArrayCollection
 	 * @ORM\ManyToMany(targetEntity="Category", inversedBy="products")
+	 * @JMS\Expose()
 	 **/
 	private $categories;
 

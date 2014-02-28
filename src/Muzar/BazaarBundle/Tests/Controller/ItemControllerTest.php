@@ -23,4 +23,27 @@ class ItemControllerTest extends ApiTestCase
 		$this->assertArrayHasKey('meta', $json);
 		$this->assertArrayHasKey('nextLink', $json['meta']);
     }
+
+	public function testAllQuery()
+	{
+		$response = $this->request('GET', '/api/ads', array(
+			'query' => 'kytara',
+		));
+		$json = $this->assertJsonResponse($response, 200);
+
+		$this->assertArrayHasKey('data', $json);
+		$this->assertArrayHasKey('meta', $json);
+		$this->assertArrayHasKey('nextLink', $json['meta']);
+	}
+
+	public function testGet()
+	{
+		$id = 1;
+
+		$response = $this->request('GET', '/api/ads/' . $id);
+		$json = $this->assertJsonResponse($response, 200);
+
+		$this->assertArrayHasKey('id', $json);
+		$this->assertArrayHasKey('link', $json);
+	}
 }

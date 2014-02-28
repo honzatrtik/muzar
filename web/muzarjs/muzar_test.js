@@ -1,10 +1,14 @@
 QUnit.config.reorder = false;
 requirejs([
-	'tests/controls/item/item_list',
-	'tests/controls/ad/ad_list',
+
+	'tests/controls/item/list',
+	'tests/controls/ad/list',
 	'tests/models/category',
 	'tests/models/ad',
-	'tests/controls/menu/menu'
+	'tests/controls/menu/menu',
+	'tests/controls/ad/detail',
+	'tests/components/link_initializer'
+
 ], function() {
 
 });

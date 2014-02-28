@@ -99,16 +99,36 @@ fos_elastica:
                 index:
                     analysis:
                         analyzer:
-                            czech:
-                                type: czech
+                            my_czech:
+                                type: custom
+                                tokenizer: standard
+                                filter: [ stopwords_CZ, cs_CZ, lowercase, stopwords_CZ, remove_duplicities ]
+                        filter:
+                            my_stemmer:
+                                type: stemmer
+                                name: czech
+                            stopwords_CZ:
+                                type: stop
+                                stopwords: [ právě, že, _czech_ ]
+                                ignore_case: true
+                            cs_CZ:
+                                type: hunspell
+                                locale: cs_CZ
+                                dedup: true
+                                recursion_level: 0
+                            remove_duplicities:
+                                type: unique
+                                only_on_same_position: true
             types:
                 item:
                     mappings:
                         id: { type: long }
                         name:
                             boost: 5
+                            analyzer: my_czech
                         description:
                             boost: 3
+                            analyzer: my_czech
                         created:
                     persistence:
                         driver: orm
@@ -120,6 +140,23 @@ fos_elastica:
                             is_indexable_callback: isActive
                     serializer:
                         groups: [elastica, Default]
+
+                catgory:
+                    mappings:
+                        id: { type: long }
+                        strId:
+                            boost: 5
+                        name:
+                            boost: 5
+                            analyzer: my_czech
+                    persistence:
+                        driver: orm
+                        model: Muzar\BazaarBundle\Entity\Category
+                        provider: ~
+                        finder: ~
+                    serializer:
+                        groups: [elastica, Default]
+
 
 
 #jms_serializer:

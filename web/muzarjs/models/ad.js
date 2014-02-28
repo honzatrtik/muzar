@@ -1,20 +1,14 @@
+var subdir = (window.location.pathname.indexOf('app_dev.php') !== -1)
+	? 'dev'
+	: 'prod';
+
+
 define([
 
-	'can/util/string',
-	'models/base'
+	'models/' + subdir + '/ad'
 
-], function (can, BaseModel) {
+], function(model) {
 
-	var AdModel = BaseModel.extend({
-		findAll: 'GET http://muzar.localhost/app_dev.php/api/ads',
-		findOne: 'GET http://muzar.localhost/app_dev.php/api/ads/{id}',
-		create: 'POST http://muzar.localhost/app_dev.php/api/ads',
-		update: 'PUT http://muzar.localhost/app_dev.php/api/ads/{id}',
-		destroy: 'DELETE http://muzar.localhost/app_dev.php/api/ads/{id}'
-	}, {});
-
-	AdModel.List = BaseModel.List.extend();
-
-	return AdModel;
+	return model;
 
 });

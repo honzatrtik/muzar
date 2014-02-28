@@ -2,13 +2,12 @@ define([
 
 	'funcunit',
 	'jquery',
-	'controls/item/item_list',
+	'controls/item/list',
 	'can/util/string',
-	'mustache!./item_list',
 	'can/util/fixture',
 	'can/model'
 
-], function(F, $, ItemListControl, can, renderer) {
+], function(F, $, ItemListControl, can) {
 
 	QUnit.module("ItemListControl", {
 		setup: function(){
@@ -18,7 +17,7 @@ define([
 		}
 	});
 
-	QUnit.asyncTest("load", function () {
+	QUnit.asyncTest("update", function () {
 
 		var $content = $('#content');
 
@@ -40,23 +39,26 @@ define([
 			findAll: 'GET /item'
 		}, {});
 
+
+		var state = new can.Map();
+
 		var control = new ItemListControl($content, {
 			model: model,
-			itemRenderer: can.view.mustache('<div>{{id}}-{{name}}</div>')
+			itemRenderer: can.view.mustache('<div>{{id}}-{{name}}</div>'),
+			state: state
 		});
 
 
-		control.load().done(function() {
+		control.update().done(function() {
 
-			setTimeout(function() {
-				QUnit.equal($content.find('.item').length, 100, 'Control has 100 .item children.');
-				QUnit.start();
-			}, 50);
+			QUnit.equal($content.find('.item').length, 100, 'Control has 100 .item children.');
+			QUnit.start();
 
 		});
 
 
 	});
+
 
 
 });
