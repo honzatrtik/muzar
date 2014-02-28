@@ -77,5 +77,21 @@ define([
 
 	});
 
+	QUnit.asyncTest("visibility", function () {
+
+		control.update().done(function() {
+
+			$content.find(' > ul > li').each(function() {
+				QUnit.ok($(this).is(':visible'));
+			});
+
+			$content.find('ul ul').each(function() {
+				QUnit.ok(!$(this).is(':visible'));
+			});
+
+			QUnit.start();
+		});
+
+	});
 
 });

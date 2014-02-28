@@ -90,10 +90,15 @@ define([
 
 		update: function() {
 
+			var self = this;
+
 			this.options.loading = true;
 
-			var self = this;
-			return this.options.model.findAll(this.options.state.attr(), function(list) {
+			if (this.options.request) {
+				this.options.request.abort();
+			}
+
+			this.options.request = this.options.model.findAll(this.options.state.attr(), function(list) {
 
 				self.options.spliced(false);
 				self.options.list = list;
@@ -111,8 +116,11 @@ define([
 				}));
 
 				self.options.loading = false;
+				self.options.request = false;
 
 			});
+
+			return this.options.request;
 		},
 
 		loadNext: function() {
