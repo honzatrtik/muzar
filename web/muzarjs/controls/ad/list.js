@@ -1,8 +1,8 @@
 define([
 	'models/ad',
-	'controls/item/item_list',
-	'mustache!controls/ad/ad',
-	'view/helpers'
+	'controls/item/list',
+	'mustache!./templates/item',
+	'util/helpers'
 ], function (AdModel, ItemListControl, itemRenderer) {
 
 	return ItemListControl.extend({

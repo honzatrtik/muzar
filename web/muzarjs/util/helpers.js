@@ -1,4 +1,4 @@
-define(['can/view/mustache', 'can/util/jquery'], function (can) {
+define(['can'], function (can) {
 
 	can.Mustache.registerHelper('saveElement', function(options) {
 		return function(element) {

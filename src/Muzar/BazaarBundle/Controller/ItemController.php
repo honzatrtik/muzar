@@ -10,6 +10,7 @@ use Muzar\BazaarBundle\Entity\ItemService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -31,6 +32,16 @@ class ItemController
 	}
 
 	/**
+	 * @Route("/ads/{id}", name="muzar_bazaar_item_get")
+	 * @Rest\View
+	 */
+	public function getAction(Request $request, $id)
+	{
+		return $this->service->getItem($id);
+	}
+
+
+	/**
 	 * @Route("/ads", name="muzar_bazaar_item_all")
 	 * @Rest\View
 	 */
@@ -39,10 +50,19 @@ class ItemController
 
 		$maxResults = $request->query->get('limit', ItemService::DEFAULT_MAX_RESULTS);
 		$categoryStrId = $request->query->get('category', ItemService::DEFAULT_CATEGORY_STR_ID);
+		$query = $request->query->get('query');
 		$startId = $request->query->get('startId');
 
-		$result = $this->service->getItems($categoryStrId, $maxResults + 1, $startId);
-		$total = $this->service->getItemsTotal($categoryStrId);
+		if ($query && is_string($query))
+		{
+			$result = $this->service->getItemsFulltext($query, $maxResults + 1, $startId);
+			$total = $this->service->getItemsFulltextTotal($categoryStrId);
+		}
+		else
+		{
+			$result = $this->service->getItems($categoryStrId, $maxResults + 1, $startId);
+			$total = $this->service->getItemsTotal($categoryStrId);
+		}
 
 		if (count($result) === ($maxResults + 1))
 		{

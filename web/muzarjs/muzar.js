@@ -2,48 +2,73 @@ requirejs([
 
 	'can',
 	'jquery',
-	'controls/menu/menu',
-	'controls/ad/ad_list',
-	'models/category',
-	'util/scroll_top_restorer'
+	'components/link',
+	'boot'
 
-], function(can, $, MenuControl, AdListControl, categoryModel, ScrollTopRestorer){
+], function(can, $){
 
-	can.ajaxPrefilter(function(options, originalOptions, request){
-		request.fail(function() {
-			console.log(arguments);
-			throw new Error('Ajax loading error!');
-		});
+	var Router = can.Control.extend({}, {
+
+		init: function(element, options) {
+		},
+
+		'{can.route} view': function(route, event, newVal, oldVal) {
+			this.update();
+		},
+
+		update: function() {
+			var self = this;
+
+			console.log(can.route.attr('view'));
+
+			var view = (can.route.attr('view') || '').replace('.', '/');
+			if (view) {
+
+				requirejs(['controls/views/' + view ], function(Control) {
+
+
+
+					var $inner = $('<div />').hide().appendTo(self.element);
+					var tempControl = new Control($inner, {
+						state: can.route
+					});
+
+					tempControl.update().done(function() {
+
+						if (self.innerElement) {
+							self.innerElement.remove();
+						}
+						$inner.show();
+
+						self.innerElement = $inner;
+
+						if (self.control) {
+							self.control.destroy();
+						}
+						self.control = tempControl;
+					});
+
+
+
+
+				});
+			} else {
+				this.element.html('');
+			}
+
+
+		}
+
 	});
 
 
-	var adList = new AdListControl($('#ad-list'));
-
-
-	// Udrzuje pozici po nacteni dalsi stranky vypisu
-	var listener = new ScrollTopRestorer($('body'));
-	can.bind.call(adList, 'beforeListSpliced', function() {
-		listener.saveHeight();
-	});
-	can.bind.call(adList, 'afterListSpliced', function() {
-		listener.restoreScrollTop();
-	});
-
-
-	var menu = new MenuControl($('#menu'), {
-		model: categoryModel
-	});
+	var router = new Router($('#content'), {});
 
 	can.route.ready();
 
-	if (!can.route.attr('category')) {
-		// Pokud nemame kategorii, nacteme vsechno
-		adList.load();
+	if (!can.route.attr('view')) {
+		can.route.attr('view', 'ad.list');
 	}
-
-	menu.load({});
-
-
 
 
 });

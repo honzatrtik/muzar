@@ -9,21 +9,24 @@ define([
 
 	var $content= $('#content');
 	var control;
+	var state;
 
 	QUnit.module("MenuControl", {
 		setup: function() {
+			state = new can.Map({});
 			control = new MenuControl($content, {
-				model: model
+				model: model,
+				state: state
 			});
 		},
 		teardown: function(){
-			$('#content').empty();
+			$content.empty();
 		}
 	});
 
 	QUnit.asyncTest("render", function () {
 
-		control.load().done(function() {
+		control.update().done(function() {
 
 			F('#content ul').exists(200).then(function() {
 				QUnit.equal($('#content > ul').length, 1, '"> ul" exists');
@@ -45,7 +48,7 @@ define([
 
 	QUnit.asyncTest("setSelected & getSelected", function () {
 
-		control.load().done(function() {
+		control.update().done(function() {
 			control.setSelected('elektricke-kytary');
 			QUnit.equal(control.getSelected(), 'elektricke-kytary');
 			QUnit.start();
@@ -55,7 +58,7 @@ define([
 
 	QUnit.asyncTest("getSelectedCategory", function () {
 
-		control.load().done(function() {
+		control.update().done(function() {
 			control.setSelected('elektricke-kytary');
 			QUnit.equal(control.getSelectedCategory().strId, 'elektricke-kytary');
 			QUnit.start();
@@ -66,32 +69,9 @@ define([
 
 	QUnit.asyncTest("getSelectedElement", function () {
 
-		control.load().done(function() {
+		control.update().done(function() {
 			control.setSelected('elektricke-kytary');
 			QUnit.equal(control.getSelectedElement().data('category').strId, 'elektricke-kytary');
-			QUnit.start();
-		});
-
-	});
-
-	QUnit.asyncTest("events", function () {
-
-		control.load().done(function() {
-
-			var $item = $('#content ul li .category').eq(1);
-
-			can.route.attr('limit', 2);
-			can.route.attr('startId', 800);
-
-			$item.trigger('click');
-
-			QUnit.ok($item.hasClass('active'), 'Clicked element has class "active"');
-			QUnit.ok(control.getSelectedElement().hasClass('active'), 'Selected element has class "active"');
-			QUnit.equal(control.getSelectedElement()[0], $item[0], 'Clicked and selected elements are same.');
-
-			QUnit.ok(!can.route.attr('limit'));
-			QUnit.ok(!can.route.attr('startId'));
-
 			QUnit.start();
 		});
 

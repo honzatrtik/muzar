@@ -66,4 +66,24 @@ class ItemServiceTest extends ApiTestCase
 			$this->assertInstanceOf('Muzar\BazaarBundle\Entity\Item', $item);
 		}
 	}
+
+	public function testFulltextResultAndTotalEqual()
+	{
+		$items = $this->service->getItemsFulltext('kytara', 1024); // Jinak  preteceme
+		$this->assertEquals($this->service->getItemsFulltextTotal('kytara'), count($items));
+	}
+
+	public function testGetItem()
+	{
+		$item = $this->service->getItem(1);
+		$this->assertInstanceOf('Muzar\BazaarBundle\Entity\Item', $item);
+	}
+
+	/**
+	 * @expectedException \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+	 */
+	public function testGetItemNonexisten()
+	{
+		$this->service->getItem(-666);
+	}
 }

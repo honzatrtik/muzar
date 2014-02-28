@@ -9,10 +9,15 @@ namespace Muzar\BazaarBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use DoctrineExtensions\NestedSet\Node;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="category",indexes={@ORM\Index(name="category_str_id_idx",columns={"str_id"})})
+ * @ORM\EntityListeners({"Muzar\BazaarBundle\Entity\CategoryListener"})
+ * @ORM\HasLifecycleCallbacks
+ *
+ * @JMS\ExclusionPolicy("all")
  */
 class Category implements Node
 {
@@ -20,6 +25,8 @@ class Category implements Node
 	 * @ORM\Id
 	 * @ORM\Column(type="integer")
 	 * @ORM\GeneratedValue
+	 *
+	 * @JMS\Expose()
 	 */
 	private $id;
 
@@ -35,20 +42,35 @@ class Category implements Node
 
 	/**
 	 * @ORM\Column(type="string", length=128)
+	 *
+	 * @JMS\Expose()
 	 */
 	private $strId;
 
 
 	/**
 	 * @ORM\Column(type="string", length=128)
+	 *
+	 * @JMS\Expose()
 	 */
 	private $name;
+
+	/**
+	 * @ORM\Column(type="string", nullable=true)
+	 * @var string
+	 */
+	private $path;
 
 	/**
 	 * ArrayCollection
 	 * @ORM\ManyToMany(targetEntity="Item", mappedBy="categories")
 	 **/
 	private $items;
+
+	/**
+	 * @var Category[]
+	 */
+	private $ancestors;
 
 	function __construct()
 	{
@@ -106,6 +128,42 @@ class Category implements Node
 		return $this->strId;
 	}
 
+	/**
+	 * @param string $path
+	 */
+	public function setPath($path)
+	{
+		$this->path = $path;
+		return $this;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getPath()
+	{
+		return $this->path;
+	}
+
+	/**
+	 * @param Category[] $ancestors
+	 */
+	public function setAncestors($ancestors)
+	{
+		$this->ancestors = $ancestors;
+		return $this;
+	}
+
+	/**
+	 * @return Category[]
+	 */
+	public function getAncestors()
+	{
+		return $this->ancestors;
+	}
+
+
+
 	public function getName()
 	{
 		return $this->name;
@@ -121,4 +179,5 @@ class Category implements Node
 	{
 		return $this->name;
 	}
+
 }

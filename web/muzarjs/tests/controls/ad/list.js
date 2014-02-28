@@ -2,23 +2,29 @@ define([
 
 	'funcunit',
 	'jquery',
-	'controls/ad/ad_list'
+	'controls/ad/list'
 
 ], function(F, $, AdListControl) {
 
+	var state;
+	var $content;
+
 	QUnit.module("AdListControl", {
 		setup: function(){
+			state = new can.Map({});
+			$content = $('#content');
 		},
 		teardown: function(){
-			$('#content').empty();
+			$content.empty();
 		}
 	});
 
-	QUnit.asyncTest("load", function () {
+	QUnit.asyncTest("update", function () {
 
-		var $content = $('#content');
-		var control = new AdListControl($content, {});
-		control.load().done(function() {
+		var control = new AdListControl($content, {
+			state: state
+		});
+		control.update().done(function() {
 
 			QUnit.ok($('#content div').length > 0, 'Control has > 0 children');
 			QUnit.start();
@@ -29,12 +35,10 @@ define([
 
 	QUnit.asyncTest("loadNext", function () {
 
-		var $content = $('#content');
-
 		var control = new AdListControl($content, {
-
+			state: state
 		});
-		control.load().done(function() {
+		control.update().done(function() {
 
 			var length = control.options.list.length;
 			control.loadNext().done(function() {
@@ -48,21 +52,27 @@ define([
 
 	QUnit.asyncTest("route change", function () {
 
-		var $content = $('#content');
 
-		var control = new AdListControl($content, {});
-
-
-		control.load().done(function() {
+		var control = new AdListControl($content, {
+			state: state
+		});
 
 
-			can.route.attr('limit', 1);
+		control.update().done(function() {
 
-			F('#content').wait(function(){
-				return  $('#content .item').length == 1;
-			}, 2000, function() {
+			state.attr('limit', 1);
+
+
+
+			F($content).wait(function(){
+
+				return  $content.find('.item').length == 1;
+
+			}, 5000, function() {
+
 				QUnit.ok(true);
 				QUnit.start();
+
 			});
 
 
