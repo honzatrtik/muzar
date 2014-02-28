@@ -58,6 +58,38 @@ code {
 	vertical-align: middle;
 }
 
+.fotka
+{
+	height: 300px;
+	text-align: center;
+	vertical-align: middle;
+	position: relative;
+	border: 1px solid #333;
+}
+
+.fotka h1
+{
+	position: relative;
+	top: 76px;
+	font-size: 80px;
+}
+
+.fotka .glyphicon-ok
+{
+	position: absolute;
+	font-size: 30px;
+	top: 10px;
+	left: 10px;
+}
+
+.fotka .glyphicon-remove
+{
+	position: absolute;
+	font-size: 30px;
+	top: 10px;
+	right: 10px;
+}
+
 #sidebar
 {
 	margin-top: 10px;
@@ -111,3 +143,7 @@ ul ul .list-group-item .badge
 	margin: 0;
 }
 
+.navbar-fixed-top.odsunuty
+{
+	left: 270px;
+}
