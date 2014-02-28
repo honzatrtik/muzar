@@ -1,11 +1,12 @@
 define([
+	'jquery',
 	'can',
 	'models/category',
 	'mustache!controls/menu/templates/menu',
 	'controls/base',
 	'util/helpers'
 
-], function (can, CategoryModel, renderer, BaseControl) {
+], function ($, can, CategoryModel, renderer, BaseControl) {
 
 	return BaseControl.extend({
 
@@ -30,11 +31,23 @@ define([
 				}
 
 				if (newSelected && self.getCategory(newSelected)) {
-					self.getCategory(newSelected).element.addClass('active');
+
+					var $el = $(self.getCategory(newSelected).element);
+
+
+					$el.addClass('active');
+					self.$uls.hide();
+
+					$el.parentsUntil(self.element).show();
+					$el.parent().find('> .menu').show();
+
 					self.options.state.removeAttr('query');
 					self.options.state.attr('category', newSelected);
 				} else {
+
 					self.options.state.removeAttr('category');
+					self.$uls.hide();
+
 				}
 
 			});
@@ -100,6 +113,9 @@ define([
 				self._createCategoriesMap();
 
 				self.render();
+
+				self.$uls = self.element.find('ul ul');
+
 				self.setSelected(self.selected);
 
 			});
