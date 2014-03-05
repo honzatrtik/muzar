@@ -2,7 +2,7 @@
 
 	{{#each children}}
 	<li>
-        <a data-route="startId=&limit=&query=&category={{strId}}" class="list-group-item category" {{data 'category'}} {{saveElement}} href="#">{{name}} {{#if {{newSince}}}}<span class="badge">*</span>{{/if}}</a>
+        <a href="#!&view=ad.list&category={{strId}}" class="list-group-item category" {{data 'category'}} {{saveElement}} href="#">{{name}} {{#if {{newSince}}}}<span class="badge">*</span>{{/if}}</a>
 		{{> controls/menu/templates/menu}}
     </li>
 	{{/each}}

@@ -3,11 +3,11 @@
 
     <div class="row">
         <ol class="breadcrumb">
-            <li><a data-route="view=ad.list" data-route-remove="true" href="#">Home</a></li>
+            <li><a href="#!&view=ad.list" data-route-remove="true" href="#">Home</a></li>
 			{{#each category.ancestors}}
-            <li><a data-route="view=ad.list&category={{str_id}}" data-route-remove="true" href="#">{{name}}</a></li>
+            <li><a href="#!&view=ad.list&category={{str_id}}" data-route-remove="true" href="#">{{name}}</a></li>
 			{{/each}}
-            <li><a data-route="view=ad.list&category={{category.str_id}}" data-route-remove="true" href="#">{{category.name}}</a></li>
+            <li><a href="#!&view=ad.list&category={{category.str_id}}" data-route-remove="true" href="#">{{category.name}}</a></li>
         </ol>
 
     </div>
