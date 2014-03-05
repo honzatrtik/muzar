@@ -17,9 +17,7 @@ define([
 		init: function(element, options) {
 
 			BaseControl.prototype.init.apply(this, arguments);
-
-			this.options.categories = new can.List();
-			this.options.categoriesMap = new can.Map();
+			this.options.categories = new CategoryModel.List();
 
 		},
 
@@ -35,7 +33,6 @@ define([
 		},
 
 
-
 		setSelected: function(category) {
 
 			this.selected = category;
@@ -43,7 +40,7 @@ define([
 			// Muzeme selekci zrusit
 			if (!category) {
 				this.options.state.removeAttr('category');
-			} else if (this.options.categoriesMap.attr(category)) {
+			} else if (this.options.categories.attr('map').attr(category)) {
 				this.options.state.attr('category', category);
 			}
 
@@ -58,7 +55,7 @@ define([
 		},
 
 		getCategory: function(strId) {
-			return this.options.categoriesMap.attr(strId);
+			return this.options.categories.attr('map').attr(strId);
 		},
 
 		getSelectedCategory: function() {
@@ -72,14 +69,14 @@ define([
 				: null;
 		},
 
-		update: function(params) {
+		update: function() {
 			var self = this;
-			return this.options.model.get(params || {}, function(categories) {
+			return this.options.model.findAll({}, function(categories) {
 
-				self.options.categories.replace(categories);
-				self._createCategoriesMap();
-
+				self.options.categories = categories;
 				self.render();
+
+				self.on();
 
 				self.$uls = self.element.find('ul ul');
 				self.initSelected(self.getSelected(), null);
@@ -122,22 +119,6 @@ define([
 			this.element.html(renderer({
 				children: this.options.categories
 			}));
-		},
-
-		_createCategoriesMap: function() {
-
-			var self = this;
-			can.each(can.Map.keys(self.options.categoriesMap), function(value) {
-				self.options.categoriesMap.removeAttr(value);
-			});
-
-			var walk = function(children) {
-				can.each(children, function(category, index) {
-					self.options.categoriesMap.attr(category.strId, category);
-					walk(category.children || []);
-				});
-			};
-			walk(self.options.categories);
 		}
 
 	});

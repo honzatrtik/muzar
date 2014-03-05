@@ -2,7 +2,7 @@ define([
 
 	'funcunit',
 	'jquery',
-	'models/apiary/category',
+	'models/category',
 	'can/util/string'
 
 ], function(F, $, model, can) {
@@ -14,9 +14,9 @@ define([
 		}
 	});
 
-	QUnit.asyncTest("get", function () {
+	QUnit.asyncTest("findAll", function () {
 
-		model.get({}, function(data) {
+		model.findAll({}, function(data) {
 			QUnit.ok(data, 'Some data was passed.');
 			QUnit.ok(data.length, 'data instanceof Array');
 

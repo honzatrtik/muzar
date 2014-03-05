@@ -7,8 +7,7 @@ requirejs([
 	'tests/models/category',
 	'tests/models/ad',
 	'tests/controls/menu/menu',
-	'tests/controls/ad/detail',
-	'tests/components/link_initializer'
+	'tests/controls/ad/detail'
 
 ], function() {
 

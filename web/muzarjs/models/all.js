@@ -1,7 +1,7 @@
 define([
 
-	'models/prod/ad',
-	'models/prod/category'
+	'models/ad',
+	'models/category'
 
 ], function () {
 
