@@ -63,7 +63,6 @@ requirejs([
 
 
 	var router = new Router($('#content'), {});
-
 	can.route.ready();
 
 	if (!can.route.attr('view')) {

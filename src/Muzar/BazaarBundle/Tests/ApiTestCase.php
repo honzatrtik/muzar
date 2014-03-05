@@ -60,6 +60,8 @@ class ApiTestCase extends WebTestCase
 		$this->runCommand('doctrine:fixtures:load', array(
 			'--no-interaction' => TRUE
 		));
+
+		$this->runCommand('fos:elastica:populate', array());
 	}
 
 }

@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManager;
 use DoctrineExtensions\NestedSet;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Muzar\BazaarBundle\Entity\Category;
+use Muzar\BazaarBundle\Entity\CategoryService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,14 +23,14 @@ class CategoryController
 	/** @var  EntityManager */
 	protected $em;
 
-	/** @var  NestedSet\Manager */
-	protected $nsm;
+	/** @var  CategoryService */
+	protected $categoryService;
 
-	public function __construct(Router $router, EntityManager $em, NestedSet\Manager $nsm)
+	public function __construct(Router $router, EntityManager $em, CategoryService $categoryService)
 	{
 		$this->router = $router;
 		$this->em = $em;
-		$this->nsm = $nsm;
+		$this->categoryService = $categoryService;
 	}
 
 	/**
@@ -38,11 +39,9 @@ class CategoryController
 	 */
 	public function allAction(Request $request)
     {
-		$data = $this->createBranch($this->nsm->fetchTree());
-
 		return array(
 			'meta' => array(),
-			'data' => $data,
+			'data' => $this->categoryService->getTree(),
 		);
     }
 

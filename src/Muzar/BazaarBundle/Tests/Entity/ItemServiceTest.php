@@ -5,6 +5,7 @@ namespace Muzar\BazaarBundle\Tests\Entity;
 use Doctrine\ORM\EntityManager;
 use DoctrineExtensions\NestedSet\Manager;
 use FOS\ElasticaBundle\Manager\RepositoryManager;
+use Muzar\BazaarBundle\Entity\CategoryService;
 use Muzar\BazaarBundle\Entity\Item;
 use Muzar\BazaarBundle\Entity\ItemService;
 use Muzar\BazaarBundle\Tests\ApiTestCase;
@@ -25,14 +26,14 @@ class ItemServiceTest extends ApiTestCase
 			->get('doctrine')
 			->getManager();
 
-		/** @var Manager $nsm */
-		$nsm = $this->getKernel()->getContainer()->get('muzar_bazaar.nsm.category');
 
-		/** @var RepositoryManager $sm */
+		/** @var RepositoryManager $rm */
 		$rm = $this->getKernel()->getContainer()->get('fos_elastica.manager');
 
-		$this->service = new ItemService($em, $nsm, $rm);
+		/** @var CategoryService $cs */
+		$cs = $this->getKernel()->getContainer()->get('muzar_bazaar.model_service.category');
 
+		$this->service = new ItemService($em, $rm, $cs);
 		$this->runCommandDropCreateFixtures();
 
 	}

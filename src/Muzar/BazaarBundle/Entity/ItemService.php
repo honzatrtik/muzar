@@ -14,23 +14,31 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class ItemService 
 {
 	const DEFAULT_MAX_RESULTS = 60;
-	const DEFAULT_CATEGORY_STR_ID = 'root';
+	const DEFAULT_CATEGORY_STR_ID = CategoryService::DEFAULT_CATEGORY_STR_ID;
 
 	/** @var EntityManager */
 	protected $em;
 
-	/** @var  NestedSet\Manager */
-	protected $nsm;
 
 	/** @var  ElasticaBundle\Doctrine\RepositoryManager */
 	protected $rm;
 
+	/**
+	 * @var CategoryService
+	 */
+	protected $categoryService;
 
-	function __construct(EntityManager $em, NestedSet\Manager $nsm, ElasticaBundle\Manager\RepositoryManager $rm)
+	function __construct(EntityManager $em, ElasticaBundle\Manager\RepositoryManager $rm, CategoryService $cs)
 	{
 		$this->em = $em;
-		$this->nsm = $nsm;
 		$this->rm = $rm;
+		$this->categoryService = $cs;
+	}
+
+
+	public function getSelectableCategories()
+	{
+		return $this->categoryService->getSelectableCategories();
 	}
 
 	public function getItem($id)
@@ -42,7 +50,7 @@ class ItemService
 		return $item;
 	}
 
-	public function getItems($categoryStrId = self::DEFAULT_CATEGORY_STR_ID, $maxResults = self::DEFAULT_MAX_RESULTS, $startId = NULL)
+	public function getItems($categoryStrId = CategoryService::DEFAULT_CATEGORY_STR_ID, $maxResults = self::DEFAULT_MAX_RESULTS, $startId = NULL)
 	{
 		$builder = $this->getItemsQueryBuilder($categoryStrId);
 		if ($startId)
@@ -60,7 +68,7 @@ class ItemService
 	}
 
 
-	public function getItemsTotal($categoryStrId = self::DEFAULT_CATEGORY_STR_ID)
+	public function getItemsTotal($categoryStrId = CategoryService::DEFAULT_CATEGORY_STR_ID)
 	{
 		return $this->getItemsQueryBuilder($categoryStrId)->select('COUNT(i.id)')->getQuery()->getSingleScalarResult();
 	}
@@ -71,30 +79,15 @@ class ItemService
 		/** @var ItemRepository $repository */
 		$repository = $this->em->getRepository('Muzar\BazaarBundle\Entity\Item');
 
-		// Nacteme si kategorii
-		$category = $this->em->getRepository('Muzar\BazaarBundle\Entity\Category')->findOneBy(array(
-			'strId' => $categoryStrId
-		));
-
-		if (!$category)
-		{
-			throw new NotFoundHttpException(sprintf('Category "%s" not found.', $categoryStrId));
-		}
-
-		$categoryNodeWrapper = $this->nsm->wrapNode($category);
-		$descendants = $categoryNodeWrapper->getDescendants();
-
-		$categoryStrIds = array_map(function(NestedSet\NodeWrapper $nodeWrapper) {
-			return $nodeWrapper->getNode()->getStrId();
-		}, $descendants);
-
 		// Pridame sebe
-		$categoryStrIds[] = $category->getStrId();
+		$categoryStrIds = array_map(function(Category $category) {
+			return $category->getStrId();
+		}, $this->categoryService->getDescendants($categoryStrId, TRUE));
 
 
 		$builder = $repository->createStatusActiveQueryBuilder($alias);
 		return $builder
-			->join($alias . '.categories', $categoryAlias)
+			->join($alias . '.category', $categoryAlias)
 			->andWhere($builder->expr()->in($categoryAlias . '.strId', $categoryStrIds));
 	}
 

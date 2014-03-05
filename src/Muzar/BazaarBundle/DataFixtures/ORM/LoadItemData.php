@@ -69,7 +69,7 @@ class LoadItemData extends AbstractFixture implements FixtureInterface, Containe
 			if (count($categoryReferenceNames) && ($index = array_rand($categoryReferenceNames)) !== NULL)
 			{
 				$category = $this->getReference($categoryReferenceNames[$index]);
-				$item->getCategories()->add($category);
+				$item->setCategory($category);
 			}
 
 

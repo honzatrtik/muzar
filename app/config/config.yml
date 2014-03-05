@@ -77,8 +77,13 @@ sensio_framework_extra:
 fos_rest:
     serializer:
         serialize_null: true
+    body_listener: true
+    format_listener: true
     view:
         view_response_listener: true
+        templating_formats:
+            html: true
+        default_engine: twig
 
 services:
     goutte:

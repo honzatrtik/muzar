@@ -1,6 +1,7 @@
 QUnit.config.reorder = false;
 requirejs([
 
+	'boot',
 	'tests/controls/item/list',
 	'tests/controls/ad/list',
 	'tests/models/category',

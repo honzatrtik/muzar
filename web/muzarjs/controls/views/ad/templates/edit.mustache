@@ -1,0 +1,99 @@
+<div class="col-xs-12 col-sm-12 col-md-8">
+
+    <h3>
+        Co prodávám
+    </h3>
+
+	<form>
+		<div class="col-xs-12 col-sm-12 col-md-12">
+			<div class="form-group">
+				<label>Název prodávané věci</label>
+				<input name="name" type="email" class="form-control" value="{{ad.name}}" placeholder="např. Gibson 1956 Les Paul Goldtop">
+			</div>
+		</div>
+
+		{{!
+		<div class="col-xs-12 col-sm-12 col-md-12">
+			<div class="form-group">
+				Návrh kategorie:<br>
+				<b>
+					Kytary > Elektrické kytary > LP
+				</b>
+
+				<button type="submit" class="btn btn-success">Umístit</button>
+			</div>
+		</div>
+		}}
+
+		<div class="row no-margin">
+			<div class="col-xs-12 col-sm-4 col-md-4">
+				<div class="form-group">
+					<label>Hlavní kategorie</label>
+					<select id="category_1" name="category_1" class="form-control">
+						{{#each categories1}}
+							<option value="{{@index}}">{{name}}</option>
+						{{/each}}
+					</select>
+				</div>
+			</div>
+			<div class="col-xs-12 col-sm-4 col-md-4">
+				<div class="form-group">
+					<label>Podkategorie</label>
+					<select id="category_2" name="category_2" class="form-control">
+                        <option>--</option>
+						{{#each categories2}}
+                            <option value="{{@index}}">{{name}}</option>
+						{{/each}}
+					</select>
+				</div>
+			</div>
+			<div class="col-xs-12 col-sm-4 col-md-4">
+				<div class="form-group">
+					<label>Přesné zařazení</label><span class="help-block-inline">(Volitelné)</span>
+					<select id="category_3" name="category_3" class="form-control">
+                        <option>--</option>
+						{{#each categories3}}
+                            <option value="{{@index}}">{{name}}</option>
+						{{/each}}
+					</select>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-xs-12 col-sm-12 col-md-12">
+
+			<div class="row">
+				<div class="form-group">
+					<div class="col-xs-12 col-sm-6 col-md-6">
+						<label for="price">Cena</label>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="form-group">
+					<div class="col-xs-12 col-sm-4 col-md-4">
+						<input value="{{ad.price}}" name="price" type="price" class="form-control" placeholder="např. 1000">
+						<span class="pull-right">Kč</span>
+					</div>
+					<div class="col-xs-12 col-sm-3 col-md-3">
+						<input id="negotiable_price" name="negotiable_price" type="checkbox" {{#if ad.negotiable_price}}checked="checked"{{/if}} />
+						<label for="negotiable_price">Cena dohodou</label>
+					</div>
+					<div class="col-xs-12 col-sm-5 col-md-5">
+						<input id="allow_sending_by_mail" name="allow_sending_by_mail" type="checkbox" {{#if ad.allow_sending_by_mail}}checked="checked"{{/if}}>
+						<label for="allow_sending_by_mail">Jsem ochoten zboží poslat poštou</label>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-xs-12 col-sm-12 col-md-12">
+			<div class="form-group">
+				<label>Popis prodávané věci</label>
+				<textarea class="form-control" rows="3" placeholder="např. Stáří, opotřebení">{{ad.description}}</textarea>
+			</div>
+		</div>
+
+	</form>
+
+</div>

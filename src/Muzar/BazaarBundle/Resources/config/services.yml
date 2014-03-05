@@ -1,10 +1,5 @@
 parameters:
 
-    muzar_bazaar.controller.item.class: Muzar\BazaarBundle\Controller\ItemController
-    muzar_bazaar.controller.category.class: Muzar\BazaarBundle\Controller\CategoryController
-
-    muzar_bazaar.model_service.item.class: Muzar\BazaarBundle\Entity\ItemService
-
 
 services:
 
@@ -18,21 +13,31 @@ services:
         calls:
             - [setRootFieldName, [null]]
 
+
+
     muzar_bazaar.nsm.category:
         class: DoctrineExtensions\NestedSet\Manager
         arguments: [@muzar_bazaar.nsm.category.config]
 
+
+
     muzar_bazaar.model_service.item:
-        class: "%muzar_bazaar.model_service.item.class%"
-        arguments: [@doctrine.orm.entity_manager, @muzar_bazaar.nsm.category, @fos_elastica.manager]
+        class: Muzar\BazaarBundle\Entity\ItemService
+        arguments: [@doctrine.orm.entity_manager, @fos_elastica.manager, @muzar_bazaar.model_service.category]
+
+    muzar_bazaar.model_service.category:
+        class: Muzar\BazaarBundle\Entity\CategoryService
+        arguments: [@doctrine.orm.entity_manager, @muzar_bazaar.nsm.category]
+
 
     muzar_bazaar.controller.item:
-        class: "%muzar_bazaar.controller.item.class%"
-        arguments: [@router, @muzar_bazaar.model_service.item]
+        class: Muzar\BazaarBundle\Controller\ItemController
+        arguments: [@router, @form.factory, @doctrine.orm.entity_manager, @muzar_bazaar.model_service.item]
 
     muzar_bazaar.controller.category:
-        class: "%muzar_bazaar.controller.category.class%"
-        arguments: [@router, @doctrine.orm.entity_manager, @muzar_bazaar.nsm.category]
+        class: Muzar\BazaarBundle\Controller\CategoryController
+        arguments: [@router, @doctrine.orm.entity_manager, @muzar_bazaar.model_service.category]
+
 
 
     muzar_bazaar.serializer.event_subscriber:

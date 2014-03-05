@@ -25,6 +25,7 @@ define([
 
 		update: function() {
 
+			debugger;
 			var id = this.options.state.attr('id');
 			if (id) {
 
@@ -35,7 +36,7 @@ define([
 
 			} else {
 
-				return can.Deferred.resolve();
+				return can.Deferred().resolve();
 
 			}
 

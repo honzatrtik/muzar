@@ -9,11 +9,15 @@ namespace Muzar\BazaarBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
+use Muzar\BazaarBundle\Entity\Category;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\ExecutionContextInterface;
 
 
 /**
  * @ORM\Entity(repositoryClass="Muzar\BazaarBundle\Entity\ItemRepository")
  * @ORM\Table(name="item", indexes={@ORM\Index(name="item_status_idx",columns={"status"})})
+ * @ORM\HasLifecycleCallbacks
  *
  * @JMS\ExclusionPolicy("all")
  */
@@ -46,12 +50,14 @@ class Item
 	/**
 	 * @ORM\Column(type="string", length=1024)
 	 * @JMS\Expose()
+	 * @Assert\NotBlank()
 	 */
 	protected $name;
 
 	/**
 	 * @ORM\Column(type="string", nullable=true)
 	 * @JMS\Expose()
+	 *
 	 */
 	protected $description;
 
@@ -61,6 +67,17 @@ class Item
 	 */
 	protected $price;
 
+	/**
+	 * @ORM\Column(type="boolean")
+	 * @JMS\Expose()
+	 */
+	protected $negotiablePrice = FALSE;
+
+	/**
+	 * @ORM\Column(type="boolean")
+	 * @JMS\Expose()
+	 */
+	protected $allowSendingByMail = FALSE;
 
 	/**
 	 * @ORM\Column(type="datetime")
@@ -70,16 +87,16 @@ class Item
 	protected $created;
 
 	/**
-	 * ArrayCollection
-	 * @ORM\ManyToMany(targetEntity="Category", inversedBy="products")
+	 * @var Category
+	 * @ORM\ManyToOne(targetEntity="Category", inversedBy="items")
 	 * @JMS\Expose()
+	 * @Assert\NotBlank()
 	 **/
-	private $categories;
+	private $category;
 
 
 	function __construct()
 	{
-		$this->categories = new ArrayCollection();
 	}
 
 
@@ -131,15 +148,24 @@ class Item
 		return $this->status;
 	}
 
-
+	/**
+	 * @param Category $category
+	 */
+	public function setCategory(Category $category)
+	{
+		$this->category = $category;
+		return $this;
+	}
 
 	/**
-	 * @return ArrayCollection
+	 * @return mixed
 	 */
-	public function getCategories()
+	public function getCategory()
 	{
-		return $this->categories;
+		return $this->category;
 	}
+
+
 
 	/**
 	 * @param mixed $description
@@ -192,6 +218,41 @@ class Item
 		return $this->price;
 	}
 
+	/**
+	 * @param boolean $allowSendingByMail
+	 */
+	public function setAllowSendingByMail($allowSendingByMail)
+	{
+		$this->allowSendingByMail = $allowSendingByMail;
+		return $this;
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function getAllowSendingByMail()
+	{
+		return $this->allowSendingByMail;
+	}
+
+	/**
+	 * @param boolean $negotiablePrice
+	 */
+	public function setNegotiablePrice($negotiablePrice)
+	{
+		$this->negotiablePrice = $negotiablePrice;
+		return $this;
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function getNegotiablePrice()
+	{
+		return $this->negotiablePrice;
+	}
+
+
 
 	/**
 	 * @JMS\VirtualProperty
@@ -225,5 +286,30 @@ class Item
 			: $this->created;
 
 	}
+
+	/** @ORM\PrePersist */
+	public function setCreatedOnPrePersist()
+	{
+		if (!$this->getId() && !$this->getCreated())
+		{
+			$this->setCreated(new \DateTime());
+		}
+	}
+
+	/**
+	 * @Assert\Callback
+	 */
+	public function validatePrice(ExecutionContextInterface $context)
+	{
+		$price = $this->getPrice();
+		$valid = $this->getNegotiablePrice()
+			|| (is_numeric($price) && $price > 0);
+
+		if (!$valid)
+		{
+			$context->addViolationAt('price', 'Cena musí být kladné celé číslo nebo dohodou.');
+		}
+	}
+
 
 }

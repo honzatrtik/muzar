@@ -63,12 +63,13 @@ class Category implements Node
 
 	/**
 	 * ArrayCollection
-	 * @ORM\ManyToMany(targetEntity="Item", mappedBy="categories")
+	 * @ORM\OneToMany(targetEntity="Item", mappedBy="category")
 	 **/
 	private $items;
 
 	/**
 	 * @var Category[]
+	 * @JMS\Expose()
 	 */
 	private $ancestors;
 
@@ -161,7 +162,6 @@ class Category implements Node
 	{
 		return $this->ancestors;
 	}
-
 
 
 	public function getName()

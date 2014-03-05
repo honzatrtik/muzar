@@ -18,53 +18,23 @@ define([
 
 			BaseControl.prototype.init.apply(this, arguments);
 
-			var self = this;
-
 			this.options.categories = new can.List();
 			this.options.categoriesMap = new can.Map();
-			this.options.selected = can.compute();
-
-			this.options.selected.bind('change', function(event, newSelected, oldSelected) {
-
-				if (oldSelected && self.getCategory(oldSelected)) {
-					self.getCategory(oldSelected).element.removeClass('active');
-				}
-
-				if (newSelected && self.getCategory(newSelected)) {
-
-					var $el = $(self.getCategory(newSelected).element);
-
-
-					$el.addClass('active');
-					self.$uls.hide();
-
-					$el.parentsUntil(self.element).show();
-					$el.parent().find('> .menu').show();
-
-					self.options.state.removeAttr('query');
-					self.options.state.attr('category', newSelected);
-				} else {
-
-					self.options.state.removeAttr('category');
-					self.$uls.hide();
-
-				}
-
-			});
 
 		},
 
-		'{state} category': function(route, event, newSelected, oldSelected) {
-			if (newSelected) {
-				this.setSelected(newSelected);
-			}
+		'{state} category': function(state, event, newVal, oldVal) {
+			this.initSelected(newVal, oldVal);
 		},
 
-		'{state} query': function(route, event, newSelected, oldSelected) {
-			if (newSelected) {
+
+		'{state} query': function(route, event, newVal, oldVal) {
+			if (newVal) {
 				this.setSelected(null);
 			}
 		},
+
+
 
 		setSelected: function(category) {
 
@@ -72,22 +42,19 @@ define([
 
 			// Muzeme selekci zrusit
 			if (!category) {
-				this.options.selected(null);
-			} else {
-				if (this.options.categoriesMap.attr(category))
-				{
-					this.options.selected(category);
-				}
+				this.options.state.removeAttr('category');
+			} else if (this.options.categoriesMap.attr(category)) {
+				this.options.state.attr('category', category);
 			}
 
 		},
 
 		getSelectedCompute: function() {
-			return this.options.selected;
+			return this.options.state.compute('category');
 		},
 
 		getSelected: function() {
-			return this.options.selected();
+			return this.options.state.attr('category');
 		},
 
 		getCategory: function(strId) {
@@ -95,7 +62,7 @@ define([
 		},
 
 		getSelectedCategory: function() {
-			return this.getCategory(this.options.selected());
+			return this.getCategory(this.getSelected());
 		},
 
 		getSelectedElement: function() {
@@ -115,10 +82,40 @@ define([
 				self.render();
 
 				self.$uls = self.element.find('ul ul');
-
-				self.setSelected(self.selected);
+				self.initSelected(self.getSelected(), null);
 
 			});
+		},
+
+		initSelected: function(newVal, oldVal) {
+
+			if (oldVal && this.getCategory(oldVal)) {
+				this.getCategory(oldVal).element.removeClass('active');
+			}
+
+			if (newVal && this.getCategory(newVal)) {
+
+				var $el = $(this.getCategory(newVal).element);
+
+				$el.addClass('active');
+				this.$uls.hide();
+
+				$el.parentsUntil(this.element).show();
+				$el.parent().find('> .menu').show();
+
+				this.options.state.removeAttr('query');
+				this.options.state.attr('category', newVal);
+
+			} else {
+
+				this.options.state.removeAttr('category');
+				this.$uls.hide();
+
+			}
+
+			if (newVal) {
+				this.setSelected(newVal);
+			}
 		},
 
 		render: function() {
