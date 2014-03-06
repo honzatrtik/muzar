@@ -17,11 +17,13 @@
 
 {% block javascripts %}
 
-    <script src="{{ asset('muzarjs/bower_components/requirejs/require.js') }}"{% if app.debug %} data-main="{{ asset('muzarjs/muzar.js') }}"{% endif %} type="text/javascript"></script>
+    <script src="{{ asset('muzarjs/bower_components/requirejs/require.js') }}"{% if app.debug %} type="text/javascript"></script>
     <script src="{{ asset('muzarjs/requirejsconfig.js') }}" type="text/javascript"></script>
-
-    {% if not app.debug %}
-        <script src="{{ asset('muzarjs/build/muzar.js') }}" type="text/javascript"></script>
+    {% if app.debug %}
+        <script src="{{ asset('muzarjs/muzar_browse.js') }}" type="text/javascript"></script>
+    {% else %}
+        <script src="{{ asset('muzarjs/build/common.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('muzarjs/build/muzar_browse.js') }}" type="text/javascript"></script>
     {% endif %}
 
 {% endblock %}

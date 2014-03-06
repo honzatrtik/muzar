@@ -68,17 +68,45 @@ module.exports = function(grunt) {
 			}
 		},
 		requirejs : {
-			compile : {
+
+			compileCommon : {
 				options : {
 					baseUrl: './',
-					name: 'muzar',
-					out: 'build/muzar.js',
+					name: 'common',
+					out: 'build/common.js',
+					findNestedDependencies: true,
+					mainConfigFile: './requirejsconfig.js'
+				}
+			},
+
+			compileBrowse : {
+				options : {
+					baseUrl: './',
+					name: 'muzar_browse',
+					out: 'build/muzar_browse.js',
 					mainConfigFile: './requirejsconfig.js',
 					findNestedDependencies: true,
 					paths: {
-						mustache: '.build/mustache'
+						mustache: '.build/mustache',
+						common: 'build/common'
 					},
-					include: ['controls/views/all', 'models/all']
+					include: ['controls/views/all', 'models/all'],
+					exclude: ['common']
+				}
+			},
+
+			compileItemEdit : {
+				options : {
+					baseUrl: './',
+					name: 'muzar_item_edit',
+					out: 'build/muzar_item_edit.js',
+					mainConfigFile: './requirejsconfig.js',
+					findNestedDependencies: true,
+					paths: {
+						mustache: '.build/mustache',
+						common: 'build/common'
+					},
+					exclude: ['common']
 				}
 			}
 		},
@@ -129,7 +157,9 @@ module.exports = function(grunt) {
 			'cancompile',
 			'extractViews',
 			'createRenderers',
-			'requirejs:compile',
+			'requirejs:compileCommon',
+			'requirejs:compileBrowse',
+			'requirejs:compileItemEdit',
 			'exec:rmbuilddir'
 		);
 	});
