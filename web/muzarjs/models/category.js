@@ -1,9 +1,10 @@
 define([
 
 	'jquery',
-	'can/model'
+	'can/model',
+	'simpleStorage'
 
-], function($, Model) {
+], function($, Model, cache) {
 
 
 	return CategoryModel = Model.extend({
@@ -11,23 +12,23 @@ define([
 		// Caching
 		makeFindAll: function(findAllData){
 			// A place to store requests
-			var cachedRequests = {};
 			return function(params, success, error){
 				// is this not cached?
-				if(!cachedRequests[JSON.stringify(params)] ) {
+				var key = JSON.stringify(params);
+				if(!cache.canUse() || !cache.get(key) ) {
 					var self = this;
 					// make the request for data, save deferred
-					cachedRequests[JSON.stringify(params)] =
-						findAllData(params).then(function(data){
-							// convert the raw data into instances
-							return self.models(data)
-						})
+					return findAllData(params).then(function(data){
+						// convert the raw data into instances
+						var models = self.models(data);
+						cache.set(key, models, { TTL: 60 * 1000 })
+						return models;
+					});
+				} else {
+					var def = can.Deferred();
+					def.then(success, error);
+					return def.resolve(cache.get(key));
 				}
-				// get the saved request
-				var def = cachedRequests[JSON.stringify(params)]
-				// hookup success and error
-				def.then(success,error)
-				return def;
 			}
 		},
 
