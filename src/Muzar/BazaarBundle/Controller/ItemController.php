@@ -9,7 +9,7 @@ use Muzar\BazaarBundle\Entity\Item;
 use Muzar\BazaarBundle\Entity\ItemRepository;
 use DoctrineExtensions\NestedSet;
 use Muzar\BazaarBundle\Entity\ItemService;
-use Muzar\BazaarBundle\FormType\ItemFormType;
+use Muzar\BazaarBundle\Form\ItemType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
@@ -135,7 +135,7 @@ class ItemController
 	protected function getForm(Item $item, $method = 'POST')
 	{
 		$categories = $this->itemService->getSelectableCategories();
-		return $this->formFactory->createNamedBuilder(NULL, new ItemFormType($categories), $item, array(
+		return $this->formFactory->createNamedBuilder(NULL, new ItemType($categories), $item, array(
 			'method' => $method
 		))->getForm();
 

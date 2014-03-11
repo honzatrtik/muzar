@@ -1,15 +1,15 @@
+
 requirejs(['common'], function() {
 
 	requirejs([
 
 		'can',
 		'jquery',
-		'models/category',
+		'controls/category/select',
 		'boot'
 
-	], function(can, $, CategoryModel) {
+	], function(can, $, CategorySelectControl) {
 
-		console.log(arguments);
 
 		$(function() {
 			// On ready
@@ -27,15 +27,11 @@ requirejs(['common'], function() {
 
 
 
+			var select = new CategorySelectControl($('#category'));
+			select.update();
+
 
 		});
-
-
-		CategoryModel.findAll().done(function() {
-
-		});
-
-
 
 
 	});

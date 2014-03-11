@@ -40,7 +40,7 @@ define([
 			// Muzeme selekci zrusit
 			if (!category) {
 				this.options.state.removeAttr('category');
-			} else if (this.options.categories.attr('map').attr(category)) {
+			} else if (this.options.categories.attr('mapStrId').attr(category)) {
 				this.options.state.attr('category', category);
 			}
 
@@ -55,7 +55,7 @@ define([
 		},
 
 		getCategory: function(strId) {
-			return this.options.categories.attr('map').attr(strId);
+			return this.options.categories.attr('mapStrId').attr(strId);
 		},
 
 		getSelectedCategory: function() {
@@ -70,6 +70,7 @@ define([
 		},
 
 		update: function() {
+
 			var self = this;
 			return this.options.model.findAll({}, function(categories) {
 

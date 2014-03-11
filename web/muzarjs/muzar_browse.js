@@ -20,8 +20,6 @@ requirejs(['common'], function() {
 			update: function() {
 				var self = this;
 
-				console.log(can.route.attr('view'));
-
 				var view = (can.route.attr('view') || '').replace('.', '/');
 				if (view) {
 

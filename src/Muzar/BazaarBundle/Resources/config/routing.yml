@@ -14,3 +14,8 @@ muzar_bazaar_category:
     prefix:   /api
     defaults: { _format: json }
     type:     annotation
+
+
+muzar_bazaar_item_edit:
+    path:      /ads/edit/{id}
+    defaults:  { _controller: muzar_bazaar.controller.item_edit:defaultAction, id: null }

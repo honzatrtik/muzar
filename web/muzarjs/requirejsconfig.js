@@ -1,4 +1,5 @@
 requirejs.config({
+	baseUrl: '/muzarjs/',
 	paths: {
 		can: 'bower_components/canjs/amd/can',
 		jquery: 'bower_components/jquery/jquery',
@@ -6,7 +7,8 @@ requirejs.config({
 		mustache: 'bower_components/require-can-renderers/lib/mustache',
 		simpleStorage: 'bower_components/simpleStorage/simpleStorage',
 		pace: 'bower_components/pace/pace',
-		boot: 'boot'
+		boot: 'boot',
+		common: 'common'
 	},
 	shim: {
 		funcunit: {

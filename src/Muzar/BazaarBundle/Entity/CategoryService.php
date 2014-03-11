@@ -81,7 +81,7 @@ class CategoryService
 		}
 
 		$filteredNodeWrappers = array_filter($this->nsm->wrapNode($root)->getDescendants(), function(NestedSet\NodeWrapper $nodeWrapper) use ($root) {
-			return $nodeWrapper->getLevel() > 2;
+			return $nodeWrapper->getLevel() > 1;
 		});
 
 		return array_map(function(NestedSet\NodeWrapper $nodeWrapper) {
@@ -107,6 +107,7 @@ class CategoryService
 			$category = $childWrapper->getNode();
 
 			$data[] = array(
+				'id' => $category->getId(),
 				'strId' => $category->getStrId(),
 				'name' => $category->getName(),
 				'children' => $this->createBranch($childWrapper),

@@ -45,25 +45,4 @@ class CategoryController
 		);
     }
 
-	protected function createBranch(NestedSet\NodeWrapper $wrapper)
-	{
-		$data = array();
-		foreach($wrapper->getChildren() as $childWrapper)
-		{
-			/** @var NestedSet\NodeWrapper $childWrapper */
-
-			/** @var Category $category */
-
-			$category = $childWrapper->getNode();
-
-			$data[] = array(
-				'strId' => $category->getStrId(),
-				'name' => $category->getName(),
-				'children' => $this->createBranch($childWrapper),
-			);
-		}
-		return $data;
-	}
-
-
 }

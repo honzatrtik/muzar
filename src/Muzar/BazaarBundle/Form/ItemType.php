@@ -4,14 +4,14 @@
  * Time: 14:05
  */
 
-namespace Muzar\BazaarBundle\FormType;
+namespace Muzar\BazaarBundle\Form;
 
 use Muzar\BazaarBundle\Entity\Category;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class ItemFormType extends AbstractType
+class ItemType extends AbstractType
 {
 
 	/**
@@ -19,9 +19,13 @@ class ItemFormType extends AbstractType
 	 */
 	protected $categories;
 
-	function __construct(array $categories)
+	/** @var boolean */
+	protected $crsf;
+
+	function __construct(array $categories, $crsf = FALSE)
 	{
 		$this->categories = $categories;
+		$this->crsf = $crsf;
 	}
 
 
@@ -41,6 +45,8 @@ class ItemFormType extends AbstractType
 			'property' => 'path',
 		));
 
+		$builder->add('contact', new ContactType());
+
 	}
 
 
@@ -48,7 +54,8 @@ class ItemFormType extends AbstractType
 	{
 		$resolver->setDefaults(array(
 			'data_class' => 'Muzar\BazaarBundle\Entity\Item',
-			'csrf_protection'   => FALSE,
+			'csrf_protection'  => $this->crsf,
+			'cascade_validation' => TRUE,
 		));
 	}
 

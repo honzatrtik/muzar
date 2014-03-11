@@ -14,20 +14,26 @@ define([
 			// A place to store requests
 			return function(params, success, error){
 				// is this not cached?
+				var self = this;
 				var key = JSON.stringify(params);
+				var def;
+
 				if(!cache.canUse() || !cache.get(key) ) {
-					var self = this;
+
 					// make the request for data, save deferred
-					return findAllData(params).then(function(data){
+					def = findAllData(params).then(function(data){
 						// convert the raw data into instances
-						var models = self.models(data);
-						cache.set(key, models, { TTL: 60 * 1000 })
-						return models;
+						cache.set(key, data, { TTL: 60 * 1000 });
+						return self.models(data);
 					});
-				} else {
-					var def = can.Deferred();
 					def.then(success, error);
-					return def.resolve(cache.get(key));
+					return def;
+
+				} else {
+
+					def = can.Deferred();
+					def.then(success, error);
+					return def.resolve(self.models(cache.get(key)));
 				}
 			}
 		},
@@ -39,18 +45,22 @@ define([
 		models : function(data) {
 
 			var models = can.Model.models.call(this, data.data);
-			var map = can.Map();
+			var mapId = can.Map();
+			var mapStrId = can.Map();
 
-			(function(map, children) {
+			(function(mapId, mapStrId, children, parent) {
 				var func = arguments.callee;
 				return can.each(children, function(value, index) {
-					map.attr(value.attr('strId'), value);
-					func(map, value.attr('children'));
+					value.attr('parent', parent);
+					mapId.attr(value.attr('id'), value);
+					mapStrId.attr(value.attr('strId'), value);
+					func(mapId, mapStrId, value.attr('children'), value);
 				});
-			})(map, models);
+			})(mapId, mapStrId, models, null);
 
 			// Set list medadata from server
-			models.attr('map', map);
+			models.attr('mapId', mapId);
+			models.attr('mapStrId', mapStrId);
 			return models;
 		}
 

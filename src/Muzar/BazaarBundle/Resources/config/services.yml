@@ -34,9 +34,20 @@ services:
         class: Muzar\BazaarBundle\Controller\ItemController
         arguments: [@router, @form.factory, @doctrine.orm.entity_manager, @muzar_bazaar.model_service.item]
 
+    muzar_bazaar.controller.item_edit:
+        class: Muzar\BazaarBundle\Controller\ItemEditController
+        arguments: [@router, @form.factory, @doctrine.orm.entity_manager, @muzar_bazaar.model_service.item]
+
+
     muzar_bazaar.controller.category:
         class: Muzar\BazaarBundle\Controller\CategoryController
         arguments: [@router, @doctrine.orm.entity_manager, @muzar_bazaar.model_service.category]
+
+
+
+    muzar_bazaar.form_type.contact:
+        class: Muzar\BazaarBundle\Form\ContactType
+
 
 
 

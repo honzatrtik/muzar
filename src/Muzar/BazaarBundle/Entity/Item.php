@@ -92,8 +92,13 @@ class Item
 	 * @JMS\Expose()
 	 * @Assert\NotBlank()
 	 **/
-	private $category;
+	protected  $category;
 
+	/**
+	 * @var Contact
+	 * @ORM\ManyToOne(targetEntity="Item")
+	 **/
+	private $contact;
 
 	function __construct()
 	{
@@ -286,6 +291,25 @@ class Item
 			: $this->created;
 
 	}
+
+	/**
+	 * @param Contact $contact
+	 */
+	public function setContact(Contact $contact)
+	{
+		$this->contact = $contact;
+		return $this;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getContact()
+	{
+		return $this->contact;
+	}
+
+
 
 	/** @ORM\PrePersist */
 	public function setCreatedOnPrePersist()

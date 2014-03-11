@@ -71,8 +71,8 @@ class CategoryServiceTest extends ApiTestCase
 		{
 			$node = $nsm->wrapNode($category);
 			$ancestors = $node->getAncestors();
-			$this->assertGreaterThan(2, count($ancestors));
-			$this->assertGreaterThan(2, $node->getLevel());
+			$this->assertGreaterThan(1, count($ancestors));
+			$this->assertGreaterThan(1, $node->getLevel());
 		}
 
 	}
