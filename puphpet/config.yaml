@@ -61,7 +61,7 @@ apache:
         - php
         - rewrite
     vhosts:
-        PbcQvVap8jaV:
+        muzar.localhost:
             servername: muzar.localhost
             docroot: /var/www/muzar.localhost/web
             docroot_owner: '501'
@@ -69,11 +69,10 @@ apache:
             port: '80'
             setenv:
                 - 'APP_ENV dev'
-            override:
-                - All
             directories:
                 - path: /var/www/muzar.localhost/web
                   custom_fragment: EnableSendfile off
+                  allow_override: [All]
     user: www-data
     group: www-data
     default_vhost: true
