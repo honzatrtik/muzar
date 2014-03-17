@@ -1,16 +1,21 @@
 define([
 
 	'can/util/string',
-	'models/base'
+	'models/base',
+	'config'
 
-], function (can, BaseModel) {
+], function (can, BaseModel, config) {
+
+	var prefix = config.debug
+		? '/app_dev.php/'
+		: '/';
 
 	var AdModel = BaseModel.extend({
-		findAll: 'GET http://muzar.localhost/app_dev.php/api/ads',
-		findOne: 'GET http://muzar.localhost/app_dev.php/api/ads/{id}',
-		create: 'POST http://muzar.localhost/app_dev.php/api/ads',
-		update: 'PUT http://muzar.localhost/app_dev.php/api/ads/{id}',
-		destroy: 'DELETE http://muzar.localhost/app_dev.php/api/ads/{id}'
+		findAll: 'GET ' + prefix  + 'api/ads',
+		findOne: 'GET ' + prefix  + 'api/ads/{id}',
+		create: 'POST ' + prefix  + 'api/ads',
+		update: 'PUT ' + prefix  + 'api/ads/{id}',
+		destroy: 'DELETE ' + prefix  + 'api/ads/{id}'
 	}, {});
 
 	AdModel.List = BaseModel.List.extend();

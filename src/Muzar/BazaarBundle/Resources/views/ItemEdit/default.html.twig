@@ -39,6 +39,8 @@
                     </div>
                 </div>
             </div>
+            <div id="category-widget" class="row no-margin">
+            </div>
 
             <div class="col-xs-12 col-sm-12 col-md-12">
 
@@ -52,8 +54,10 @@
                 <div class="row">
                     <div class="form-group">
                         <div class="col-xs-12 col-sm-4 col-md-4">
-                            {{ form_widget(form.price, { 'attr': {'class': 'form-control', 'placeholder': 'např. 1000'} }) }}
-                            <span class="pull-right">Kč</span>
+                            <div class="input-group">
+                                {{ form_widget(form.price, { 'attr': {'class': 'form-control', 'placeholder': 'např. 1000'} }) }}
+                                <span class="input-group-addon">Kč</span>
+                            </div>
                         </div>
                         <div class="col-xs-12 col-sm-3 col-md-3">
                             {{ form_widget(form.negotiablePrice) }}
@@ -98,12 +102,9 @@
                 <div class="form-group">
                     <label>Město nebo obec</label>
 
-                    <div class="col-xs-10 col-sm-10 col-md-10">
-                        <input type="text" class="form-control" placeholder="staci zdata par prvnich pismen do naseptavace">
+                    <div id="address-widget" class="col-xs-10 col-sm-10 col-md-10">
                     </div>
-                    <div class="col-xs-2 col-sm-2 col-md-2">
-                        <button class="btn btn-default" type="submit">Moje poloha</button>
-                    </div>
+
                 </div>
             </div>
 
@@ -124,6 +125,16 @@
                     </div>
                 </div>
             </div>
+        </div>
+
+
+
+        <div class="col-xs-12 col-sm-8 col-md-8">
+            {% if item.id %}
+                {{ form_widget(form.save, { 'attr': {'class': 'btn btn-primary btn-lg'}, 'label': 'Uložit inzerat' }) }}
+            {% else %}
+                {{ form_widget(form.save, { 'attr': {'class': 'btn btn-primary btn-lg'}, 'label': 'Přidat inzerat' }) }}
+            {% endif %}
         </div>
 
         {{ form_rest(form) }}

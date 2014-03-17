@@ -80,8 +80,9 @@ class Item
 	protected $allowSendingByMail = FALSE;
 
 	/**
-	 * @ORM\Column(type="datetime")
 	 * @var \DateTime
+	 * @ORM\Column(type="datetime")
+	 * @JMS\Type("DateTime")
 	 * @JMS\Expose()
 	 */
 	protected $created;
@@ -96,7 +97,9 @@ class Item
 
 	/**
 	 * @var Contact
-	 * @ORM\ManyToOne(targetEntity="Item")
+	 * @ORM\ManyToOne(targetEntity="Contact", cascade={"persist"})
+	 * @JMS\Expose()
+	 * @Assert\NotBlank()
 	 **/
 	private $contact;
 

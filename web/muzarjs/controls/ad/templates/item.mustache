@@ -8,7 +8,13 @@
 			<h4>{{name}}</h4>
             <small>#{{id}}</small>
 			<span class="text-muted">{{district}}</span>
-			<span class="pull-right"><strong>{{price}} Kc</strong></span>
+			<span class="pull-right"><strong>
+				{{#if negotiable_price}}
+                    Cena dohodou
+				{{else}}
+                    Cena: {{price}} Kč
+				{{/if}}
+			</strong></span>
 		</div>
 	</div>
 </div>

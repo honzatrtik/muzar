@@ -9,7 +9,6 @@ define([
 
 	return can.Control.extend({
 		defaults: {
-			inputName: 'category'
 		}
 	}, {
 
@@ -42,13 +41,17 @@ define([
 			this.on();
 		},
 
+		destroy: function() {
+			can.Control.prototype.destroy.apply(this, arguments);
+		},
+
 		update: function() {
 			var self = this;
 			return CategoryModel.findAll().done(function(categories) {
 				self.map = categories.attr('mapId');
 				self.options.categories1.replace(categories);
-				self.on();
 				self.setValue(self.getValue());
+				self.on();
 			});
 		},
 
@@ -56,7 +59,7 @@ define([
 			this.options.input(id);
 		},
 
-		getValue: function(id) {
+		getValue: function() {
 			return this.options.input();
 		},
 

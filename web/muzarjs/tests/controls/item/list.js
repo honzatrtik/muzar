@@ -9,30 +9,33 @@ define([
 
 ], function(F, $, ItemListControl, can) {
 
+	var $content = $('#content');
+	var $element;
 	QUnit.module("ItemListControl", {
 		setup: function(){
+			$element = $('<div/>').appendTo($content);
+
+			var store = can.fixture.store(100, function (i) {
+				var id = i + 1; // Make ids 1 based instead of 0 based
+				return {
+					id: id,
+					name: 'Item ' + id
+				}
+			});
+
+			can.fixture({
+				'GET /item': store.findAll
+			});
 		},
 		teardown: function(){
-			$('#content').empty();
+			$element.remove();
+			can.fixture({
+				'GET /item': null
+			});
 		}
 	});
 
 	QUnit.asyncTest("update", function () {
-
-		var $content = $('#content');
-
-
-		var store = can.fixture.store(100, function (i) {
-			var id = i + 1; // Make ids 1 based instead of 0 based
-			return {
-				id: id,
-				name: 'Item ' + id
-			}
-		});
-
-		can.fixture({
-			'GET /item': store.findAll
-		});
 
 
 		var model = can.Model.extend({
@@ -42,16 +45,15 @@ define([
 
 		var state = new can.Map();
 
-		var control = new ItemListControl($content, {
+		var control = new ItemListControl($element, {
 			model: model,
 			itemRenderer: can.view.mustache('<div>{{id}}-{{name}}</div>'),
 			state: state
 		});
 
-
 		control.update().done(function() {
 
-			QUnit.equal($content.find('.item').length, 100, 'Control has 100 .item children.');
+			QUnit.equal($element.find('.item').length, 100, 'Control has 100 .item children.');
 			QUnit.start();
 
 		});

@@ -34,18 +34,22 @@
 
             <div class="thumbnail">
 
-                <h3 class="pull-left">Cena: {{price}} Kč</h3>
+                <h3 class="pull-left">
+					{{#if negotiable_price}}
+						Cena dohodou
+					{{else}}
+						Cena: {{price}} Kč
+					{{/if}}
+				</h3>
 
                 <a href="" class="btn btn-primary btn-lg pull-right">Kontaktovat</a>
                 <div class="clearfix"></div>
 
 
                 <h4>Prodávající:</h4>
-                Pavel Novák<br>
-                Třinec<br>
-                <span class="text-muted">Ostravsky kraj</span><br>
-                Tel: 736252366<br>
-                <br>
+                {{#if contact.name}}{{contact.name}}<br>{{/if}}
+                {{#if contact.place}}{{contact.place}}<br>{{/if}}
+                {{#if contact.phone}}{{contact.phone}}<br>{{/if}}
 
                 <span class="glyphicon glyphicon-time"></span> {{created}} <span class="glyphicon glyphicon-eye-open"></span> zobrazeno 250x
 

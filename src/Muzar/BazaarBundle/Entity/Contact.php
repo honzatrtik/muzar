@@ -14,7 +14,11 @@ use Symfony\Component\Validator\ExecutionContextInterface;
 
 /**
  * @ORM\Entity(repositoryClass="Muzar\BazaarBundle\Entity\ContactRepository")
- * @ORM\Table(name="contact", indexes={@ORM\Index(name="contact_email_idx",columns={"email"})})
+ * @ORM\Table(name="contact", indexes={
+ * 		@ORM\Index(name="contact_email_idx",columns={"email"}),
+ * 		@ORM\Index(name="contact_lat_idx",columns={"lat"}),
+ * 		@ORM\Index(name="contact_lng_idx",columns={"lng"})
+ * })
  * @ORM\HasLifecycleCallbacks
  *
  * @JMS\ExclusionPolicy("all")
@@ -39,13 +43,13 @@ class Contact
 	protected $email;
 
 	/**
-	 * @ORM\Column(type="string")
+	 * @ORM\Column(type="string", nullable=true)
 	 * @JMS\Expose()
 	 */
 	protected $name;
 
 	/**
-	 * @ORM\Column(type="string")
+	 * @ORM\Column(type="string", nullable=true)
 	 * @JMS\Expose()
 	 */
 	protected $phone;
@@ -53,39 +57,31 @@ class Contact
 
 
 	/**
-	 * @ORM\Column(type="float",  nullable=true)
+	 * @ORM\Column(type="float", nullable=true)
 	 * @JMS\Expose()
 	 */
 	protected $lat;
 
 	/**
-	 * @ORM\Column(type="float",  nullable=true)
+	 * @ORM\Column(type="float", nullable=true)
 	 * @JMS\Expose()
 	 */
 	protected $lng;
+
 
 	/**
 	 * @ORM\Column(type="string", nullable=true)
 	 * @JMS\Expose()
 	 */
-	protected $address;
+	protected $place;
 
 	/**
-	 * @param mixed $address
+	 * @ORM\Column(type="string", nullable=true)
+	 * @JMS\Expose()
 	 */
-	public function setAddress($address)
-	{
-		$this->address = $address;
-		return $this;
-	}
+	protected $reference;
 
-	/**
-	 * @return mixed
-	 */
-	public function getAddress()
-	{
-		return $this->address;
-	}
+
 
 	/**
 	 * @param mixed $email
@@ -187,6 +183,40 @@ class Contact
 	public function getPhone()
 	{
 		return $this->phone;
+	}
+
+	/**
+	 * @param string $place
+	 */
+	public function setPlace($place)
+	{
+		$this->place = $place;
+		return $this;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getPlace()
+	{
+		return $this->place;
+	}
+
+	/**
+	 * @param string $reference
+	 */
+	public function setReference($reference)
+	{
+		$this->reference = $reference;
+		return $this;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getReference()
+	{
+		return $this->reference;
 	}
 
 

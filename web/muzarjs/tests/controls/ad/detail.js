@@ -6,22 +6,23 @@ define([
 
 ], function(F, $, AdDetailControl) {
 
+	var $content = $('#content');
 	var state;
-	var $content;
+	var $element;
 
 	QUnit.module("AdDetailControl", {
 		setup: function(){
 			state = new can.Map({});
-			$content = $('#content');
+			$element = $('<div/>').appendTo($content);
 		},
 		teardown: function(){
-			$content.empty();
+			$element.remove();
 		}
 	});
 
 	QUnit.asyncTest("update", function () {
 
-		var control = new AdDetailControl($content, {
+		var control = new AdDetailControl($element, {
 			state: state
 		});
 

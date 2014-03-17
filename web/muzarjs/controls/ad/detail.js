@@ -17,6 +17,7 @@ define([
 
 		},
 
+
 		'{state} id': function(route, event, newVal, oldVal) {
 			this.update();
 		},
@@ -25,7 +26,6 @@ define([
 
 		update: function() {
 
-			debugger;
 			var id = this.options.state.attr('id');
 			if (id) {
 

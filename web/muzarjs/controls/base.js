@@ -15,6 +15,10 @@ define([
 			this.on();
 		},
 
+		destroy: function() {
+			can.Control.prototype.destroy.apply(this, arguments);
+		},
+
 		deferUpdate: function(timeout) {
 
 			var self = this;

@@ -2,10 +2,10 @@ define([
 
 	'jquery',
 	'can/model',
-	'simpleStorage'
+	'simpleStorage',
+	'config'
 
-], function($, Model, cache) {
-
+], function($, Model, cache, config) {
 
 	return CategoryModel = Model.extend({
 
@@ -39,7 +39,10 @@ define([
 		},
 
 		findAll: function(){
-			return $.get('/app_dev.php/api/categories');
+			var prefix = config.debug
+				? '/app_dev.php/'
+				: '/';
+			return $.get(prefix + 'api/categories');
 		},
 
 		models : function(data) {

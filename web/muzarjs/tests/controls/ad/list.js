@@ -7,21 +7,22 @@ define([
 ], function(F, $, AdListControl) {
 
 	var state;
-	var $content;
+	var $content = $('#content');
+	var $element;
 
 	QUnit.module("AdListControl", {
 		setup: function(){
 			state = new can.Map({});
-			$content = $('#content');
+			$element = $('<div/>').appendTo($content);
 		},
 		teardown: function(){
-			$content.empty();
+			$element.remove();
 		}
 	});
 
 	QUnit.asyncTest("update", function () {
 
-		var control = new AdListControl($content, {
+		var control = new AdListControl($element, {
 			state: state
 		});
 		control.update().done(function() {
@@ -35,7 +36,7 @@ define([
 
 	QUnit.asyncTest("loadNext", function () {
 
-		var control = new AdListControl($content, {
+		var control = new AdListControl($element, {
 			state: state
 		});
 		control.update().done(function() {
@@ -53,7 +54,7 @@ define([
 	QUnit.asyncTest("route change", function () {
 
 
-		var control = new AdListControl($content, {
+		var control = new AdListControl($element, {
 			state: state
 		});
 

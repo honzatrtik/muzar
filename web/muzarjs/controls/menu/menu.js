@@ -10,9 +10,6 @@ define([
 
 	return BaseControl.extend({
 
-		defaults: {
-		}
-
 	}, {
 		init: function(element, options) {
 
@@ -20,6 +17,7 @@ define([
 			this.options.categories = new CategoryModel.List();
 
 		},
+
 
 		'{state} category': function(state, event, newVal, oldVal) {
 			this.initSelected(newVal, oldVal);
@@ -72,7 +70,7 @@ define([
 		update: function() {
 
 			var self = this;
-			return this.options.model.findAll({}, function(categories) {
+			return this.options.model.findAll({}).done(function(categories) {
 
 				self.options.categories = categories;
 				self.render();

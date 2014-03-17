@@ -69,11 +69,16 @@ class ItemEditController
 			$this->em->persist($item);
 			$this->em->flush();
 
-			return new RedirectResponse($this->router->generate('muzar_bazaar_item_form_default'));
+			return new RedirectResponse($this->router->generate('muzar_bazaar_item_edit', array(
+				'id' => $item->getId(),
+			)));
 		}
 		else
 		{
-			return $form;
+			return array(
+				'form' => $form,
+				'item' => $item,
+			);
 		}
 	}
 

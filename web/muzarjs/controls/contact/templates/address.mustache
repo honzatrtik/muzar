@@ -1,0 +1,9 @@
+<input type="text" class="input form-control" placeholder="staci zdata par prvnich pismen do naseptavace">
+{{#if place.reference}}
+<p>
+    <span class="glyphicon glyphicon-map-marker"></span>
+	<span>{{place.formatted_address}}</span>
+	<a class="clear btn btn-xs btn-danger">smazat</a>
+</p>
+{{/if}}
+<div class="result"></div>

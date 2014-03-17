@@ -34,12 +34,22 @@ class ItemType extends AbstractType
 
 		$builder
 			->add('name', 'text')
-			->add('description', 'textarea')
-			->add('price', 'integer')
-			->add('negotiablePrice', 'checkbox')
-			->add('allowSendingByMail', 'checkbox');
+			->add('description', 'textarea', array(
+				'required'  => false
+			))
+			->add('price', 'integer', array(
+				'required'  => false
+			))
+			->add('negotiablePrice', 'checkbox', array(
+				'required'  => false,
+			))
+			->add('allowSendingByMail', 'checkbox',array(
+				'required'  => false,
+			))
+			->add('save', 'submit');
 
 		$builder->add('category', 'entity', array(
+			'empty_value' => '',
 			'class' => 'Muzar\BazaarBundle\Entity\Category',
 			'choices' => $this->categories,
 			'property' => 'path',
