@@ -45,9 +45,14 @@ class LoadItemData extends AbstractFixture implements FixtureInterface, Containe
 
 		// Ziskame si reference na Category, ktere jsou listy
 		$categoryReferenceNames = array_filter(array_keys($this->referenceRepository->getReferences()), function($name) {
-			return strpos($name, 'leaf') !== FALSE;
+			return strpos($name, 'category.leaf') !== FALSE;
 		});
 
+
+		// Ziskame si reference na Users
+		$userReferenceNames = array_filter(array_keys($this->referenceRepository->getReferences()), function($name) {
+			return strpos($name, 'user') !== FALSE;
+		});
 
 
 		$path = __DIR__ . '/../../Resources/fixtures/item.yml';
@@ -72,6 +77,11 @@ class LoadItemData extends AbstractFixture implements FixtureInterface, Containe
 				$item->setCategory($category);
 			}
 
+			if (count($userReferenceNames) && ($index = array_rand($userReferenceNames)) !== NULL)
+			{
+				$user = $this->getReference($userReferenceNames[$index]);
+				$item->setUser($user);
+			}
 
 			$em->persist($item);
 		}
@@ -94,7 +104,7 @@ class LoadItemData extends AbstractFixture implements FixtureInterface, Containe
 	 */
 	function getOrder()
 	{
-		return 1;
+		return 2;
 	}
 
 

@@ -8,13 +8,10 @@ namespace Muzar\BazaarBundle\Tests\DataFixtures\ORM;
 
 use Doctrine\Common\DataFixtures\ReferenceRepository;
 use Doctrine\ORM\EntityManager;
-use Muzar\BazaarBundle\DataFixtures\ORM\LoadCategoryData;
-use Muzar\BazaarBundle\DataFixtures\ORM\LoadItemData;
 use Muzar\BazaarBundle\DataFixtures\ORM\LoadUserData;
 use Muzar\BazaarBundle\Tests\ApiTestCase;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class LoadItemDataTest extends ApiTestCase
+class LoadUserDataTest extends ApiTestCase
 {
 	/**
 	 * @var \Doctrine\ORM\EntityManager
@@ -43,13 +40,10 @@ class LoadItemDataTest extends ApiTestCase
 	public function testLoad()
 	{
 		$loader = new LoadUserData();
-		$loader->setReferenceRepository(new ReferenceRepository($this->em));
-		$loader->setContainer(static::$kernel->getContainer());
-		$loader->load($this->em);
 
-		$loader = new LoadItemData();
 		$loader->setReferenceRepository(new ReferenceRepository($this->em));
 		$loader->setContainer(static::$kernel->getContainer());
+
 		$loader->load($this->em);
 	}
 

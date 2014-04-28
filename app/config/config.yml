@@ -4,7 +4,7 @@ imports:
 
 framework:
     #esi:             ~
-    #translator:      { fallback: "%locale%" }
+    translator:      { fallback: "%locale%" }
     secret:          "%secret%"
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
@@ -23,6 +23,7 @@ framework:
         handler_id:  ~
     fragments:       ~
     http_method_override: true
+
 
 # Twig Configuration
 twig:
@@ -163,6 +164,10 @@ fos_elastica:
                         groups: [elastica, Default]
 
 
+fos_user:
+    db_driver: orm
+    firewall_name: main
+    user_class: Muzar\BazaarBundle\Entity\User
 
 #jms_serializer:
 #    metadata:

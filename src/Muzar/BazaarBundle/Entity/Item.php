@@ -103,6 +103,17 @@ class Item
 	 **/
 	private $contact;
 
+	/**
+	 * @var User
+	 * @ORM\ManyToOne(targetEntity="User", cascade={"persist"})
+	 * @JMS\Expose()
+	 * @Assert\NotBlank()
+	 **/
+	private $user;
+
+
+
+
 	function __construct()
 	{
 	}
@@ -312,6 +323,22 @@ class Item
 		return $this->contact;
 	}
 
+	/**
+	 * @param \Muzar\BazaarBundle\Entity\User $user
+	 */
+	public function setUser($user)
+	{
+		$this->user = $user;
+		return $this;
+	}
+
+	/**
+	 * @return \Muzar\BazaarBundle\Entity\User
+	 */
+	public function getUser()
+	{
+		return $this->user;
+	}
 
 
 	/** @ORM\PrePersist */
