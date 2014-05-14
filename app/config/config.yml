@@ -129,6 +129,7 @@ fos_elastica:
                 item:
                     mappings:
                         id: { type: long }
+                        price: { type: float }
                         name:
                             boost: 5
                             analyzer: my_czech

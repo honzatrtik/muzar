@@ -8,6 +8,7 @@ use FOS\ElasticaBundle\Manager\RepositoryManager;
 use Muzar\BazaarBundle\Entity\CategoryService;
 use Muzar\BazaarBundle\Entity\Item;
 use Muzar\BazaarBundle\Entity\ItemService;
+use Muzar\BazaarBundle\Entity\ItemSearchQuery;
 use Muzar\BazaarBundle\Tests\ApiTestCase;
 
 
@@ -59,19 +60,29 @@ class ItemServiceTest extends ApiTestCase
 		$this->assertEquals($this->service->getItemsTotal(ItemService::DEFAULT_CATEGORY_STR_ID), count($items));
     }
 
-	public function testFulltext()
+	public function testFulltextQuery()
 	{
-		$items = $this->service->getItemsFulltext('kytara', 1024); // Jinak  preteceme
+		$holder = $this->getFulltextItemParamHolder('kytara');
+		$items = $this->service->getItemsFulltext($holder, 1024); // Jinak  preteceme
 		foreach($items as $item)
 		{
 			$this->assertInstanceOf('Muzar\BazaarBundle\Entity\Item', $item);
 		}
 	}
 
-	public function testFulltextResultAndTotalEqual()
+	protected function getFulltextItemParamHolder($query = '', $priceFrom = NULL, $priceTo = NULL)
 	{
-		$items = $this->service->getItemsFulltext('kytara', 1024); // Jinak  preteceme
-		$this->assertEquals($this->service->getItemsFulltextTotal('kytara'), count($items));
+		$holder = new ItemSearchQuery();
+		return $holder->setQuery($query)
+			->setPriceFrom($priceFrom)
+			->setPriceTo($priceTo);
+	}
+
+	public function testFulltextQueryResultAndTotalEqual()
+	{
+		$holder = $this->getFulltextItemParamHolder('kytara');
+		$items = $this->service->getItemsFulltext($holder, 1024); // Jinak  preteceme
+		$this->assertEquals($this->service->getItemsFulltextTotal($holder), count($items));
 	}
 
 	public function testGetItem()

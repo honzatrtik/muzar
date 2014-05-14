@@ -10,6 +10,7 @@ use Muzar\BazaarBundle\Entity\ItemRepository;
 use DoctrineExtensions\NestedSet;
 use Muzar\BazaarBundle\Entity\ItemService;
 use Muzar\BazaarBundle\Form\ItemType;
+use Muzar\BazaarBundle\Entity\ItemSearchQuery;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
@@ -93,13 +94,15 @@ class ItemController
 
 		$maxResults = $request->query->get('limit', ItemService::DEFAULT_MAX_RESULTS);
 		$categoryStrId = $request->query->get('category', ItemService::DEFAULT_CATEGORY_STR_ID);
-		$query = $request->query->get('query');
 		$startId = $request->query->get('startId');
 
-		if ($query && is_string($query))
+
+		$searchQuery = ItemSearchQuery::createFromRequest($request);
+
+		if ($searchQuery->isFilled())
 		{
-			$result = $this->itemService->getItemsFulltext($query, $maxResults + 1, $startId);
-			$total = $this->itemService->getItemsFulltextTotal($categoryStrId);
+			$result = $this->itemService->getItemsFulltext($searchQuery, $maxResults + 1, $startId);
+			$total = $this->itemService->getItemsFulltextTotal($searchQuery);
 		}
 		else
 		{
