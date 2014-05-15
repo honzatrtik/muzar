@@ -24,6 +24,7 @@ class LoadCategoryDataTest extends ApiTestCase
 	 */
 	public function setUp()
 	{
+		parent::setUp();
 
 		/** @var EntityManager em */
 		$this->em =  $this->getKernel()->getContainer()

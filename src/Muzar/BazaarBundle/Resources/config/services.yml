@@ -32,7 +32,7 @@ services:
 
     muzar_bazaar.controller.item:
         class: Muzar\BazaarBundle\Controller\ItemController
-        arguments: [@router, @form.factory, @doctrine.orm.entity_manager, @muzar_bazaar.model_service.item]
+        arguments: [@router, @form.factory, @doctrine.orm.entity_manager, @muzar_bazaar.model_service.item, @security.context]
 
     muzar_bazaar.controller.item_edit:
         class: Muzar\BazaarBundle\Controller\ItemEditController

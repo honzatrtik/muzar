@@ -9,6 +9,7 @@ namespace Muzar\BazaarBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
+use Muzar\BazaarBundle\Elastica\ItemQuery;
 use Symfony\Component\Validator\Constraints as Assert;
 
 use Symfony\Component\HttpFoundation\Request;
@@ -66,14 +67,14 @@ class ItemSearchQuery
 	 */
 	public static function createFromRequest(Request $request)
 	{
-		/** @var ItemSearchQuery $holder */
-		$holder = new static();
-		$holder
+		/** @var ItemSearchQuery $itemSearchQuery */
+		$itemSearchQuery = new static();
+		$itemSearchQuery
 			->setQuery($request->query->getAlnum('query'))
 			->setPriceFrom($request->query->get('priceFrom'))
 			->setPriceTo($request->query->get('priceTo'));
 
-		return $holder;
+		return $itemSearchQuery;
 	}
 
 	/**
@@ -170,5 +171,16 @@ class ItemSearchQuery
 			|| $this->getPriceTo();
 	}
 
+	/**
+	 * @return ItemQuery
+	 */
+	public function getElasticaItemQuery()
+	{
+		if (!$this->isFilled())
+		{
+			throw new \RuntimeException('Must be filled!');
+		}
+		return new ItemQuery($this);
+	}
 
 }

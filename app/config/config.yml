@@ -148,7 +148,7 @@ fos_elastica:
                     serializer:
                         groups: [elastica, Default]
 
-                catgory:
+                category:
                     mappings:
                         id: { type: long }
                         strId:

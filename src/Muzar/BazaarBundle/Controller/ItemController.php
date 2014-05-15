@@ -9,6 +9,7 @@ use Muzar\BazaarBundle\Entity\Item;
 use Muzar\BazaarBundle\Entity\ItemRepository;
 use DoctrineExtensions\NestedSet;
 use Muzar\BazaarBundle\Entity\ItemService;
+use Muzar\BazaarBundle\Entity\User;
 use Muzar\BazaarBundle\Form\ItemType;
 use Muzar\BazaarBundle\Entity\ItemSearchQuery;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -19,6 +20,11 @@ use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\Security\Core\Exception\InsufficientAuthenticationException;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
  * @Route(service="muzar_bazaar.controller.item")
@@ -38,18 +44,22 @@ class ItemController
 	/** @var  FormFactory */
 	protected $formFactory;
 
+	/** @var  SecurityContextInterface */
+	protected $securityContext;
 
 	public function __construct(
 		Router $router,
 		FormFactory $formFactory,
 		EntityManager $em,
-		ItemService $itemService
+		ItemService $itemService,
+		SecurityContextInterface $securityContext
 	)
 	{
 		$this->router = $router;
 		$this->formFactory = $formFactory;
 		$this->em = $em;
 		$this->itemService = $itemService;
+		$this->securityContext = $securityContext;
 	}
 
 	/**
@@ -66,20 +76,29 @@ class ItemController
 	 * @Route("/ads", name="muzar_bazaar_item_post")
 	 * @Method("POST")
 	 * @Rest\View(statusCode=201)
+	 * @Security("has_role('ROLE_USER')")
 	 */
 	public function postAction(Request $request)
 	{
-		return $this->processForm(new Item(), $request);
+		$item = new Item();
+		$item->setUser($this->securityContext->getToken()->getUser());
+		return $this->processForm($item, $request);
 	}
 
 	/**
 	 * @Route("/ads/{id}", name="muzar_bazaar_item_put", requirements={"id" = "\d+"})
 	 * @Method("PUT")
 	 * @Rest\View()
+	 * @Security("has_role('ROLE_USER')")
 	 */
 	public function putAction(Request $request, $id)
 	{
 		$item = $this->itemService->getItem($id);
+		if ($item->getUser()->getId() != $this->securityContext->getToken()->getUser()->getId())
+		{
+			throw new InsufficientAuthenticationException();
+		}
+
 		return $this->processForm($item, $request);
 	}
 
@@ -150,6 +169,7 @@ class ItemController
 
 		$form = $this->getForm($item, $request->getMethod());
 		$form->handleRequest($request);
+
 
 		if ($form->isValid())
 		{

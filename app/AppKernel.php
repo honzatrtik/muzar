@@ -24,6 +24,7 @@ class AppKernel extends Kernel
 			new FOS\RestBundle\FOSRestBundle(),
 			new FOS\ElasticaBundle\FOSElasticaBundle(),
 			new FOS\UserBundle\FOSUserBundle(),
+			new Escape\WSSEAuthenticationBundle\EscapeWSSEAuthenticationBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

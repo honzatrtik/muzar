@@ -11,6 +11,7 @@ use Doctrine\ORM\EntityManager;
 use Elastica\Query\Match;
 use Elastica\Query\MatchAll;
 use FOS\ElasticaBundle;
+use Muzar\BazaarBundle\Elastica\ItemQuery;
 use Muzar\BazaarBundle\Entity\ItemSearchQuery;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -44,6 +45,10 @@ class ItemService
 		return $this->categoryService->getSelectableCategories();
 	}
 
+	/**
+	 * @param $id
+	 * @return Item
+	 */
 	public function getItem($id)
 	{
 		if (!$item = $this->em->getRepository('Muzar\BazaarBundle\Entity\Item')->find($id))
@@ -97,29 +102,11 @@ class ItemService
 
 	/**
 	 * @param ItemSearchQuery $query
-	 * @return \Elastica\Filter\BoolAnd
-	 */
-	protected function createFulltextFilters(ItemSearchQuery $query)
-	{
-		$filters = new \Elastica\Filter\BoolAnd();
-
-		$range = array();
-		$range['gte'] = $query->getPriceFrom();
-		$range['lte'] = $query->getPriceTo();
-		if ($range = array_filter($range))
-		{
-			$filters->addFilter(new \Elastica\Filter\Range('price', $range));
-		}
-		return $filters;
-	}
-
-	/**
-	 * @param ItemSearchQuery $query
-	 * @return \Elastica\Query
+	 * @return ItemQuery
 	 */
 	protected function createFulltextQuery(ItemSearchQuery $query)
 	{
-		$q = \Elastica\Query::create($query->getQuery());
+		$q = $query->getElasticaItemQuery();
 		$q->addSort(array(
 			'id' => array(
 				'order' => 'asc',
@@ -136,18 +123,11 @@ class ItemService
 		$q = $this->createFulltextQuery($query);
 		$q->setSize($maxResults);
 
-		$filters = $this->createFulltextFilters($query);
-
 		if ($startId)
 		{
-			$filters->addFilter(new \Elastica\Filter\Range('id', array(
+			$q->addFilter(new \Elastica\Filter\Range('id', array(
 				'lte' => $startId
 			)));
-		}
-
-		if ($filters->getFilters())
-		{
-			$q->setFilter($filters);
 		}
 
 		return $repository->find($q);
@@ -159,11 +139,7 @@ class ItemService
 		/** @var ElasticaBundle\Repository $repository */
 		$repository = $this->rm->getRepository('Muzar\BazaarBundle\Entity\Item');
 
-		$q = \Elastica\Query::create($query->getQuery());
-		if ($filters = $this->createFulltextFilters($query))
-		{
-			$q->setFilter($filters);
-		}
+		$q = $this->createFulltextQuery($query);
 		return $repository->createPaginatorAdapter($q)->getTotalHits();
 	}
 } 

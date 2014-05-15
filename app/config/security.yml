@@ -11,6 +11,14 @@ security:
             id: fos_user.user_provider.username_email
 
     firewalls:
+        wsse_secured:
+            pattern:   ^/api/.*
+            anonymous:    true
+            wsse:
+                realm: "Secured API" #identifies the set of resources to which the authentication information will apply (WWW-Authenticate)
+                profile: "UsernameToken" #WSSE profile (WWW-Authenticate)
+                lifetime: 300 #lifetime of nonce
+
         main:
             pattern: ^/
             form_login:
