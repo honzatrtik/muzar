@@ -8,7 +8,8 @@ vendor/*
 web/bundles/
 app/bootstrap.php.cache
 app/cache/*
-app/config/parameters.yml
+app/config/**/parameters.yml
+!app/config/common/parameters.yml
 app/logs/*
 !app/cache/.gitkeep
 !app/logs/.gitkeep

@@ -7,7 +7,7 @@ framework:
     translator:      { fallback: "%locale%" }
     secret:          "%secret%"
     router:
-        resource: "%kernel.root_dir%/config/routing.yml"
+        resource: "%kernel.root_dir%/config/common/routing.yml"
         strict_requirements: ~
     form:            ~
     csrf_protection: ~
@@ -94,7 +94,7 @@ services:
 
 fos_elastica:
     clients:
-        default: { host: muzar.localhost, port: 9200 }
+        default: { host: localhost, port: 9200 }
     serializer:
         callback_class: FOS\ElasticaBundle\Serializer\Callback
         serializer: serializer
@@ -170,10 +170,10 @@ fos_user:
     firewall_name: main
     user_class: Muzar\BazaarBundle\Entity\User
 
-#jms_serializer:
-#    metadata:
-#        auto_detection: true
-#        directories:
-#            Muzar\BazaarBundle:
-#                namespace_prefix: Muzar\BazaarBundle
-#                path: "@MuzarBazaarBundle/Resources/config/serializer"
+jms_serializer:
+    metadata:
+        auto_detection: true
+        directories:
+            FOSUserBundle:
+                namespace_prefix: "FOS\\UserBundle"
+                path: "@MuzarBazaarBundle/Resources/config/serializer/fos"
