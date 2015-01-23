@@ -16,3 +16,7 @@ app/logs/*
 build/
 vendor/
 bin/
+
+appjs/node_modules/*
+web/build/*
+npm-debug.log
