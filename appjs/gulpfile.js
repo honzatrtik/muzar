@@ -2,6 +2,7 @@ var _ = require('lodash');
 var gulp = require('gulp');
 var rename = require('gulp-rename');
 var browserify = require('browserify');
+var deamdify = require('deamdify');
 var reactify = require('reactify');
 var util = require('gulp-util');
 var sourcemaps = require('gulp-sourcemaps');
@@ -10,6 +11,7 @@ var streamify = require('gulp-streamify');
 var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
 var watchify = require('watchify');
+var es6ify = require('es6ify');
 
 
 
@@ -18,7 +20,6 @@ var bundlesConfig = [{
     files: ['./test.js'],
     dest: './../web/build/'
 }];
-
 
 
 gulp.task('browserify', function(){
@@ -35,14 +36,18 @@ gulp.task('watch', function() {
 });
 
 
+
 function browserifyShare(config, watch){
 
-    var b = browserify(config.files, {
+    var b = browserify(es6ify.runtime, {
         cache: {},
         packageCache: {},
         fullPaths: true
     });
-    b.transform(reactify);
+
+    _.each(config.files, function(file) {
+        b.add(file);
+    });
 
     if (watch) {
         b = watchify(b);
@@ -53,16 +58,21 @@ function browserifyShare(config, watch){
         });
     }
 
+    b.transform(es6ify.configure(/^(?!.*node_modules)+.+\.js$/));
+    b.transform(reactify);
+    b.transform(deamdify);
+
     return bundleShare(b, config);
 }
+
 
 function bundleShare(b, config) {
     return b.bundle()
         .on('error', function(e) {
-            util.log(util.colors.red('Browserify error'), e.message);
+            util.log(util.colors.red('Browserify error:'), e.message);
         })
         .pipe(source(config.name))
-        .pipe(streamify(uglify()))
+        //.pipe(streamify(uglify()))
         .pipe(rename(function(path) {
             path.extname = '.min.js';
         }))
