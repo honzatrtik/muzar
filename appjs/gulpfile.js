@@ -7,7 +7,6 @@ var reactify = require('reactify');
 var util = require('gulp-util');
 var sourcemaps = require('gulp-sourcemaps');
 var uglify = require('gulp-uglifyjs');
-var streamify = require('gulp-streamify');
 var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
 var watchify = require('watchify');

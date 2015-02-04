@@ -30,7 +30,7 @@
     "gulp-uglifyjs": "^0.5.0",
     "jest-cli": "^0.2.1",
     "node-jsx": "^0.12.4",
-    "react": "^0.12.2",
+    "react-tools": "^0.12.2",
     "reactify": "^1.0.0",
     "vinyl-source-stream": "^1.0.0",
     "watchify": "^2.2.1"
@@ -38,13 +38,11 @@
   "dependencies": {
     "es5-shim": "^4.0.5",
     "es6-promise": "^2.0.1",
-    "flux": "^2.0.1",
+    "fluxible": "^0.2.0",
     "immutable": "^3.5.0",
-    "leaf-flux-dispatcher": "0.0.3",
     "lodash": "~2.4.1",
     "morearty": "^0.7.7",
-    "react": "~0.12.2",
-    "_susanin": "git://github.com/honzatrtik/susanin",
-    "url-parse": "^1.0.0"
+    "react": "^0.12.2",
+    "react-router": "^0.11.6"
   }
 }
