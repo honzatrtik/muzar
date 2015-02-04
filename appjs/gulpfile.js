@@ -15,9 +15,9 @@ var es6ify = require('es6ify');
 
 
 var bundlesConfig = [{
-    name: 'test',
-    files: ['./test.js'],
-    dest: './../web/build/'
+    name: 'client',
+    files: ['./client.js'],
+    dest: './build/'
 }];
 
 
@@ -51,14 +51,14 @@ function browserifyShare(config, watch){
     if (watch) {
         b = watchify(b);
         b.on('update', function(){
-            util.log('Updating...');
+            util.log('Changed...');
             bundleShare(b, config);
             util.log(util.colors.green('Done!'));
         });
     }
 
-    b.transform(es6ify.configure(/^(?!.*node_modules)+.+\.js$/));
     b.transform(reactify);
+    b.transform(es6ify.configure(/^(?!.*node_modules)+.+\.js$/));
     b.transform(deamdify);
 
     return bundleShare(b, config);
@@ -73,7 +73,7 @@ function bundleShare(b, config) {
         .pipe(source(config.name))
         //.pipe(streamify(uglify()))
         .pipe(rename(function(path) {
-            path.extname = '.min.js';
+            path.extname = '.js';
         }))
         .pipe(gulp.dest(config.dest));
 }

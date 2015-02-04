@@ -18,5 +18,5 @@ vendor/
 bin/
 
 appjs/node_modules/*
-web/build/*
+appjs/build/*
 npm-debug.log
