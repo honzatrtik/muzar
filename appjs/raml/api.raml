@@ -1,0 +1,127 @@
+#%RAML 0.8
+title: Muzar.cz
+baseUri: http://api.muzar.cz/{version}
+version: 0.1
+
+/ads:
+  get:
+    queryParameters:
+        startId:
+          type: integer
+          example: 4
+        limit:
+          type: integer
+          example: 4
+    description: Loads list of ads.
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              {
+                "meta": {
+                  "params": {
+                    "limit": 6
+                  },
+                  "nextLink": "/ad?startId=4",
+                  "total": 128
+                },
+                "data": [
+                  {
+                    "id": 1,
+                    "name": "Fender Telecaster Mexico",
+                    "image_url": "http://lorempixel.com/300/200",
+                    "district": "Olomoucký kraj",
+                    "price": 13000,
+                    "description": "",
+                    "created": "2013-12-12 12:45:30",
+                    "url": "/ads/1"
+                  },
+                  {
+                    "id": 2,
+                    "name": "Fender Precision Bass",
+                    "image_url": "http://lorempixel.com/300/200",
+                    "district": "Královehradecký kraj",
+                    "price": 20000,
+                    "description": "",
+                    "created": "2013-12-12 12:45:30",
+                    "url": "/ads/2"
+                  }
+                ]
+              }
+  /{id}:
+    uriParameters:
+      id:
+        type: integer
+        example: 2
+    get:
+      description: Loads ad by id.
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  "meta": {
+                  },
+                  "data": {
+                    "id": 2,
+                    "name": "Fender Telecaster Mexico",
+                    "status": "active",
+                    "image_url": "http://placehold.it/300x200/008&text=2",
+                    "district": "Olomoucký kraj",
+                    "price": 13000,
+                    "description": "",
+                    "created": "2013-12-12 12:45:30",
+                    "categories": [
+                      {
+                        "id": 7,
+                        "str_id": "kontrabasy",
+                        "name": "Kontrabasy"
+                      }
+                    ],
+                    "url": "/ads/2"
+                  }
+                }
+
+/categories:
+  get:
+    description: Loads category tree.
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              {
+                "meta": {
+                },
+                "data": [
+                  {
+                    "strId": "kytarove-nastroje",
+                    "name": "Kytarové nastroje",
+                    "newSince": 10,
+                    "children": [
+                      {
+                        "strId": "elektricke-kytary",
+                        "name": "Elektrické kytary",
+                        "newSince": 15
+                      },
+                      {
+                        "strId": "kytarove-aparaty",
+                        "name": "Kytarové aparáty",
+                        "newSince": 1
+                      },
+                      {
+                        "strId": "akusticke-a-klasicke-kytary",
+                        "name": "Akustické a klasické kytary",
+                        "newSince": 2
+                      }
+                    ]
+                  },
+                  {
+                    "strId": "bici-nastroje",
+                    "name": "Bicí nastroje",
+                    "newSince": 28
+                  }
+                ]
+              }

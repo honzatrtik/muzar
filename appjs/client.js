@@ -1,22 +1,21 @@
 'use strict';
 
+require('debug').enable('*');
+
 var routeChangedAction = require('./src/route-changed-action.js');
+
 
 var React = require('react');
 var Router = require('react-router');
 var Morearty = require('morearty');
+var serializer = require('./src/serializer.js');
 
 var moreartyContext = Morearty.createContext({
-    initialState: window.serializedState
+    initialState: serializer.unserialize(window.serializedState)
 });
 
-var Dispatchr = require('dispatchr')();
-var RouteStore = require('./src/stores/route-store.js');
-var AdStore = require('./src/stores/ad-store.js');
 
-Dispatchr.registerStore(RouteStore);
-Dispatchr.registerStore(AdStore);
-
+var Dispatchr = require('./src/bootstrap-dispatcher.js');
 var dispatcher = new Dispatchr({
     moreartyContext: moreartyContext
 });
@@ -29,6 +28,9 @@ Router.run(routes, Router.HistoryLocation, function (Handler, state) {
         if (err) {
             throw err;
         }
+        Handler = moreartyContext.bootstrap(Handler, {
+            getStore: dispatcher.dispatcherInterface.getStore
+        });
         React.render(React.createElement(Handler), document.getElementById('content'));
     });
 

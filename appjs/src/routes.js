@@ -18,6 +18,6 @@ module.exports = (
     <Route name="app" path="/" handler={App}>
         <Route name="detail" path="detail/:id" handler={Test}/>
         <DefaultRoute name="list" handler={List}/>
-        <NotFoundRoute handler={NotFound} />
+        <NotFoundRoute name="404" handler={NotFound} />
     </Route>
 );
