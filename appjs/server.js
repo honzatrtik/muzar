@@ -11,16 +11,7 @@ var serializer = require('./src/serializer.js');
 var React = require('react');
 var Router = require('react-router');
 var Morearty = require('morearty');
-
-var moreartyContext = Morearty.createContext({
-    initialState: {},
-    renderOnce: true
-});
-
 var Dispatchr = require('./src/bootstrap-dispatcher.js');
-var dispatcher = new Dispatchr({
-    moreartyContext: moreartyContext
-});
 
 
 var routes = require('./src/routes.js');
@@ -40,35 +31,33 @@ app.use('/build', express.static(__dirname + '/build'));
 
 app.get('*', function(req, res) {
 
-    Router.run(routes, req.url, function (Handler, state) {
+    var morearty = Morearty.createContext({
+        initialState: {},
+        renderOnce: true
+    });
 
-        routeChangedAction(dispatcher, state, function(err, routes) {
+    var dispatcher = new Dispatchr({
+        morearty: morearty
+    });
 
-            if (err) {
-                throw err;
-            }
+    var Wrapper = require('./src/wrapper.js')(routes, req.url, function(Handler, state) {
+        routeChangedAction(dispatcher, state);
+    });
 
-            Handler = moreartyContext.bootstrap(Handler, {
-                getStore: dispatcher.dispatcherInterface.getStore
-            });
-            var html = React.renderToString(React.createElement(Handler));
+    var html = React.withContext({ dispatcher: dispatcher }, function () {
+        Wrapper = morearty.bootstrap(Wrapper);
+        return React.renderToString(React.createElement(Wrapper));
+    });
 
-            var serializedState = serializer.serialize(moreartyContext.getBinding().get());
-            res.expose(serializedState, 'serializedState');
+    var serializedState = serializer.serialize(morearty.getBinding().get());
+    res.expose(serializedState, 'serializedState');
 
-            var state = '<script>' + res.locals.state + '</script>';
+    var state = '<script>' + res.locals.state + '</script>';
 
-            if (_.last(routes) === '404') {
-                res.status(404);
-            }
-
-            res.render('default', {
-                html: html,
-                state: state,
-                title: 'Some title'
-            });
-        });
-
+    res.render('default', {
+        html: html,
+        state: state,
+        title: 'Some title'
     });
 
 });

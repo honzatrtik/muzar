@@ -13,7 +13,6 @@ var watchify = require('watchify');
 var es6ify = require('es6ify');
 
 
-
 var bundlesConfig = [{
     name: 'client',
     files: ['./client.js'],

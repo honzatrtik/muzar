@@ -1,6 +1,5 @@
 "use strict";
 
-var debug = require('debug')('AdDetailStore');
 var Promise = require('es6-promise').Promise;
 var superagent = require('superagent');
 var BaseStore = require('./base-store.js');
@@ -27,7 +26,7 @@ function load(id) {
 
 class AdDetailStore extends BaseStore {
     getAd() {
-        return this.binding.toJS();
+        return this.getBinding().get();
     }
 }
 
@@ -38,10 +37,10 @@ AdDetailStore.handlers = {
         this.dispatcher.waitFor(RouteStore, function() {
             var store = self.getStore(RouteStore);
             if (store.getRoute() == 'detail') {
-                load(store.getParams().id).then(function(data) {
+                return load(store.getParams().id).then(function(data) {
                     self.getBinding().set(data.data);
                 }).catch(function(res) {
-                    debug(res.status);
+                    throw new Error(res.status);
                 });
             }
         });

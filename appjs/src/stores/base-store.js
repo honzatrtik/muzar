@@ -3,10 +3,10 @@
 class BaseStore {
     constructor(dispatcher) {
         this.dispatcher = dispatcher;
-        if (!this.getContext().moreartyContext) {
-            throw new Error('"moreartyContext" must be passed in context');
+        if (!this.getContext().morearty) {
+            throw new Error('"morearty" must be passed in context');
         }
-        this.binding = this.getContext().moreartyContext.getBinding().sub('store-' + this.constructor.name);
+        this.binding = this.getContext().morearty.getBinding().sub(this.constructor.name);
     }
 
     getBinding() {
