@@ -11,10 +11,20 @@ var Test = React.createClass({
 
     render() {
 
-        var store = this.getStore(AdDetailStore);
         this.observeBinding(this.getStoreBinding(AdDetailStore));
 
-        return <div>TEstik!</div>;
+        var store = this.getStore(AdDetailStore);
+        var ad = store.getAd();
+        ad = ad ? ad.toJS() : {};
+
+        return (
+            <div>
+                <h2>Nazev: {ad.name}</h2>
+                <p>
+                    {ad.district}
+                </p>
+            </div>
+        );
     }
 });
 

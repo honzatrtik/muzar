@@ -1,32 +1,45 @@
 'use strict';
 
+var debugError = require('debug')('Client error');
+var debugBinding = require('debug')('Binding');
+
 require('debug').enable('*');
 
 var routeChangedAction = require('./src/route-changed-action.js');
 
 var React = require('react');
 var Router = require('react-router');
-var Morearty = require('morearty');
 var serializer = require('./src/serializer.js');
-
-var morearty = Morearty.createContext({
-    initialState: serializer.unserialize(window.serializedState)
-});
-
+var morearty = require('./src/bootstrap-morearty.js');
 
 var Dispatchr = require('./src/bootstrap-dispatcher.js');
 var dispatcher = new Dispatchr({
     morearty: morearty
 });
 
+
 var routes = require('./src/routes.js');
+var context = {
+    dispatcher: dispatcher,
+    morearty: morearty
+};
 
-var Wrapper = require('./src/wrapper.js')(routes, Router.HistoryLocation, function(Handler, state) {
-    routeChangedAction(dispatcher, state);
+var router = Router.create({
+    routes: routes,
+    location: Router.HistoryLocation
 });
 
-React.withContext({ dispatcher: dispatcher }, function () {
-    Wrapper = morearty.bootstrap(Wrapper);
-    React.render(React.createElement(Wrapper), document.getElementById('content'));
+router.run(function(Handler, state) {
+
+    React.withContext(context, function () {
+        return React.render(React.createElement(Handler), document.getElementById('content'));
+    });
+
+    routeChangedAction(dispatcher, state).catch(function(e) {
+        debugError(e);
+    });
+
 });
+
+
 

@@ -245,14 +245,14 @@ module.exports = function () {
         if (!this.currentAction) {
             throw new Error('waitFor called even though there is no action dispatching');
         }
-        this.currentAction.waitFor(stores, callback);
+        return this.currentAction.waitFor(stores, callback);
     };
 
     Dispatcher.prototype.waitForPromises = function waitForPromises(stores, callback) {
         if (!this.currentAction) {
             throw new Error('waitForPromises called even though there is no action dispatching');
         }
-        this.currentAction.waitForPromises(stores, callback);
+        return this.currentAction.waitForPromises(stores, callback);
     };
 
 

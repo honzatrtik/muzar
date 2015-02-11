@@ -4,7 +4,7 @@ var React = require('react');
 
 var NotFound = React.createClass({
     render() {
-        return <div>Not-found</div>;
+        return <div><h3>Not-found</h3></div>;
     }
 });
 

@@ -62,9 +62,7 @@ describe('Dispatcher', function() {
                 console.log('store, before');
                 return new Promise(function(resolve, reject) {
                     setTimeout(function() {
-                        console.log('store, after');
                         resolve();
-                        console.log('store, after resolve');
                         done();
                     }, 10);
                 });
@@ -75,7 +73,6 @@ describe('Dispatcher', function() {
             'test': function() {
                 var self = this;
                 this.dispatcher.waitForPromises(Store, function() {
-                    console.log('store2');
                 });
             }
         };

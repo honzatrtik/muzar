@@ -32,7 +32,7 @@ var items = [
     }
 ];
 
-describe('CategoryMenu', function() {
+describe('CategoryMenuLevel', function() {
 
     beforeEach(function(done){
         this.timeout(10000);
@@ -43,9 +43,9 @@ describe('CategoryMenu', function() {
 
     it('renders correct number of ul & li', function() {
 
-        var CategoryMenu = require('../category-menu.js');
+        var CategoryMenuLevel = require('../category-menu-level.js');
 
-        var menu = React.render(<CategoryMenu items={items}/>, document.body);
+        var menu = React.render(<CategoryMenuLevel items={items}/>, document.body);
 
         var uls = TestUtils.scryRenderedDOMComponentsWithTag(menu, 'ul');
         var lis = TestUtils.scryRenderedDOMComponentsWithTag(menu, 'li');
@@ -57,10 +57,10 @@ describe('CategoryMenu', function() {
 
     it('renders active trail if path param passed', function() {
 
-        var CategoryMenu = require('../category-menu.js');
+        var CategoryMenuLevel = require('../category-menu-level.js');
 
         var menu = React.render(
-            <CategoryMenu items={items} path={['kytarove-nastroje', 'akusticke-a-klasicke-kytary']}/>,
+            <CategoryMenuLevel items={items} path={['kytarove-nastroje', 'akusticke-a-klasicke-kytary']}/>,
             document.body
         );
 
@@ -71,10 +71,10 @@ describe('CategoryMenu', function() {
 
     it('renders no active trail if path param is not passed', function() {
 
-        var CategoryMenu = require('../category-menu.js');
+        var CategoryMenuLevel = require('../category-menu-level.js');
 
         var menu = React.render(
-            <CategoryMenu items={items} path={[]}/>,
+            <CategoryMenuLevel items={items} path={[]}/>,
             document.body
         );
 

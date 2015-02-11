@@ -1,18 +1,23 @@
 'use strict';
 
+var debugError = require('debug')('Server error');
+
 require('node-jsx').install({
     harmony: true
 });
 
 var _ = require('lodash');
+var serverInitAction = require('./src/server-init-action.js');
 var routeChangedAction = require('./src/route-changed-action.js');
 
+var debug = require('debug')('Binding');
+var Promise = require('es6-promise').Promise;
 var serializer = require('./src/serializer.js');
 var React = require('react');
 var Router = require('react-router');
 var Morearty = require('morearty');
-var Dispatchr = require('./src/bootstrap-dispatcher.js');
-
+var Dispatcher = require('./src/bootstrap-dispatcher.js');
+var HttpError = require('./src/errors/http-error.js');
 
 var routes = require('./src/routes.js');
 
@@ -31,34 +36,66 @@ app.use('/build', express.static(__dirname + '/build'));
 
 app.get('*', function(req, res) {
 
-    var morearty = Morearty.createContext({
-        initialState: {},
-        renderOnce: true
-    });
+    var morearty = require('./src/bootstrap-morearty.js');
 
-    var dispatcher = new Dispatchr({
+    var dispatcher = new Dispatcher({
         morearty: morearty
     });
 
-    var Wrapper = require('./src/wrapper.js')(routes, req.url, function(Handler, state) {
-        routeChangedAction(dispatcher, state);
+    var context = {
+        dispatcher: dispatcher,
+        morearty: morearty
+    };
+
+    var router = Router.create({
+        routes: routes,
+        location: req.url
     });
 
-    var html = React.withContext({ dispatcher: dispatcher }, function () {
-        Wrapper = morearty.bootstrap(Wrapper);
-        return React.renderToString(React.createElement(Wrapper));
+    router.run(function(Handler, state) {
+
+        var promises = [];
+
+        promises.push(serverInitAction(dispatcher));
+        promises.push(routeChangedAction(dispatcher, state));
+
+        Promise.all(promises).then(function() {
+
+            var html = React.withContext(context, function () {
+                Handler = morearty.bootstrap(Handler, context);
+                return React.renderToString(React.createElement(Handler));
+            });
+
+            var serializedState = serializer.serialize(morearty.getBinding().get());
+            res.expose(serializedState, 'serializedState');
+
+            if (_.find(state.routes, { 'name': '404' })) {
+                res.status(404);
+            }
+
+            res.render('default', {
+                html: html,
+                state: '<script>' + res.locals.state + '</script>',
+                title: 'Some title'
+            });
+
+        }).catch(function(e) {
+
+            debugError(e);
+            if (e instanceof HttpError) {
+                res.status(e.status).send(e.message);
+            } else {
+                res.status(500).end();
+            }
+        });
+
     });
 
-    var serializedState = serializer.serialize(morearty.getBinding().get());
-    res.expose(serializedState, 'serializedState');
 
-    var state = '<script>' + res.locals.state + '</script>';
 
-    res.render('default', {
-        html: html,
-        state: state,
-        title: 'Some title'
-    });
+
+
+
 
 });
 

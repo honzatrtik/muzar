@@ -47,7 +47,6 @@ Action.prototype.execute = function execute(handlers) {
     Object.keys(handlers).forEach(function handlersEach(storeName) {
         self._callHandler(storeName);
     });
-
     var promises = Object.keys(this._promises).map(function (key) {
         return self._promises[key];
     });
@@ -101,7 +100,7 @@ Action.prototype.waitFor = function waitFor(stores, callback) {
         self._callHandler(storeName);
     });
 
-    callback();
+    return callback();
 };
 
 Action.prototype.waitForPromises = function waitForPromises(stores, callback) {
@@ -114,7 +113,7 @@ Action.prototype.waitForPromises = function waitForPromises(stores, callback) {
         stores = [stores];
     }
 
-    this.waitFor(stores, function() {
+    return this.waitFor(stores, function() {
 
         debug('waiting on promises ' + stores.join(', '));
         var promises = [];
@@ -123,7 +122,7 @@ Action.prototype.waitForPromises = function waitForPromises(stores, callback) {
             promises.push(self._promises[key]);
         });
 
-        Promise.all(promises).then(callback);
+        return Promise.all(promises).then(callback);
 
     });
 

@@ -12,7 +12,6 @@ AdStore.handlers = {
     'ROUTE_CHANGED': function() {
         var self = this;
         this.dispatcher.waitFor(RouteStore, function() {
-
         });
     }
 };

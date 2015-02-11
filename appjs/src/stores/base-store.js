@@ -1,5 +1,7 @@
 "use strict";
 
+var Imm = require('immutable');
+
 class BaseStore {
     constructor(dispatcher) {
         this.dispatcher = dispatcher;

@@ -13,11 +13,10 @@ var List = require('./components/list.js');
 var Test = require('./components/test.js');
 var NotFound = require('./components/not-found.js');
 
-
 module.exports = (
     <Route name="app" path="/" handler={App}>
         <Route name="detail" path="detail/:id" handler={Test}/>
-        <DefaultRoute name="list" handler={List}/>
+        <Route name="list" path="list/:category" handler={List}/>
         <NotFoundRoute name="404" handler={NotFound} />
     </Route>
 );
