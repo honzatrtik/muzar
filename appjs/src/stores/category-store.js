@@ -5,6 +5,8 @@ var Imm = require('immutable');
 var superagent = require('../superagent.js');
 var BaseStore = require('./base-store.js');
 var RouteStore = require('./route-store.js');
+var TreeModel = require('tree-model');
+var HttpError = require('../errors/http-error.js');
 
 
 var req;
@@ -23,6 +25,22 @@ function load() {
 }
 
 
+function parseTree(data) {
+    var tree = new TreeModel();
+
+    // Add root 'node'
+    var root = tree.parse({
+        strId: 'root',
+        children: data
+    });
+
+    var map = {};
+    root.walk(function(node) {
+        map[node.model.strId] = node;
+    });
+
+    return map;
+}
 
 
 
@@ -30,6 +48,31 @@ class CategoryStore extends BaseStore {
 
     getItems() {
         return this.getBinding().get('items');
+    }
+
+    getMap() {
+        if (!this.map) {
+            this.map = parseTree(this.getBinding().toJS('items'));
+        }
+        return this.map;
+    }
+
+    getPath(category) {
+        var node = this.getMap()[category];
+        if (node) {
+            return node.getPath().map(function(node) {
+                return node.model;
+            }).slice(1);
+        }
+        return [];
+    }
+
+    getActivePath() {
+        var active = this.getActive();
+        if (active) {
+            return this.getPath(active);
+        }
+        return [];
     }
 
     getActive() {
@@ -48,10 +91,13 @@ CategoryStore.handlers = {
 
     'ROUTE_CHANGED': function() {
         var self = this;
-        return this.dispatcher.waitFor(RouteStore, function() {
+        return this.dispatcher.waitForPromises(RouteStore, function() {
             var store = self.getStore(RouteStore);
             if (store.getRoute() == 'list') {
                 var category = store.getParams().category;
+                if (!self.getPath(category).length) {
+                    throw new HttpError(404, 'Category not found: ' + category);
+                }
                 self.getBinding().set('active', category);
             }
         });

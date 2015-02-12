@@ -9,7 +9,7 @@ var Morearty = require('morearty');
 var DispatcherMixin = require('../dispatcher-mixin.js');
 var CategoryMenu = require('./category-menu.js');
 
-var morearty = require('../bootstrap-morearty.js');
+var morearty = require('../bootstrap-morearty.js')();
 
 var App = React.createClass({
 
@@ -22,17 +22,14 @@ var App = React.createClass({
     render: function() {
 
         return (
-            <div>
-                <h1>App</h1>
+            <div className="container">
 
-                <ul>
-                    <li><Link to="list" params={{category: "kytary"}}>List</Link></li>
-                    <li><Link to="detail" params={{id: 6}}>Detail</Link></li>
-                </ul>
-
-                <CategoryMenu />
+               <div className="row">
+                   <h1>Muzar</h1>
+               </div>
 
                 <Router.RouteHandler/>
+
             </div>
 
         );

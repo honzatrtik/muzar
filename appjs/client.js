@@ -10,7 +10,7 @@ var routeChangedAction = require('./src/route-changed-action.js');
 var React = require('react');
 var Router = require('react-router');
 var serializer = require('./src/serializer.js');
-var morearty = require('./src/bootstrap-morearty.js');
+var morearty = require('./src/bootstrap-morearty.js')();
 
 var Dispatchr = require('./src/bootstrap-dispatcher.js');
 var dispatcher = new Dispatchr({
@@ -35,7 +35,7 @@ router.run(function(Handler, state) {
         return React.render(React.createElement(Handler), document.getElementById('content'));
     });
 
-    routeChangedAction(dispatcher, state).catch(function(e) {
+    dispatcher.executeAction(routeChangedAction, state).catch(function(e) {
         debugError(e);
     });
 

@@ -2,6 +2,7 @@
 
 var _ = require('lodash');
 var Promise = require('es6-promise').Promise;
+var RouteStore = require('./stores/route-store.js');
 
 module.exports = function routeChangedAction(dispatcher, state) {
 
@@ -9,5 +10,9 @@ module.exports = function routeChangedAction(dispatcher, state) {
     state = _.omit(state, 'routes');
     state.routes = routes;
 
-    return dispatcher.dispatch('ROUTE_CHANGED', state);
+    // Dispatch only if path differs - prevent initial dispatch on client
+    if (dispatcher.getStore(RouteStore).getPath() !== state.path) {
+        return dispatcher.dispatch('ROUTE_CHANGED', state);
+    }
+
 };

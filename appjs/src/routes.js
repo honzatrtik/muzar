@@ -10,13 +10,13 @@ var RouteHandler = Router.RouteHandler;
 
 var App = require('./components/app.js');
 var List = require('./components/list.js');
-var Test = require('./components/test.js');
-var NotFound = require('./components/not-found.js');
+var Detail = require('./components/detail.js');
+var ErrorPage = require('./components/error-page.js');
 
 module.exports = (
     <Route name="app" path="/" handler={App}>
-        <Route name="detail" path="detail/:id" handler={Test}/>
+        <Route name="detail" path="detail/:id" handler={Detail}/>
         <Route name="list" path="list/:category" handler={List}/>
-        <NotFoundRoute name="404" handler={NotFound} />
+        <NotFoundRoute name="404" handler={ErrorPage} />
     </Route>
 );

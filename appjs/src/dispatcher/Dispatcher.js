@@ -189,48 +189,15 @@ module.exports = function () {
             this.currentAction = null;
         }
 
+        promise.then(function() {
+            debug('finished handler promises for ' + actionName);
+        });
+
         return promise;
     };
 
-    /**
-     * Returns a raw data object representation of the current state of the
-     * dispatcher and all store instances. If the store implements a shouldDehdyrate
-     * function, then it will be called and only dehydrate if the method returns `true`
-     * @method dehydrate
-     * @returns {Object} dehydrated dispatcher data
-     */
-    Dispatcher.prototype.dehydrate = function dehydrate() {
-        var self = this,
-            stores = {};
-        Object.keys(self.storeInstances).forEach(function storeInstancesEach(storeName) {
-            var store = self.storeInstances[storeName];
-            if (!store.dehydrate || (store.shouldDehydrate && !store.shouldDehydrate())) {
-                return;
-            }
-            stores[storeName] = store.dehydrate();
-        });
-        return {
-            stores: stores
-        };
-    };
-
-    /**
-     * Takes a raw data object and rehydrates the dispatcher and store instances
-     * @method rehydrate
-     * @param {Object} dispatcherState raw state typically retrieved from `dehydrate`
-     *      method
-     */
-    Dispatcher.prototype.rehydrate = function rehydrate(dispatcherState) {
-        var self = this;
-        if (dispatcherState.stores) {
-            Object.keys(dispatcherState.stores).forEach(function storeStateEach(storeName) {
-                var state = dispatcherState.stores[storeName],
-                    store = self.getStore(storeName);
-                if (store.rehydrate) {
-                    store.rehydrate(state);
-                }
-            });
-        }
+    Dispatcher.prototype.executeAction = function executeAction(action, payload) {
+        return Promise.resolve(action(this, payload));
     };
 
     /**

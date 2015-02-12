@@ -5,23 +5,21 @@ var Morearty = require('morearty');
 var React = require('react/addons');
 var Router = require('react-router');
 var Link = Router.Link;
+var CategoryStore = require('../stores/category-store.js');
 
 
 var CategoryMenuLevel = React.createClass({
 
-    mixins: [Morearty.Mixin],
-
     render: function() {
 
         var cs = React.addons.classSet;
-
         var path = this.props.path || [];
 
         var items = _.map(this.props.items, function(item) {
 
             var active = item.strId === path[0];
             var classNames = cs({
-                active: active
+                'active': active
             });
 
             return (
@@ -33,7 +31,7 @@ var CategoryMenuLevel = React.createClass({
         });
 
         return (
-            <ul>{items}</ul>
+            <ul className="nav nav-pills">{items}</ul>
         );
 
     }

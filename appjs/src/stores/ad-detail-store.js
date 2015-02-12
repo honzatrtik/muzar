@@ -34,10 +34,18 @@ AdDetailStore.storeName = 'AdDetailStore';
 AdDetailStore.handlers = {
     'ROUTE_CHANGED': function() {
         var self = this;
-        return this.dispatcher.waitFor(RouteStore, function() {
+        return this.dispatcher.waitForPromises(RouteStore, function() {
 
             var store = self.getStore(RouteStore);
             if (store.getRoute() == 'detail') {
+
+                var id = store.getParams().id;
+
+                self.getBinding().atomically()
+                    .set('id', id)
+                    .remove('data')
+                    .commit();
+
                 return load(store.getParams().id).then(function(data) {
                     self.getBinding().set('data', Imm.Map(data.data));
                 }).catch(function(e) {

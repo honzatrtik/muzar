@@ -16,11 +16,12 @@ var CategoryMenu = React.createClass({
         this.observeBinding(this.getStoreBinding(CategoryStore));
         var store = this.getStore(CategoryStore);
 
-
         var items = store.getItems() ? store.getItems().toJS() : [];
+        var path = _.pluck(store.getActivePath(), 'strId');
+
         return (
             <nav>
-                <CategoryMenuLevel items={items} />
+                <CategoryMenuLevel items={items} path={path} />
             </nav>
         );
 
