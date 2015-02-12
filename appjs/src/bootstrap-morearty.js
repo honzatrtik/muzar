@@ -10,10 +10,13 @@ var morearty;
 module.exports = function(refresh) {
 
     if (!morearty || refresh) {
-        var initialState = (typeof window !== 'undefined') ? serializer.unserialize(window.serializedState) : {};
+
+        var isServer = (typeof window === 'undefined');
+        var initialState = isServer ? {} : serializer.unserialize(window.serializedState);
 
         morearty = Morearty.createContext({
-            initialState: initialState
+            initialState: initialState,
+            renderOnce: isServer
         });
 
         debugBinding('Creating context with initial state', morearty.getBinding().toJS());
