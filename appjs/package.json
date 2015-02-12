@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha --compilers js:\"./test-preprocessor.js\"  \"./src/**/tests/*.js\"",
+    "prestart": "gulp browserify",
     "start": "./node_modules/.bin/nodemon ./server.js"
   },
   "jest": {
