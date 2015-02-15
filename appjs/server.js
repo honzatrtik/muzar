@@ -17,7 +17,7 @@ var Router = require('react-router');
 var Morearty = require('morearty');
 var Dispatcher = require('./src/bootstrap-dispatcher.js');
 var HttpError = require('./src/errors/http-error.js');
-var ErrorPage = require('./src/components/error-page.js');
+var ErrorPage = React.createFactory(require('./src/components/error-page.js'));
 
 var routes = require('./src/routes.js');
 
