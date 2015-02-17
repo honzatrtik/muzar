@@ -5,8 +5,11 @@ var browserify = require('browserify');
 var deamdify = require('deamdify');
 var reactify = require('reactify');
 var util = require('gulp-util');
+var less = require('gulp-less');
+var watchLess = require('gulp-watch-less');
 var sourcemaps = require('gulp-sourcemaps');
 var uglify = require('gulp-uglifyjs');
+var plumber = require('gulp-plumber');
 var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
 var watchify = require('watchify');
@@ -19,6 +22,27 @@ var bundlesConfig = [{
     dest: './build/'
 }];
 
+
+var lessConfig = {
+    src: ['./less/all.less'],
+    dest: './build/'
+};
+
+gulp.task('less', function(){
+    gulp.src(lessConfig.src)
+        .pipe(plumber())
+        .pipe(less())
+        .pipe(gulp.dest(lessConfig.dest));
+});
+
+gulp.task('watch-less', function(){
+    watchLess(lessConfig.src, function() {
+        gulp.src(lessConfig.src)
+            .pipe(less())
+            .pipe(gulp.dest(lessConfig.dest));
+    });
+
+});
 
 gulp.task('browserify', function(){
     _.each(bundlesConfig, function(config) {
@@ -37,7 +61,7 @@ gulp.task('watch', function() {
 
 function browserifyShare(config, watch){
 
-    var b = browserify(es6ify.runtime, {
+    var b = browserify({
         cache: {},
         packageCache: {},
         fullPaths: true
@@ -56,8 +80,14 @@ function browserifyShare(config, watch){
         });
     }
 
-    b.transform(reactify);
-    b.transform(es6ify.configure(/^(?!.*node_modules)+.+\.js$/));
+    b.transform(function(filename, options) {
+        options = options || {};
+        options.target = 'es5';
+        options.es6 = true;
+        options.stripTypes = true;
+        return reactify(filename, options);
+
+    });
     b.transform(deamdify);
 
     return bundleShare(b, config);

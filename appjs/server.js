@@ -2,9 +2,25 @@
 
 var debugError = require('debug')('Server error');
 
-require('node-jsx').install({
-    harmony: true
-});
+var ReactTools = require('react-tools');
+var fs = require('fs');
+
+require.extensions['.js'] = function(module, filename) {
+    var src = fs.readFileSync(filename, {
+        encoding: 'utf8'
+    });
+    try {
+        src = ReactTools.transform(src, {
+            es5: true,
+            stripTypes: true,
+            harmony: true
+        });
+    } catch (e) {
+        throw new Error('Error transforming ' + filename + ' to JSX: ' + e.toString());
+    }
+    module._compile(src, filename);
+};
+
 
 var _ = require('lodash');
 var serverInitAction = require('./src/server-init-action.js');
@@ -33,7 +49,7 @@ function responseError(res, e) {
     if (e instanceof HttpError) {
         res.status(e.status);
     } else {
-        res.status(500).end();
+        res.status(500);
     }
 
     res.render('error', {
@@ -42,8 +58,13 @@ function responseError(res, e) {
             message: e.message
         })),
         title: 'Error'
+    }, function(err, html) {
+        if (err) {
+            res.send(err);
+        } else {
+            res.send(html);
+        }
     });
-
 }
 
 app.engine('handlebars', exphbs());
@@ -85,12 +106,12 @@ app.get('*', function(req, res) {
                         return React.renderToString(React.createElement(Handler));
                     });
 
-                    var serializedState = serializer.serialize(morearty.getBinding().get());
-                    res.expose(serializedState, 'serializedState');
-
                     if (_.find(state.routes, { 'name': '404' })) {
                         res.status(404);
                     }
+
+                    var serializedState = serializer.serialize(morearty.getBinding().get());
+                    res.expose(serializedState, 'serializedState');
 
                     res.render('default', {
                         html: html,

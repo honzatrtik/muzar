@@ -6,6 +6,7 @@ var React = require('react/addons');
 var Router = require('react-router');
 var Link = Router.Link;
 var CategoryStore = require('../stores/category-store.js');
+var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
 
 
 var CategoryMenuLevel = React.createClass({
@@ -14,24 +15,30 @@ var CategoryMenuLevel = React.createClass({
 
         var cs = React.addons.classSet;
         var path = this.props.path || [];
+        var self = this;
 
         var items = _.map(this.props.items, function(item) {
 
             var active = item.strId === path[0];
             var classNames = cs({
-                'active': active
+                'is-active': active,
+                'mainMenu-level-item': true
             });
+
+            var expanded = (self.props.expanded || active) && item.children;
 
             return (
                 <li className={classNames} key={item.strId}>
                     <Link to="list" params={{category: item.strId}}>{item.name}</Link>
-                    {item.children ? <CategoryMenuLevel items={item.children} path={active ? path.slice(1) : []}/> : null}
+                    <ReactCSSTransitionGroup component="div" transitionLeave={false} transitionName="mainMenu">
+                        {expanded ? <CategoryMenuLevel items={item.children} path={active ? path.slice(1) : []}/> : null}
+                    </ReactCSSTransitionGroup>
                 </li>
             );
         });
 
         return (
-            <ul className="nav nav-pills">{items}</ul>
+            <ul className="mainMenu-level">{items}</ul>
         );
 
     }

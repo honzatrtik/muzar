@@ -20,7 +20,7 @@ var CategoryMenu = React.createClass({
         var path = _.pluck(store.getActivePath(), 'strId');
 
         return (
-            <nav>
+            <nav className="mainMenu">
                 <CategoryMenuLevel items={items} path={path} />
             </nav>
         );
