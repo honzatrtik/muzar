@@ -38,6 +38,7 @@ gulp.task('less', function(){
 gulp.task('watch-less', function(){
     watchLess(lessConfig.src, function() {
         gulp.src(lessConfig.src)
+            .pipe(plumber())
             .pipe(less())
             .pipe(gulp.dest(lessConfig.dest));
     });
