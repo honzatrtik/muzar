@@ -25,7 +25,7 @@ var List = React.createClass({
         var adStore = this.getStore(AdStore);
 
         var path = categoryStore.getActivePath();
-        var title = _.last(path).name;
+        var title = path.length ? _.last(path).name : 'Všechny inzeráty';
 
         var items = adStore.getItems().map(function(item) {
             item = item.toJS();
@@ -42,7 +42,7 @@ var List = React.createClass({
 
                 <div className="col-xs-12 col-sm-12 col-md-9">
                     <h2>{title}</h2>
-                    <div><CategoryBreadcrumbs path={path}/></div>
+                    {path ? <div><CategoryBreadcrumbs path={path}/></div> : null}
                     {items.toJS()}
                 </div>
 

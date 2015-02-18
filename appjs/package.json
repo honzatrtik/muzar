@@ -6,7 +6,8 @@
   "scripts": {
     "test": "mocha --compilers js:\"./test-preprocessor.js\"  \"./src/**/tests/*.js\"",
     "start": "./node_modules/.bin/nodemon ./server.js",
-    "prestart": "gulp less"
+    "prestart": "gulp less",
+    "precommit": ["test"]
   },
   "jest": {
     "scriptPreprocessor": "./jest-preprocessor.js",
@@ -42,6 +43,7 @@
     "mocha": "^2.1.0",
     "node-jsx": "^0.12.4",
     "nodemon": "^1.3.6",
+    "pre-commit": "^1.0.4",
     "raml-mocker-server": "^0.1.1",
     "react-tools": "^0.12",
     "reactify": "^1.0.0",

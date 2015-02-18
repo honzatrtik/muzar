@@ -100,6 +100,9 @@ CategoryStore.handlers = {
                 }
                 self.getBinding().set('active', category);
             }
+            if (store.getRoute() == 'listAll' ) {
+                self.getBinding().set('active', null);
+            }
         });
     }
 };

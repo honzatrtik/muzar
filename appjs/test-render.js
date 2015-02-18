@@ -39,7 +39,7 @@ module.exports = function render(component, links, props) {
     TestLocation.history = ['/test'];
     Router.run(routes, TestLocation, function(Handler) {
 
-        var mainComponent = React.render(React.createFactory(Handler)(props), document.body);
+        var mainComponent = React.render(React.createFactory(Handler)(props), document.createElement('div'));
 
         // If nesting components, we take first component of type (we presume breadth first search)
         renderedComponent = TestUtils.scryRenderedComponentsWithType(mainComponent, component)[0];

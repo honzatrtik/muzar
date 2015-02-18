@@ -90,7 +90,13 @@ app.get('*', function(req, res) {
 
     var router = Router.create({
         routes: routes,
-        location: req.url
+        location: req.url,
+        onAbort: function(reason, location) {
+            // Server redirect!
+            if (reason.to) {
+                res.redirect(this.makePath(reason.to, reason.params, reason.query));
+            }
+        }
     });
 
     try {

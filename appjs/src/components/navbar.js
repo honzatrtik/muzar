@@ -2,6 +2,8 @@
 
 var React = require('react');
 var Suggester = require('./suggester');
+var Router = require('react-router');
+var Link = Router.Link;
 
 
 // Move!
@@ -41,17 +43,12 @@ var Navbar = React.createClass({
                             <span className="icon-bar" />
                             <span className="icon-bar" />
                         </button>
-                        <a className="navbar-brand" href="#">Muzar</a>
+                        <Link className="navbar-brand" to="home">Muzar</Link>
                     </div>
                     <div className="collapse navbar-collapse">
                         <ul className="nav navbar-nav">
+                            <Suggester suggestionsFunction={getSuggestions} />
                             <form className="navbar-form navbar-left" role="search">
-                                <div className="form-group">
-                                    <Suggester suggestionsFunction={getSuggestions} />
-                                </div>
-                                <button type="submit" className="btn btn-default"><span className="glyphicon glyphicon-search" />
-                                    Vyhledat
-                                </button>
                             </form>
                             <form className="navbar-btn navbar-right">
                                 <a className="btn btn-default" href="#"><span className="glyphicon glyphicon-plus" />
