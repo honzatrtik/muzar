@@ -1,0 +1,27 @@
+.suggester {
+}
+
+.suggester-suggestionsBox {
+	position: absolute;
+	background: #fff;
+	width: 100%;
+	padding: 5px;
+	border: 1px solid #999;
+}
+
+.suggester-suggestionsBox-item {
+	> a {
+		display: block;
+		padding: 5px;
+	}
+
+	> a:hover {
+		text-decoration: none;
+	}
+
+	&.is-active > a {
+		background: #0b97c4;
+		color: #fff;
+	}
+}
+

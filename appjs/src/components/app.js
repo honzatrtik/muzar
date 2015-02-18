@@ -8,6 +8,7 @@ var Link = Router.Link;
 var Morearty = require('morearty');
 var DispatcherMixin = require('../dispatcher-mixin.js');
 var CategoryMenu = require('./category-menu.js');
+var Navbar = require('./navbar.js');
 
 var morearty = require('../bootstrap-morearty.js')();
 
@@ -22,14 +23,16 @@ var App = React.createClass({
     render: function() {
 
         return (
-            <div className="container">
 
-               <div className="row">
-                   <h1>Muzar</h1>
-               </div>
+            <div id="wrap">
 
-                <Router.RouteHandler/>
+                <Navbar />
 
+                <div className="container">
+
+                    <Router.RouteHandler/>
+
+                </div>
             </div>
 
         );

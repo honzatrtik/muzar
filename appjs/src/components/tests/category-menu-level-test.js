@@ -1,3 +1,8 @@
+"use strict";
+
+// This must be first!
+var render = require('../../../test-render.js');
+
 var React = require('react/addons');
 var TestUtils = React.addons.TestUtils;
 var assert = require('assert');
@@ -34,24 +39,20 @@ var items = [
 
 describe('CategoryMenuLevel', function() {
 
-    beforeEach(function(done){
-        this.timeout(10000);
-        require('./../../../test-dom.js')();
-        done();
-    });
-
 
     it('renders correct number of ul & li', function() {
 
         var CategoryMenuLevel = require('../category-menu-level.js');
 
-        var menu = React.render(<CategoryMenuLevel items={items}/>, document.body);
+        var menu = render(CategoryMenuLevel, ['list', 'detail'], {
+            items: items
+        });
 
-        var uls = TestUtils.scryRenderedDOMComponentsWithTag(menu, 'ul');
-        var lis = TestUtils.scryRenderedDOMComponentsWithTag(menu, 'li');
+        var uls = TestUtils.scryRenderedDOMComponentsWithClass(menu, 'mainMenu-level');
+        var lis = TestUtils.scryRenderedDOMComponentsWithClass(menu, 'mainMenu-level-item');
 
-        assert.equal(uls.length, 2);
-        assert.equal(lis.length, 5);
+        assert.equal(uls.length, 1);
+        assert.equal(lis.length, 2);
     });
 
 
@@ -59,26 +60,27 @@ describe('CategoryMenuLevel', function() {
 
         var CategoryMenuLevel = require('../category-menu-level.js');
 
-        var menu = React.render(
-            <CategoryMenuLevel items={items} path={['kytarove-nastroje', 'akusticke-a-klasicke-kytary']}/>,
-            document.body
-        );
+        var menu = render(CategoryMenuLevel, ['list', 'detail'], {
+            items: items,
+            path: ['kytarove-nastroje', 'akusticke-a-klasicke-kytary']
+        });
 
-        var active = TestUtils.scryRenderedDOMComponentsWithClass(menu, 'active');
+        var active = TestUtils.scryRenderedDOMComponentsWithClass(menu, 'is-active');
         assert.equal(active.length, 2);
     });
+
 
 
     it('renders no active trail if path param is not passed', function() {
 
         var CategoryMenuLevel = require('../category-menu-level.js');
 
-        var menu = React.render(
-            <CategoryMenuLevel items={items} path={[]}/>,
-            document.body
-        );
+        var menu = render(CategoryMenuLevel, ['list', 'detail'], {
+            items: items,
+            path: []
+        });
 
-        var active = TestUtils.scryRenderedDOMComponentsWithClass(menu, 'active');
+        var active = TestUtils.scryRenderedDOMComponentsWithClass(menu, 'is-active');
         assert.equal(active.length, 0);
     });
 });
