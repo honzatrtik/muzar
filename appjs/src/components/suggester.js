@@ -125,6 +125,10 @@ var Suggester = React.createClass({
         event.stopPropagation();
     },
 
+    handleButtonClick: function(event) {
+        event.stopPropagation();
+    },
+
     handleInputFocus: function(event) {
         this.setState({
             show: true,
@@ -251,7 +255,8 @@ var Suggester = React.createClass({
                 <div className="form-group">
                     <input ref="input" onClick={this.handleInputClick} onFocus={this.handleInputFocus} onBlur={this.handleInputBlur} onKeyDown={this.handleInputKeyDown} autoComplete="off" type="search" name="query" className="form-control suggester-input" value={query} onChange={this.handleInputChange} />
                     {show ? box : null}
-                    <button type="submit" className="btn btn-default suggester-button"><span className="glyphicon glyphicon-search" />
+                    <button onClick={this.handleButtonClick} type="submit" className="btn btn-default suggester-button">
+                        <span className="glyphicon glyphicon-search" />
                         Vyhledat
                     </button>
                 </div>
