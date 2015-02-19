@@ -6,7 +6,7 @@ var render = require('../../../test-render.js');
 var React = require('react/addons');
 var TestUtils = React.addons.TestUtils;
 var assert = require('assert');
-var Promise = require('es6-promise').Promise;
+var Promise = require('../../promise.js');
 
 
 var suggestionsFunction = function(query) {

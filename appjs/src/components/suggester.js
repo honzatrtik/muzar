@@ -1,8 +1,9 @@
 "use strict";
 
 var _ = require('lodash');
+var event = require('dom-event');
 var React = require('react/addons');
-var Promise = require('es6-promise').Promise;
+var Promise = require('../promise.js');
 var Router = require('react-router');
 var Link = Router.Link;
 var keyCodes = require('../utils/event-key-codes.js');
@@ -22,8 +23,50 @@ var Suggester = React.createClass({
             query: '',
             ads: [],
             categories: [],
-            activeTabIndex: 0
+            activeTabIndex: 0,
+            show: false,
+            loading: false
         }
+    },
+
+    closeSuggestionBox: function() {
+        this.setState({
+            show: false,
+            query: '',
+            activeTabIndex: 0
+        });
+    },
+
+    bindBodyClickListener: function() {
+        event.on(document.body, 'click', this.closeSuggestionBox);
+    },
+
+    unbindBodyClickListener: function() {
+        event.off(document.body, 'click', this.closeSuggestionBox);
+    },
+
+    componentDidMount: function() {
+        this.bindBodyClickListener();
+    },
+
+    componentWillUnmount: function() {
+        this.unbindBodyClickListener();
+    },
+
+    loadSuggestions: function(query) {
+
+        this.setState({
+            loading: true
+        });
+
+        var self = this;
+        Promise.resolve(this.props.suggestionsFunction.call(null, query)).then(function(data) {
+            self.setState({
+                ads: data.ads,
+                categories: data.categories,
+                loading: false
+            });
+        });
     },
 
     handleSubmit: function(event) {
@@ -33,7 +76,7 @@ var Suggester = React.createClass({
         var query = this.state.query;
 
         this.setState({
-            query: '',
+            show: false,
             activeTabIndex: 0
         }, function() {
             self.transitionTo('search', {}, {
@@ -45,7 +88,7 @@ var Suggester = React.createClass({
 
     handleSuggestionsBoxClick: function() {
         this.setState({
-            query: '',
+            show: false,
             activeTabIndex: 0
         });
     },
@@ -56,29 +99,40 @@ var Suggester = React.createClass({
         var query =  event.target.value;
         var state = {
             query: query,
+            show: true,
             activeTabIndex: 0
         };
 
         if (query) {
-            Promise.resolve(this.props.suggestionsFunction.call(null, query)).then(function(data) {
-                self.setState({
-                    ads: data.ads,
-                    categories: data.categories
-                });
-            });
+            this.loadSuggestions(query);
         }
 
         this.setState(state);
 
     },
 
-    handleItemMouseOver: function(index, event) {
+    handleItemFocus: function(index, event) {
         this.setState({
             activeTabIndex: index
         });
     },
 
-    handleKeyDown: function(event) {
+    handleInputBlur: function(event) {
+    },
+
+
+    handleInputClick: function(event) {
+        event.stopPropagation();
+    },
+
+    handleInputFocus: function(event) {
+        this.setState({
+            show: true,
+            activeTabIndex: 0
+        });
+    },
+
+    handleInputKeyDown: function(event) {
 
         var activeTabIndex = this.state.activeTabIndex;
         var length = this.tabIndices.length;
@@ -105,10 +159,9 @@ var Suggester = React.createClass({
 
         switch (event.keyCode) {
             case keyCodes.ESC:
-                this.setState({
-                    activeTabIndex: 0,
-                    query: ''
-                });
+                event.preventDefault();
+                this.refs['input'].getDOMNode().blur();
+                this.closeSuggestionBox(); // Close suggestion box
                 break;
 
             case keyCodes.ENTER:
@@ -130,8 +183,8 @@ var Suggester = React.createClass({
             'is-active': index === this.state.activeTabIndex
         });
         return (
-            <li onMouseOver={this.handleItemMouseOver.bind(this, index)} className={classNames} key={'query:'+query}>
-                <Link ref={index} tabIndex={index} onClick={this.handleSuggestionsBoxClick} to="search" query={{query: query}}>{query}</Link>
+            <li onMouseOver={this.handleItemFocus.bind(this, index)} className={classNames} key={'query:'+query}>
+                <Link onFocus={this.handleItemFocus.bind(this, index)} ref={index} tabIndex={index} onClick={this.handleSuggestionsBoxClick} to="search" query={{query: query}}>{query}</Link>
             </li>
         );
     },
@@ -144,7 +197,7 @@ var Suggester = React.createClass({
             'is-active': index === this.state.activeTabIndex
         });
         return (
-            <li onMouseOver={this.handleItemMouseOver.bind(this, index)} className={classNames} key={'ad:'+ad.id}>
+            <li onMouseOver={this.handleItemFocus.bind(this, index)} className={classNames} key={'ad:'+ad.id}>
                 <Link ref={index} tabIndex={index} onClick={this.handleSuggestionsBoxClick} to="detail" params={{id: ad.id}}>{ad.name}</Link>
             </li>
         );
@@ -159,7 +212,7 @@ var Suggester = React.createClass({
         });
 
         return (
-            <li onMouseOver={this.handleItemMouseOver.bind(this, index)} className={classNames} key={'category:'+category.strId}>
+            <li onMouseOver={this.handleItemFocus.bind(this, index)} className={classNames} key={'category:'+category.strId}>
                 <Link ref={index} tabIndex={index} onClick={this.handleSuggestionsBoxClick} to="list" params={{category: category.strId}}>{category.path.join(' > ')}</Link>
             </li>
         );
@@ -169,7 +222,9 @@ var Suggester = React.createClass({
 
         this.tabIndices = [];
 
-        if (this.state.query) {
+        var show = this.state.query && this.state.show;
+
+        if (show) {
             var box = (
                 <div className="suggester-suggestionsBox">
                     <small>Hledat všude</small>
@@ -189,12 +244,13 @@ var Suggester = React.createClass({
         }
 
         var formAction = this.makeHref('search');
+        var query = this.state.query;
 
         return (
             <form onSubmit={this.handleSubmit} className="suggester navbar-form navbar-left" method="get" action={formAction}>
                 <div className="form-group">
-                    <input onKeyDown={this.handleKeyDown} autoComplete="off" type="search" name="query" className="form-control suggester-input" value={this.state.query} onChange={this.handleInputChange} />
-                    {this.state.query ? box : null}
+                    <input ref="input" onClick={this.handleInputClick} onFocus={this.handleInputFocus} onBlur={this.handleInputBlur} onKeyDown={this.handleInputKeyDown} autoComplete="off" type="search" name="query" className="form-control suggester-input" value={query} onChange={this.handleInputChange} />
+                    {show ? box : null}
                     <button type="submit" className="btn btn-default suggester-button"><span className="glyphicon glyphicon-search" />
                         Vyhledat
                     </button>

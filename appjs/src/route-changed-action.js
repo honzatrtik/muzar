@@ -1,7 +1,7 @@
 "use strict";
 
 var _ = require('lodash');
-var Promise = require('es6-promise').Promise;
+var Promise = require('./promise.js');
 var RouteStore = require('./stores/route-store.js');
 
 module.exports = function routeChangedAction(dispatcher, state) {

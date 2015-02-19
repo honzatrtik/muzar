@@ -2,7 +2,7 @@
 
 var BaseStore = require('./base-store.js');
 var CategoryStore = require('./category-store.js');
-var Promise = require('es6-promise').Promise;
+var Promise = require('../promise.js');
 var superagent = require('../superagent.js');
 var HttpError = require('../errors/http-error.js');
 var Imm = require('immutable');

@@ -1,7 +1,7 @@
 "use strict";
 
 var debug = require('debug')('Dispatcher test');
-var Promise = require('es6-promise').Promise;
+var Promise = require('../../promise.js');
 var assert = require('assert');
 
 var Store = function(dispatcher) {
@@ -31,7 +31,6 @@ describe('Dispatcher', function() {
                     setTimeout(function() {
                         self.after = 'after';
                         resolve();
-                        done();
                     }, 10);
                 });
             }
@@ -48,7 +47,8 @@ describe('Dispatcher', function() {
         assert(promise.then instanceof Function);
 
         promise.then(function() {
-            expect(dispatcher.getStore(Store).after).toEqual('after');
+            assert.equal(dispatcher.getStore(Store).after, 'after');
+            done();
         });
 
     });

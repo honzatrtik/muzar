@@ -26,7 +26,7 @@ var _ = require('lodash');
 var serverInitAction = require('./src/server-init-action.js');
 var routeChangedAction = require('./src/route-changed-action.js');
 
-var Promise = require('es6-promise').Promise;
+var Promise = require('./src/promise.js');
 var serializer = require('./src/serializer.js');
 var React = require('react');
 var Router = require('react-router');

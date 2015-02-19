@@ -1,7 +1,7 @@
 "use strict";
 
 var React = require('react');
-var Promise = require('es6-promise').Promise;
+var Promise = require('../promise.js');
 
 var Router = require('react-router');
 var Link = Router.Link;

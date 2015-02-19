@@ -97,6 +97,7 @@ function browserifyShare(config, watch){
 
 function bundleShare(b, config) {
     return b.bundle()
+        .pipe(plumber())
         .on('error', function(e) {
             util.log(util.colors.red('Browserify error:'), e.message);
         })

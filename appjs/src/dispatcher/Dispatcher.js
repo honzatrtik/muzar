@@ -4,7 +4,7 @@
  */
 'use strict';
 
-var Promise = require('es6-promise').Promise;
+var Promise = require('../promise.js');
 
 var Action = require('./Action'),
     DEFAULT = 'default';

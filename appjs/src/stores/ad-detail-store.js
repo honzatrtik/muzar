@@ -1,6 +1,6 @@
 "use strict";
 
-var Promise = require('es6-promise').Promise;
+var Promise = require('../promise.js');
 var superagent = require('../superagent.js');
 var BaseStore = require('./base-store.js');
 var RouteStore = require('./route-store.js');
