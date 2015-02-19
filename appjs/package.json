@@ -6,7 +6,7 @@
   "scripts": {
     "test": "mocha --compilers js:\"./test-preprocessor.js\"  \"./src/**/tests/*.js\"",
     "start": "./node_modules/.bin/nodemon ./server.js",
-    "prestart": "gulp less",
+    "prestart": "gulp less && gulp browserify",
     "precommit": ["test"]
   },
   "jest": {
