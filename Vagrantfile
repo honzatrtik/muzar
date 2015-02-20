@@ -1,3 +1,5 @@
+ENV['VAGRANT_DEFAULT_PROVIDER'] = "docker"
+
 Vagrant.configure("2") do |config|
 
 
@@ -30,31 +32,40 @@ Vagrant.configure("2") do |config|
 	  	v.vm.synced_folder "./docker/mysql", "/docker"
 	end
 
+	config.vm.define "redis" do |v|
+		v.vm.provider "docker" do |d|
+			d.name = "redis"
+			d.image = "tutum/redis"
+			d.ports = ["6379:6379"]
+			d.vagrant_vagrantfile = "./Vagrantfile.proxy"
+			d.env = {
+				'REDIS_PASS='  => '**None**',
+		  	}
+	  	end
+	end
+
 
 	config.vm.define "apache-php" do |v|
 		v.vm.provider "docker" do |d|
 
 			d.name = "apache"
+			d.remains_running = true
 			d.build_dir = "./docker/apache-php"
-			d.build_args = ["--force-rm=false"]
+#			d.build_args = ["--force-rm=false"]
 			d.ports = ["80:80"]
 			d.vagrant_vagrantfile = "./Vagrantfile.proxy"
 			d.link("elasticsearch:elasticsearch")
 			d.link("mysql:mysql")
+			d.link("redis:redis")
 			d.env = {
 				'SYMFONY_ENV'  => 'docker',
 		  	}
-
-			d.cmd = ["php", "/data/app/console", "doctrine:schema:drop", "--force"]
-			d.cmd = ["php", "/data/app/console", "doctrine:schema:update", "--force"]
-			d.cmd = ["php", "/data/app/console", "doctrine:fixtures:load", "--no-interaction"]
-			d.cmd = ["php", "/data/app/console", "fos:elastica:populate"]
-			d.cmd = ["php", "/data/app/console", "cache:clear", "--env=docker", "--no-warmup"]
-			d.cmd = ["/run.sh"]
 
 		end
 
 		v.vm.synced_folder ".", "/data", owner: "www-data", group: "www-data"
 
 	end
+
+
 end  
