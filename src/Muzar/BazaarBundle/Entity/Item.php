@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
 use Muzar\BazaarBundle\Entity\Category;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\ExecutionContextInterface;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 
 /**
@@ -361,7 +361,7 @@ class Item
 
 		if (!$valid)
 		{
-			$context->addViolationAt('price', 'Cena musí být kladné celé číslo nebo dohodou.');
+			$context->buildViolation('Cena musí být kladné celé číslo nebo dohodou.')->atPath('price')->addViolation();
 		}
 	}
 

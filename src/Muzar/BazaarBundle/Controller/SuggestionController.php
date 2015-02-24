@@ -12,36 +12,31 @@ use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @Route(service="muzar_bazaar.controller.category")
+ * @Route(service="muzar_bazaar.controller.suggestion")
  */
-class CategoryController
+class SuggestionController
 {
 
 	/** @var  Router */
 	protected $router;
 
-	/** @var  EntityManager */
-	protected $em;
-
-	/** @var  CategoryService */
-	protected $categoryService;
-
-	public function __construct(Router $router, EntityManager $em, CategoryService $categoryService)
+	public function __construct(Router $router)
 	{
 		$this->router = $router;
-		$this->em = $em;
-		$this->categoryService = $categoryService;
 	}
 
 	/**
-	 * @Route("/categories/tree", name="muzar_bazaar_category_all")
+	 * @Route("/suggestions", name="muzar_bazaar_suggestion_all")
 	 * @Rest\View
 	 */
 	public function allAction(Request $request)
     {
 		return array(
 			'meta' => array(),
-			'data' => $this->categoryService->getTree(),
+			'data' => array(
+				'ads' => array(),
+				'categories' => array(),
+			)
 		);
     }
 

@@ -14,7 +14,7 @@ var CategoryBreadcrumbs = React.createClass({
         var path = this.props.path || [];
         var breadcrumbs = path.map(function(part) {
             return (
-                <Link key={part.strId} to="list" params={{ category: part.strId }}>{part.name}</Link>
+                <Link key={part.str_id} to="list" params={{ category: part.str_id }}>{part.name}</Link>
             );
         });
 

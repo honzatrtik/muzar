@@ -3,9 +3,18 @@ parameters:
 
 services:
 
+
+    muzar_bazaar.watchdog:
+        class: Muzar\BazaarBundle\Watchdog
+        arguments: [@fos_elastica.index, @doctrine.orm.entity_manager, ]
+
     muzar_bazaar.model.entity_listener.category:
         class: Muzar\BazaarBundle\Entity\CategoryListener
         arguments: [@muzar_bazaar.nsm.category]
+
+    muzar_bazaar.model.entity_listener.item_search_query:
+        class: Muzar\BazaarBundle\Entity\ItemSearchQueryListener
+        arguments: [@muzar_bazaar.watchdog]
 
     muzar_bazaar.nsm.category.config:
         class: DoctrineExtensions\NestedSet\Config
@@ -33,6 +42,10 @@ services:
     muzar_bazaar.controller.item:
         class: Muzar\BazaarBundle\Controller\ItemController
         arguments: [@router, @form.factory, @doctrine.orm.entity_manager, @muzar_bazaar.model_service.item, @security.context]
+
+    muzar_bazaar.controller.user:
+        class: Muzar\BazaarBundle\Controller\UserController
+        arguments: [@router, @form.factory, @doctrine.orm.entity_manager, @fos_user.user_manager, @security.context]
 
     muzar_bazaar.controller.item_edit:
         class: Muzar\BazaarBundle\Controller\ItemEditController

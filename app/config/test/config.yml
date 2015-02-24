@@ -1,5 +1,4 @@
 imports:
-    - { resource: '../common/config.yml' }
     - { resource: '../dev/config.yml' }
 
 framework:

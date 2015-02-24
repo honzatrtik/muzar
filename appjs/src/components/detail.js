@@ -25,7 +25,7 @@ var Detail = React.createClass({
         }
 
         ad = ad.toJS();
-        var path = categoryStore.getPath(ad.categories[0].strId);
+        var path = categoryStore.getPath(ad.category.str_id);
 
         return (
             <div>
@@ -41,7 +41,7 @@ var Detail = React.createClass({
                     <div className="col-xs-12 col-sm-8 col-md-8">
 
                         <div className="thumbnail">
-                            <img src="http://lorempixel.com/g/640/480/cats/" alt="Cat" />
+                            <img src={ad.image_url} alt={ad.name} />
                         </div>
                     </div>
 

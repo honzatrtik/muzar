@@ -30,13 +30,13 @@ function parseTree(data) {
 
     // Add root 'node'
     var root = tree.parse({
-        strId: 'root',
+        str_id: 'root',
         children: data
     });
 
     var map = {};
     root.walk(function(node) {
-        map[node.model.strId] = node;
+        map[node.model.str_id] = node;
     });
 
     return map;

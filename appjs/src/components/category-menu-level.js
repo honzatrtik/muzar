@@ -19,7 +19,7 @@ var CategoryMenuLevel = React.createClass({
 
         var items = _.map(this.props.items, function(item) {
 
-            var active = item.strId === path[0];
+            var active = item.str_id === path[0];
             var classNames = cs({
                 'is-active': active,
                 'mainMenu-level-item': true
@@ -28,8 +28,8 @@ var CategoryMenuLevel = React.createClass({
             var expanded = (self.props.expanded || active) && item.children;
 
             return (
-                <li className={classNames} key={item.strId}>
-                    <Link to="list" params={{category: item.strId}}>{item.name}</Link>
+                <li className={classNames} key={item.str_id}>
+                    <Link to="list" params={{category: item.str_id}}>{item.name}</Link>
                     <ReactCSSTransitionGroup component="div" transitionLeave={false} transitionName="mainMenu">
                         {expanded ? <CategoryMenuLevel items={item.children} path={active ? path.slice(1) : []}/> : null}
                     </ReactCSSTransitionGroup>

@@ -8,6 +8,7 @@ var Router = require('react-router');
 var Link = Router.Link;
 var keyCodes = require('../utils/event-key-codes.js');
 var cs = React.addons.classSet;
+var Imm = require('immutable');
 
 
 var Suggester = React.createClass({
@@ -21,8 +22,9 @@ var Suggester = React.createClass({
     getInitialState: function() {
         return {
             query: '',
-            ads: [],
-            categories: [],
+            ads: Imm.List(),
+            categories: Imm.List(),
+            queries: Imm.List(),
             activeTabIndex: 0,
             show: false,
             loading: false
@@ -62,8 +64,9 @@ var Suggester = React.createClass({
         var self = this;
         Promise.resolve(this.props.suggestionsFunction.call(null, query)).then(function(data) {
             self.setState({
-                ads: data.ads,
-                categories: data.categories,
+                queries: Imm.List(data.queries || []),
+                ads: Imm.List(data.ads || []),
+                categories: Imm.List(data.categories || []),
                 loading: false
             });
         });
@@ -216,10 +219,53 @@ var Suggester = React.createClass({
         });
 
         return (
-            <li onMouseOver={this.handleItemFocus.bind(this, index)} className={classNames} key={'category:'+category.strId}>
-                <Link ref={index} tabIndex={index} onClick={this.handleSuggestionsBoxClick} to="list" params={{category: category.strId}}>{category.path.join(' > ')}</Link>
+            <li onMouseOver={this.handleItemFocus.bind(this, index)} className={classNames} key={'category:'+category.str_id}>
+                <Link ref={index} tabIndex={index} onClick={this.handleSuggestionsBoxClick} to="list" params={{category: category.str_id}}>{category.path.join(' > ')}</Link>
             </li>
         );
+    },
+
+
+    renderCategories: function() {
+        if (this.state.categories.size) {
+            return (
+                <div>
+                    <small>Nalezeny kategorie</small>
+                    <ul className="suggester-suggestionsBox-group">
+                        {this.state.categories.map(this.renderCategoryItem).toJS()}
+                    </ul>
+                </div>
+            );
+        } else {
+            return null;
+        }
+    },
+
+    renderQueries: function() {
+        var queries = this.state.queries.push(this.state.query);
+        return (
+            <div>
+                <small>Hledat</small>
+                <ul className="suggester-suggestionsBox-group">
+                    {queries.map(this.renderQueryItem).toJS()}
+                </ul>
+            </div>
+        );
+    },
+
+    renderAds: function() {
+        if (this.state.ads.size) {
+            return (
+                <div>
+                    <small>Nalezeno v inzerátech</small>
+                    <ul className="suggester-suggestionsBox-group">
+                        {this.state.ads.map(this.renderAdItem).toJS()}
+                    </ul>
+                </div>
+            );
+        } else {
+            return null;
+        }
     },
 
     render: function() {
@@ -231,18 +277,9 @@ var Suggester = React.createClass({
         if (show) {
             var box = (
                 <div className="suggester-suggestionsBox">
-                    <small>Hledat všude</small>
-                    <ul className="suggester-suggestionsBox-group">
-                        {this.renderQueryItem(this.state.query)}
-                    </ul>
-                    <small>Nalezeno v inzerátech</small>
-                    <ul className="suggester-suggestionsBox-group">
-                        {this.state.ads.map(this.renderAdItem)}
-                    </ul>
-                    <small>Nalezeny kategorie</small>
-                    <ul className="suggester-suggestionsBox-group">
-                        {this.state.categories.map(this.renderCategoryItem)}
-                    </ul>
+                    {this.renderQueries()}
+                    {this.renderCategories()}
+                    {this.renderAds()}
                 </div>
             );
         }

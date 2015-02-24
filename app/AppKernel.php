@@ -28,7 +28,6 @@ class AppKernel extends Kernel
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test', 'docker'))) {
-            $bundles[] = new Acme\DemoBundle\AcmeDemoBundle();
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
@@ -41,5 +40,19 @@ class AppKernel extends Kernel
 	public function registerContainerConfiguration(LoaderInterface $loader)
 	{
 		$loader->load(__DIR__.'/config/'.$this->getEnvironment().'/config.yml');
+	}
+
+	public function getCacheDir() {
+//		if (in_array($this->getEnvironment(), array('docker'))) {
+//			return sprintf('/dev/shm/%s/cache/%s', $this->getName(),  $this->getEnvironment());
+//		}
+		return parent::getCacheDir();
+	}
+
+	public function getLogDir() {
+//		if (in_array($this->getEnvironment(), array('docker'))) {
+//			return sprintf('/dev/shm/%s/logs/%s', $this->getName(),  $this->getEnvironment());
+//		}
+		return parent::getLogDir();
 	}
 }

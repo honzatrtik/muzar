@@ -16,9 +16,9 @@ use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="item_search_query")
+ * @ORM\Table(name="item_search_query", indexes={@ORM\Index(name="item_search_query_user_id_hash_idx",columns={"user_id","hash"})})
  * @ORM\HasLifecycleCallbacks
- *
+ * @ORM\EntityListeners({"Muzar\BazaarBundle\Entity\ItemSearchQueryListener"})
  * @JMS\ExclusionPolicy("all")
  */
 class ItemSearchQuery
@@ -50,6 +50,13 @@ class ItemSearchQuery
 	 * @JMS\Expose()
 	 */
 	protected $priceTo;
+
+	/**
+	 * @ORM\Column(type="string")
+	 * @JMS\Expose()
+	 */
+	protected $hash;
+
 
 	/**
 	 * @var User
@@ -163,6 +170,33 @@ class ItemSearchQuery
 		return $this->user;
 	}
 
+	/**
+	 * @return mixed
+	 */
+	public function getHash()
+	{
+		return $this->hash;
+	}
+
+	/**
+	 * @param mixed $hash
+	 */
+	public function setHash($hash)
+	{
+		$this->hash = $hash;
+		return $this;
+	}
+
+
+	/**
+	 * Vypocita checksum query
+	 * @return string
+	 */
+	public function createHash()
+	{
+		return sha1(json_encode($this->getElasticaItemQuery()->toArray()));
+	}
+
 
 	public function isFilled()
 	{
@@ -183,4 +217,10 @@ class ItemSearchQuery
 		return new ItemQuery($this);
 	}
 
+
+	/** @ORM\PrePersist */
+	public function createHashOnPrePersist()
+	{
+		$this->setHash($this->createHash());
+	}
 }

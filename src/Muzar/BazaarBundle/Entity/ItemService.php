@@ -17,7 +17,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ItemService 
 {
-	const DEFAULT_MAX_RESULTS = 60;
+	const DEFAULT_MAX_RESULTS = 27;
 	const DEFAULT_CATEGORY_STR_ID = CategoryService::DEFAULT_CATEGORY_STR_ID;
 
 	/** @var EntityManager */
@@ -71,6 +71,9 @@ class ItemService
 		$builder
 			->setMaxResults($maxResults)
 			->addOrderBy('i.id', 'DESC');
+
+		$query = $builder->getQuery();
+		$query->useResultCache(true, 30);
 
 		return $builder->getQuery()->getResult();
 	}

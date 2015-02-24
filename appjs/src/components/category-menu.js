@@ -20,7 +20,7 @@ var CategoryMenu = React.createClass({
         var store = this.getStore(CategoryStore);
 
         var items = store.getItems() ? store.getItems().toJS() : [];
-        var path = _.pluck(store.getActivePath(), 'strId');
+        var path = _.pluck(store.getActivePath(), 'str_id');
 
         var classNames = cs({
             'is-active': !path.length,

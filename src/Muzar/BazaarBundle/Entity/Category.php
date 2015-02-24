@@ -69,7 +69,6 @@ class Category implements Node
 
 	/**
 	 * @var Category[]
-	 * @JMS\Expose()
 	 */
 	private $ancestors;
 
@@ -139,6 +138,7 @@ class Category implements Node
 	}
 
 	/**
+	 * @JMS\VirtualProperty
 	 * @return string
 	 */
 	public function getPath()

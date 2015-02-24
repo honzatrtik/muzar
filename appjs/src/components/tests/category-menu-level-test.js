@@ -9,29 +9,29 @@ var assert = require('assert');
 
 var items = [
     {
-        "strId": "kytarove-nastroje",
+        "str_id": "kytarove-nastroje",
         "name": "Kytarové nastroje",
         "newSince": 10,
         "children": [
             {
-                "strId": "elektricke-kytary",
+                "str_id": "elektricke-kytary",
                 "name": "Elektrické kytary",
                 "newSince": 15
             },
             {
-                "strId": "kytarove-aparaty",
+                "str_id": "kytarove-aparaty",
                 "name": "Kytarové aparáty",
                 "newSince": 1
             },
             {
-                "strId": "akusticke-a-klasicke-kytary",
+                "str_id": "akusticke-a-klasicke-kytary",
                 "name": "Akustické a klasické kytary",
                 "newSince": 2
             }
         ]
     },
     {
-        "strId": "bici-nastroje",
+        "str_id": "bici-nastroje",
         "name": "Bicí nastroje",
         "newSince": 28
     }

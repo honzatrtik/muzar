@@ -69,7 +69,10 @@ class ItemController
 	 */
 	public function getAction(Request $request, $id)
 	{
-		return $this->itemService->getItem($id);
+		return array(
+			'data' => $this->itemService->getItem($id),
+			'meta' => new \stdClass(),
+		);
 	}
 
 	/**

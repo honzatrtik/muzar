@@ -108,7 +108,7 @@ class CategoryService
 
 			$data[] = array(
 				'id' => $category->getId(),
-				'strId' => $category->getStrId(),
+				'str_id' => $category->getStrId(),
 				'name' => $category->getName(),
 				'children' => $this->createBranch($childWrapper),
 			);

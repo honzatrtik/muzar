@@ -7,6 +7,7 @@ use DoctrineExtensions\NestedSet\Manager;
 use Muzar\BazaarBundle\Entity\Item;
 use Muzar\BazaarBundle\Entity\ItemService;
 use Muzar\BazaarBundle\Tests\ApiTestCase;
+use Symfony\Component\Validator\Validation;
 
 
 class ItemTest extends ApiTestCase
@@ -27,4 +28,14 @@ class ItemTest extends ApiTestCase
 		$item = new Item();
 		$item->setStatus('badstatus');
     }
+
+
+	public function testValidatePrice()
+	{
+		$item = new Item();
+		$validator = $this->getKernel()->getContainer()->get('validator');
+
+		$errors = $validator->validate($item);
+		$this->assertNotEmpty($errors);
+	}
 }

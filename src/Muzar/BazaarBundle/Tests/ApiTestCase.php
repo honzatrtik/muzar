@@ -25,17 +25,25 @@ class ApiTestCase extends WebTestCase
 		return static::$kernel;
 	}
 
+	/**
+	 * Proxy for container service getter
+	 * @param $service
+	 * @return object
+	 */
+	protected function get($service)
+	{
+		return $this->getKernel()->getContainer()->get($service);
+	}
+
 	protected function setUp()
 	{
 
 		parent::setUp();
 
-		static::bootKernel(array(
-			'debug' => FALSE,
-		));
+		static::bootKernel(array());
 
 		/** @var EntityManager $em */
-		$em = $this->getKernel()->getContainer()->get('doctrine')->getManager();
+		$em = $this->get('doctrine')->getManager();
 
 		$em->flush();
         $em->clear();
@@ -62,10 +70,10 @@ class ApiTestCase extends WebTestCase
 	protected function generateWsseHeader($username)
 	{
 		/** @var PasswordEncoderInterface $encoder */
-		$encoder = $this->getKernel()->getContainer()->get('escape_wsse_authentication.encoder');
+		$encoder = $this->get('escape_wsse_authentication.encoder');
 
 		/** @var UserManager $userManager */
-		$userManager = $this->getKernel()->getContainer()->get('fos_user.user_manager');
+		$userManager = $this->get('fos_user.user_manager');
 
 		$user = $userManager->findUserByUsernameOrEmail($username);
 

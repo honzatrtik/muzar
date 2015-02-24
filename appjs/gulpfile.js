@@ -99,7 +99,7 @@ function bundleShare(b, config) {
     return b.bundle()
         .on('error', function(e) {
             util.log(util.colors.red('Browserify error:'), e.message);
-            this.end();
+            this.end(); // http://latviancoder.com/story/error-handling-browserify-gulp
         })
         .pipe(source(config.name))
         //.pipe(streamify(uglify()))

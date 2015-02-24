@@ -16,6 +16,9 @@ var DispatcherMixin = {
         return { dispatcher: this.context.dispatcher };
     },
 
+    executeAction: function() {
+        return this.context.dispatcher.executeAction.apply(this.context.dispatcher, arguments);
+    },
 
     getStore: function(store) {
         return this.context.dispatcher.getStore(store);

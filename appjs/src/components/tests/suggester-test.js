@@ -11,14 +11,19 @@ var Promise = require('../../promise.js');
 
 var suggestionsFunction = function(query) {
     return {
+        "queries": [
+            "akusticka basa",
+            "akusticka pena",
+            "akustika"
+        ],
         "categories": [
             {
-                "strId": "akusticke-a-klasicke-kytary",
+                "str_id": "akusticke-a-klasicke-kytary",
                 "name": "Akustické a klasické kytary",
                 "path": ["Kytary", "Akustické a klasické kytary"]
             },
             {
-                "strId": "akusticke-kontrabasy",
+                "str_id": "akusticke-kontrabasy",
                 "name": "Akustické a kontrabasy",
                 "path": ["Baskytary", "Akustické a kontrabasy"]
             }
@@ -76,7 +81,7 @@ describe('Suggester', function() {
             assert.equal(box.length, 1);
 
             var items = TestUtils.scryRenderedDOMComponentsWithClass(suggester, 'suggester-suggestionsBox-item');
-            assert.equal(items.length, 5);
+            assert.equal(items.length, 8);
 
             done();
         }, 1000)

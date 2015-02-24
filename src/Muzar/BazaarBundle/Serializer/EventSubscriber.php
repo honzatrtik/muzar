@@ -43,8 +43,11 @@ class EventSubscriber implements EventSubscriberInterface
 
 		/** @var Item $item */
 		$item = $event->getObject();
-		$link = $this->router->generate('muzar_bazaar_item_get', array('id' => $item->getId()), Router::ABSOLUTE_URL);
-		$event->getVisitor()->addData('link', $link);
+		if ($item->getId())
+		{
+			$link = $this->router->generate('muzar_bazaar_item_get', array('id' => $item->getId()), Router::ABSOLUTE_URL);
+			$event->getVisitor()->addData('link', $link);
+		}
 
 	}
 } 

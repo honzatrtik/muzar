@@ -156,6 +156,9 @@ fos_elastica:
                         name:
                             boost: 5
                             analyzer: my_czech
+                        path:
+                            boost: 3
+                            analyzer: my_czech
                     persistence:
                         driver: orm
                         model: Muzar\BazaarBundle\Entity\Category

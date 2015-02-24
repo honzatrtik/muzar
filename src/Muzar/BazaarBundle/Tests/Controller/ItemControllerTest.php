@@ -14,17 +14,6 @@ class ItemControllerTest extends ApiTestCase
 		$this->runCommandDropCreateFixtures();
 	}
 
-	public function testTest()
-	{
-		$i = 5;
-		while($i--)
-		{
-			$this->runCommandDropCreateFixtures();
-			$this->printMemoryUsage();
-		}
-	}
-
-
 	public function testAll()
     {
 		$response = $this->request('GET', '/api/ads');

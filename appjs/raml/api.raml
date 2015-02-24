@@ -21,7 +21,7 @@ version: 0.1
               {
                 "meta": {
                   "params": {
-                    "limit": 6
+                    "limit": 10
                   },
                   "nextLink": "/ad?startId=4",
                   "total": 128
@@ -46,7 +46,88 @@ version: 0.1
                     "description": "",
                     "created": "2013-12-12 12:45:30",
                     "url": "/ads/2"
+                  },
+                  {
+                    "id": 3,
+                    "name": "Fender Telecaster Mexico",
+                    "image_url": "http://lorempixel.com/300/200",
+                    "district": "Olomoucký kraj",
+                    "price": 13000,
+                    "description": "",
+                    "created": "2013-12-12 12:45:30",
+                    "url": "/ads/1"
+                  },
+                  {
+                    "id": 4,
+                    "name": "Fender Precision Bass",
+                    "image_url": "http://lorempixel.com/300/200",
+                    "district": "Královehradecký kraj",
+                    "price": 20000,
+                    "description": "",
+                    "created": "2013-12-12 12:45:30",
+                    "url": "/ads/2"
+                  },
+                  {
+                    "id": 5,
+                    "name": "Fender Telecaster Mexico",
+                    "image_url": "http://lorempixel.com/300/200",
+                    "district": "Olomoucký kraj",
+                    "price": 13000,
+                    "description": "",
+                    "created": "2013-12-12 12:45:30",
+                    "url": "/ads/1"
+                  },
+                  {
+                    "id": 6,
+                    "name": "Fender Precision Bass",
+                    "image_url": "http://lorempixel.com/300/200",
+                    "district": "Královehradecký kraj",
+                    "price": 20000,
+                    "description": "",
+                    "created": "2013-12-12 12:45:30",
+                    "url": "/ads/2"
+                  },
+                  {
+                    "id": 7,
+                    "name": "Fender Telecaster Mexico",
+                    "image_url": "http://lorempixel.com/300/200",
+                    "district": "Olomoucký kraj",
+                    "price": 13000,
+                    "description": "",
+                    "created": "2013-12-12 12:45:30",
+                    "url": "/ads/1"
+                  },
+                  {
+                    "id": 8,
+                    "name": "Fender Precision Bass",
+                    "image_url": "http://lorempixel.com/300/200",
+                    "district": "Královehradecký kraj",
+                    "price": 20000,
+                    "description": "",
+                    "created": "2013-12-12 12:45:30",
+                    "url": "/ads/2"
+                  },
+                  {
+                    "id": 9,
+                    "name": "Fender Telecaster Mexico",
+                    "image_url": "http://lorempixel.com/300/200",
+                    "district": "Olomoucký kraj",
+                    "price": 13000,
+                    "description": "",
+                    "created": "2013-12-12 12:45:30",
+                    "url": "/ads/1"
+                  },
+                  {
+                    "id": 10,
+                    "name": "Fender Precision Bass",
+                    "image_url": "http://lorempixel.com/300/200",
+                    "district": "Královehradecký kraj",
+                    "price": 20000,
+                    "description": "",
+                    "created": "2013-12-12 12:45:30",
+                    "url": "/ads/2"
                   }
+
                 ]
               }
   /{id}:
@@ -76,7 +157,7 @@ version: 0.1
                     "categories": [
                       {
                         "id": 7,
-                        "strId": "akusticke-a-klasicke-kytary",
+                        "str_id": "akusticke-a-klasicke-kytary",
                         "name": "Akustické a klasické kytary"
                       }
                     ],
@@ -106,14 +187,19 @@ version: 0.1
                 },
 
                 "data": {
+                  "queries": [
+                    "akusticka basa",
+                    "akusticka pena",
+                    "akustika"
+                  ],
                   "categories": [
                     {
-                      "strId": "akusticke-a-klasicke-kytary",
+                      "str_id": "akusticke-a-klasicke-kytary",
                       "name": "Akustické a klasické kytary",
                       "path": ["Kytary", "Akustické a klasické kytary"]
                     },
                     {
-                      "strId": "akusticke-kontrabasy",
+                      "str_id": "akusticke-kontrabasy",
                       "name": "Akustické a kontrabasy",
                       "path": ["Baskytary", "Akustické a kontrabasy"]
                     }
@@ -158,165 +244,165 @@ version: 0.1
                   },
                   "data":  [
                     {
-                      "strId": "kytary",
+                      "str_id": "kytary",
                       "name": "Kytary",
                       "children": [
                         {
-                          "strId": "elektricke-kytary",
+                          "str_id": "elektricke-kytary",
                           "name": "Elektricke kytary",
                           "children": [
                             {
-                              "strId": "strat",
+                              "str_id": "strat",
                               "name": "Stratocaster"
                             },
                             {
-                              "strId": "tele",
+                              "str_id": "tele",
                               "name": "Telecaster"
                             },
                             {
-                              "strId": "lp",
+                              "str_id": "lp",
                               "name": "LesPaul"
                             },
                             {
-                              "strId": "sg",
+                              "str_id": "sg",
                               "name": "SG"
                             },
                             {
-                              "strId": "v-hardandheavy",
+                              "str_id": "v-hardandheavy",
                               "name": "V, hard and heavy"
                             },
                             {
-                              "strId": "semiakustika",
+                              "str_id": "semiakustika",
                               "name": "Semiakustické kytary"
                             },
                             {
-                              "strId": "vicestrunne",
+                              "str_id": "vicestrunne",
                               "name": "7 a více strunné"
                             },
                             {
-                              "strId": "ostatni-tvary",
+                              "str_id": "ostatni-tvary",
                               "name": "Ostatní tvary"
                             }
                           ]
                         },
                         {
-                          "strId": "akusticke-a-klasicke-kytary",
+                          "str_id": "akusticke-a-klasicke-kytary",
                           "name": "Akustické a klasické kytary",
                           "children": [
                             {
-                              "strId": "klasicka-kytara",
+                              "str_id": "klasicka-kytara",
                               "name": "Klasická kytara"
                             },
                             {
-                              "strId": "dvanactistrunna",
+                              "str_id": "dvanactistrunna",
                               "name": "12 - strunná"
                             },
                             {
-                              "strId": "jumbo-grand-dreadnaut",
+                              "str_id": "jumbo-grand-dreadnaut",
                               "name": "Jumbo/grand/dreadnaut"
                             }
                           ]
                         },
                         {
-                          "strId": "ostatni-strunne",
+                          "str_id": "ostatni-strunne",
                           "name": "Ostatní strunné",
                           "children": [
                             {
-                              "strId": "ukulele",
+                              "str_id": "ukulele",
                               "name": "Ukulele"
                             },
                             {
-                              "strId": "banjo",
+                              "str_id": "banjo",
                               "name": "Banjo"
                             },
                             {
-                              "strId": "mandolina",
+                              "str_id": "mandolina",
                               "name": "Mandolina"
                             }
                           ]
                         },
                         {
-                          "strId": "levoruke",
+                          "str_id": "levoruke",
                           "name": "Levoruké",
                           "children": [
                             {
-                              "strId": "levoruke-elektricke",
+                              "str_id": "levoruke-elektricke",
                               "name": "Elektrické kytary"
                             },
                             {
-                              "strId": "levoruke-akusticke",
+                              "str_id": "levoruke-akusticke",
                               "name": "Akustické kytary"
                             }
                           ]
                         },
                         {
-                          "strId": "modeling-usb-hybrid",
+                          "str_id": "modeling-usb-hybrid",
                           "name": "Modeling, usb, hybrid"
                         },
                         {
-                          "strId": "prislusenstvi",
+                          "str_id": "prislusenstvi",
                           "name": "Příslušenství"
                         },
                         {
-                          "strId": "snimace",
+                          "str_id": "snimace",
                           "name": "Snímače"
                         },
                         {
-                          "strId": "kytarove-aparaty",
+                          "str_id": "kytarove-aparaty",
                           "name": "Kytarové aparáty",
                           "children": [
                             {
-                              "strId": "komba",
+                              "str_id": "komba",
                               "name": "Komba"
                             },
                             {
-                              "strId": "zesilovace-hlavy",
+                              "str_id": "zesilovace-hlavy",
                               "name": "Zesilovače a hlavy"
                             },
                             {
-                              "strId": "reproboxy",
+                              "str_id": "reproboxy",
                               "name": "Reproboxy"
                             },
                             {
-                              "strId": "prislusenstvi-nahradnidily",
+                              "str_id": "prislusenstvi-nahradnidily",
                               "name": "Příslušenství a nahradní díly"
                             }
                           ]
                         },
                         {
-                          "strId": "kytarove-efekty",
+                          "str_id": "kytarove-efekty",
                           "name": "Kytarové efekty",
                           "children": [
                             {
-                              "strId": "multiefekty",
+                              "str_id": "multiefekty",
                               "name": "Multiefekty"
                             },
                             {
-                              "strId": "synth",
+                              "str_id": "synth",
                               "name": "Synťáky"
                             },
                             {
-                              "strId": "efektove-pedaly",
+                              "str_id": "efektove-pedaly",
                               "name": "Efektové pedály"
                             },
                             {
-                              "strId": "wah-wah",
+                              "str_id": "wah-wah",
                               "name": "Wah Wah"
                             },
                             {
-                              "strId": "volume",
+                              "str_id": "volume",
                               "name": "Volume"
                             },
                             {
-                              "strId": "rackove-efekty",
+                              "str_id": "rackove-efekty",
                               "name": "Rackové efekty"
                             },
                             {
-                              "strId": "sitove-efekty",
+                              "str_id": "sitove-efekty",
                               "name": "Síťové efekty"
                             },
                             {
-                              "strId": "pedalboardy",
+                              "str_id": "pedalboardy",
                               "name": "Pedalboardy"
                             }
                           ]
@@ -324,45 +410,45 @@ version: 0.1
                       ]
                     },
                     {
-                      "strId": "baskytary",
+                      "str_id": "baskytary",
                       "name": "Baskytary",
                       "children": [
                         {
-                          "strId": "elektricke-basy",
+                          "str_id": "elektricke-basy",
                           "name": "Elektricke basy"
                         },
                         {
-                          "strId": "akusticke-kontrabasy",
+                          "str_id": "akusticke-kontrabasy",
                           "name": "Akustické a kontrabasy"
                         }
                       ]
                     },
                     {
-                      "strId": "bici",
+                      "str_id": "bici",
                       "name": "Bicí"
                     },
                     {
-                      "strId": "klavesy",
+                      "str_id": "klavesy",
                       "name": "Klávesy"
                     },
                     {
-                      "strId": "dechove-nastroje",
+                      "str_id": "dechove-nastroje",
                       "name": "Dechové nástroje"
                     },
                     {
-                      "strId": "smyccove-nastroje",
+                      "str_id": "smyccove-nastroje",
                       "name": "Smyčcové nástroje"
                     },
                     {
-                      "strId": "zvukova-technika",
+                      "str_id": "zvukova-technika",
                       "name": "Zvuková technika"
                     },
                     {
-                      "strId": "svetelna-technika",
+                      "str_id": "svetelna-technika",
                       "name": "Světelná technika"
                     },
                     {
-                      "strId": "djs",
+                      "str_id": "djs",
                       "name": "Djs"
                     }
                   ]
