@@ -39,7 +39,7 @@ Vagrant.configure("2") do |config|
 			d.ports = ["6379:6379"]
 			d.vagrant_vagrantfile = "./Vagrantfile.proxy"
 			d.env = {
-				'REDIS_PASS='  => '**None**',
+				'REDIS_PASS'  => '**None**',
 		  	}
 	  	end
 	end
@@ -49,9 +49,8 @@ Vagrant.configure("2") do |config|
 		v.vm.provider "docker" do |d|
 
 			d.name = "apache"
-			d.remains_running = true
 			d.build_dir = "./docker/apache-php"
-#			d.build_args = ["--force-rm=false"]
+			d.build_args = ["--force-rm=false"]
 			d.ports = ["80:80"]
 			d.vagrant_vagrantfile = "./Vagrantfile.proxy"
 			d.link("elasticsearch:elasticsearch")
@@ -63,7 +62,7 @@ Vagrant.configure("2") do |config|
 
 		end
 
-		v.vm.synced_folder ".", "/data", owner: "www-data", group: "www-data"
+		v.vm.synced_folder "./data", "/data", type: "nfs"
 
 	end
 

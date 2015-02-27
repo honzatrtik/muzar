@@ -1,0 +1,107 @@
+strId: root
+name: root
+children:
+  - strId: kytary
+    name: Kytary
+    children:
+      - strId: elektricke-kytary
+        name: Elektricke kytary
+        children:
+          - strId: strat
+            name: Stratocaster
+          - strId: tele
+            name: Telecaster
+          - strId: lp
+            name: LesPaul
+          - strId: sg
+            name: SG
+          - strId: v-hardandheavy
+            name: V, hard and heavy
+          - strId: semiakustika
+            name: Semiakustické kytary
+          - strId: vicestrunne
+            name: 7 a více strunné
+          - strId: ostatni-tvary
+            name: Ostatní tvary
+      - strId: akusticke-a-klasicke-kytary
+        name: Akustické a klasické kytary
+        children:
+          - strId: klasicka-kytara
+            name: Klasická kytara
+          - strId: dvanactistrunna
+            name: 12 - strunná
+          - strId: jumbo-grand-dreadnaut
+            name: Jumbo/grand/dreadnaut
+      - strId: ostatni-strunne
+        name: Ostatní strunné
+        children:
+          - strId: ukulele
+            name: Ukulele
+          - strId: banjo
+            name: Banjo
+          - strId: mandolina
+            name: Mandolina
+      - strId: levoruke
+        name: Levoruké
+        children:
+          - strId: levoruke-elektricke
+            name: Elektrické kytary
+          - strId: levoruke-akusticke
+            name: Akustické kytary
+      - strId: modeling-usb-hybrid
+        name: Modeling, usb, hybrid
+      - strId: prislusenstvi
+        name: Příslušenství
+      - strId: snimace
+        name: Snímače
+      - strId: kytarove-aparaty
+        name: Kytarové aparáty
+        children:
+          - strId: komba
+            name: Komba
+          - strId: zesilovace-hlavy
+            name: Zesilovače a hlavy
+          - strId: reproboxy
+            name: Reproboxy
+          - strId: prislusenstvi-nahradnidily
+            name: Příslušenství a nahradní díly
+      - strId: kytarove-efekty
+        name: Kytarové efekty
+        children:
+          - strId: multiefekty
+            name: Multiefekty
+          - strId: synth
+            name: Synťáky
+          - strId: efektove-pedaly
+            name: Efektové pedály
+          - strId: wah-wah
+            name: Wah Wah
+          - strId: volume
+            name: Volume
+          - strId: rackove-efekty
+            name: Rackové efekty
+          - strId: sitove-efekty
+            name: Síťové efekty
+          - strId: pedalboardy
+            name: Pedalboardy
+  - strId: baskytary
+    name: Baskytary
+    children:
+      - strId: elektricke-basy
+        name: Elektricke basy
+      - strId: akusticke-kontrabasy
+        name: Akustické a kontrabasy
+  - strId: bici
+    name: Bicí
+  - strId: klavesy
+    name: Klávesy
+  - strId: dechove-nastroje
+    name: Dechové nástroje
+  - strId: smyccove-nastroje
+    name: Smyčcové nástroje
+  - strId: zvukova-technika
+    name: Zvuková technika
+  - strId: svetelna-technika
+    name: Světelná technika
+  - strId: djs
+    name: Djs

@@ -1,0 +1,12 @@
+# No stored passwords!
+parameters:
+    database_driver: pdo_mysql
+    database_host: mysql
+    database_port: 3306
+    database_name: muzar
+    database_user: muzar
+    mailer_transport: smtp
+    mailer_host: 127.0.0.1
+    mailer_user: null
+    locale: cs
+    secret: 059ce2dd8a3d7dbae7084202893f633b0c2842f5

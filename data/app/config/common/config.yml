@@ -1,0 +1,198 @@
+imports:
+    - { resource: parameters.yml }
+    - { resource: security.yml }
+
+framework:
+    #esi:             ~
+    translator:      { fallback: "%locale%" }
+    secret:          "%secret%"
+    router:
+        resource: "%kernel.root_dir%/config/common/routing.yml"
+        strict_requirements: ~
+    form:            ~
+    csrf_protection: ~
+    validation:      { enable_annotations: true }
+    templating:
+        engines: ['twig']
+        #assets_version: SomeVersionScheme
+    default_locale:  "%locale%"
+    trusted_hosts:   ~
+    trusted_proxies: ~
+    session:
+        # handler_id set to null will use default session handler from php.ini
+        handler_id:  ~
+    fragments:       ~
+    http_method_override: true
+
+
+# Twig Configuration
+twig:
+    debug:            "%kernel.debug%"
+    strict_variables: "%kernel.debug%"
+
+# Assetic Configuration
+assetic:
+    debug:          "%kernel.debug%"
+    use_controller: false
+    bundles:        [ MuzarBazaarBundle ]
+    #java: /usr/bin/java
+    filters:
+        cssrewrite: ~
+        #closure:
+        #    jar: "%kernel.root_dir%/Resources/java/compiler.jar"
+        #yui_css:
+        #    jar: "%kernel.root_dir%/Resources/java/yuicompressor-2.4.7.jar"
+
+# Doctrine Configuration
+doctrine:
+    dbal:
+        driver:   "%database_driver%"
+        host:     "%database_host%"
+        port:     "%database_port%"
+        dbname:   "%database_name%"
+        user:     "%database_user%"
+        password: "%database_password%"
+        charset:  UTF8
+        # if using pdo_sqlite as your database driver, add the path in parameters.yml
+        # e.g. database_path: "%kernel.root_dir%/data/data.db3"
+        # path:     "%database_path%"
+
+    orm:
+        auto_generate_proxy_classes: "%kernel.debug%"
+        auto_mapping: true
+        naming_strategy: doctrine.orm.naming_strategy.underscore
+
+# Swiftmailer Configuration
+swiftmailer:
+    transport: "%mailer_transport%"
+    host:      "%mailer_host%"
+    username:  "%mailer_user%"
+    password:  "%mailer_password%"
+    spool:     { type: memory }
+
+
+sensio_framework_extra:
+    view:
+        annotations: false
+
+fos_rest:
+    serializer:
+        serialize_null: true
+    body_listener: true
+    format_listener: true
+    view:
+        view_response_listener: true
+        templating_formats:
+            html: true
+        default_engine: twig
+
+services:
+    goutte:
+        class:  Goutte\Client
+    json_schema_validator:
+        class: JsonSchema\Validator
+
+fos_elastica:
+    clients:
+        default: { host: localhost, port: 9200 }
+    serializer:
+        callback_class: FOS\ElasticaBundle\Serializer\Callback
+        serializer: serializer
+    indexes:
+        website:
+            client: default
+            settings:
+                index:
+                    analysis:
+                        analyzer:
+                            my_czech:
+                                type: custom
+                                tokenizer: standard
+                                filter: [ stopwords_CZ, cs_CZ, lowercase, stopwords_CZ, remove_duplicities ]
+                        filter:
+                            my_stemmer:
+                                type: stemmer
+                                name: czech
+                            stopwords_CZ:
+                                type: stop
+                                stopwords: [ právě, že, _czech_ ]
+                                ignore_case: true
+                            cs_CZ:
+                                type: hunspell
+                                locale: cs_CZ
+                                dedup: true
+                                recursion_level: 0
+                            remove_duplicities:
+                                type: unique
+                                only_on_same_position: true
+            types:
+                item:
+                    mappings:
+                        id: { type: long }
+                        price: { type: float }
+                        name:
+                            boost: 5
+                            analyzer: my_czech
+                        description:
+                            boost: 3
+                            analyzer: my_czech
+                        created:
+                    persistence:
+                        driver: orm
+                        model: Muzar\BazaarBundle\Entity\Item
+                        provider:
+                            query_builder_method: createStatusActiveQueryBuilder
+                        finder: ~
+                        listener:
+                            is_indexable_callback: isActive
+                    serializer:
+                        groups: [elastica, Default]
+
+                category:
+                    mappings:
+                        id: { type: long }
+                        strId:
+                            boost: 5
+                        name:
+                            boost: 5
+                            analyzer: my_czech
+                        path:
+                            boost: 3
+                            analyzer: my_czech
+                    persistence:
+                        driver: orm
+                        model: Muzar\BazaarBundle\Entity\Category
+                        provider: ~
+                        finder: ~
+                    serializer:
+                        groups: [elastica, Default]
+
+                query:
+                    mappings:
+                        query: ~
+                        count: { type: long }
+                        suggest:
+                            type: completion
+                            index_analyzer: simple
+                            search_analyzer: simple
+                            payloads: false
+
+
+doctrine_cache:
+    providers:
+        app_cache:
+            namespace: app_cache_ns
+            array: ~
+
+fos_user:
+    db_driver: orm
+    firewall_name: main
+    user_class: Muzar\BazaarBundle\Entity\User
+
+jms_serializer:
+    metadata:
+        auto_detection: true
+        directories:
+            FOSUserBundle:
+                namespace_prefix: "FOS\\UserBundle"
+                path: "@MuzarBazaarBundle/Resources/config/serializer/fos"
