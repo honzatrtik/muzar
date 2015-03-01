@@ -2,6 +2,6 @@
 
 /bin/sh /initialize.sh
 
-chown www-data:www-data /app -R
+chown www-data:www-data /data -R
 source /etc/apache2/envvars
 exec apache2 -D FOREGROUND

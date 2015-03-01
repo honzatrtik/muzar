@@ -13,11 +13,12 @@ use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use FOS\UserBundle\Doctrine\UserManager;
 use Muzar\BazaarBundle\Entity\User;
+use Muzar\BazaarBundle\Suggestion\QuerySuggesterInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Yaml\Yaml;
 
-class LoadUserData extends AbstractFixture implements FixtureInterface, ContainerAwareInterface, OrderedFixtureInterface
+class LoadQuerySuggestionData extends AbstractFixture implements FixtureInterface, ContainerAwareInterface, OrderedFixtureInterface
 {
 
 	/**
@@ -40,36 +41,24 @@ class LoadUserData extends AbstractFixture implements FixtureInterface, Containe
 	 */
 	public function load(ObjectManager $manager)
 	{
-		$um = $this->getUserManager();
-
-
-		$path = __DIR__ . '/../../Resources/fixtures/user.yml';
+		$path = __DIR__ . '/../../Resources/fixtures/item.yml';
 		$data = Yaml::parse(file_get_contents($path));
 
-		foreach($data as $userData)
+		$suggester = $this->getQuerySuggester();
+
+		foreach($data as $itemData)
 		{
-			/** @var User $user */
-			$user = $um->createUser();
-			$user->setUsername($userData['username']);
-			$user->setEmail($userData['email']);
-			$user->setPlainPassword($userData['plainPassword']);
-			$user->setEnabled(TRUE);
-
-			$um->updateUser($user);
-			$manager->flush();
-
-			$this->addReference('user.' . $user->getId(), $user);
-
+			$suggester->add($itemData['name']);
 		}
 
 	}
 
 	/**
-	 * @return UserManager
+	 * @return QuerySuggesterInterface
 	 */
-	protected function getUserManager()
+	protected function getQuerySuggester()
 	{
-		return $this->container->get('fos_user.user_manager');
+		return $this->container->get('muzar_bazaar.query_suggester');
 	}
 
 	/**
@@ -79,7 +68,7 @@ class LoadUserData extends AbstractFixture implements FixtureInterface, Containe
 	 */
 	function getOrder()
 	{
-		return 1;
+		return 4;
 	}
 
 

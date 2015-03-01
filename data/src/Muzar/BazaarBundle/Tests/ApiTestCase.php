@@ -156,6 +156,9 @@ class ApiTestCase extends WebTestCase
 
 	protected function runCommandDropCreateFixtures()
 	{
+		$this->runCommand('fos:elastica:reset', array(
+			'--no-debug' => TRUE,
+		));
 		$this->runCommand('doctrine:schema:drop', array(
 			'--force' => TRUE,
 			'--no-debug' => TRUE,

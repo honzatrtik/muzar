@@ -220,7 +220,7 @@ var Suggester = React.createClass({
 
         return (
             <li onMouseOver={this.handleItemFocus.bind(this, index)} className={classNames} key={'category:'+category.str_id}>
-                <Link ref={index} tabIndex={index} onClick={this.handleSuggestionsBoxClick} to="list" params={{category: category.str_id}}>{category.path.join(' > ')}</Link>
+                <Link ref={index} tabIndex={index} onClick={this.handleSuggestionsBoxClick} to="list" params={{category: category.str_id}}>{category.path}</Link>
             </li>
         );
     },

@@ -59,10 +59,9 @@ Vagrant.configure("2") do |config|
 			d.env = {
 				'SYMFONY_ENV'  => 'docker',
 		  	}
+		  	d.volumes = ["/data:/data"]
 
 		end
-
-		v.vm.synced_folder "./data", "/data", type: "nfs"
 
 	end
 

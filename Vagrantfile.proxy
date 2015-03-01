@@ -6,7 +6,7 @@ Vagrant.configure("2") do |config|
   config.vm.provision "shell", inline:
     "ps aux | grep 'sshd:' | awk '{print $2}' | xargs kill"
 
-  config.vm.synced_folder ".", "/vagrant", disabled: true
+  config.vm.synced_folder "./data", "/data", owner: "www-data", group: "www-data"
 
   config.vm.network "private_network", ip: "192.168.33.66"
 
@@ -15,5 +15,10 @@ Vagrant.configure("2") do |config|
   config.vm.network :forwarded_port, guest: 9200, host: 9200
   config.vm.network :forwarded_port, guest: 80, host: 8080
   config.vm.network :forwarded_port, guest: 6379, host: 6379
+
+  config.vm.provider "virtualbox" do |v|
+    v.memory = 3072
+    v.cpus = 2
+  end
 
 end

@@ -45,7 +45,7 @@ services:
 
     muzar_bazaar.controller.item:
         class: Muzar\BazaarBundle\Controller\ItemController
-        arguments: [@router, @form.factory, @doctrine.orm.entity_manager, @muzar_bazaar.model_service.item, @security.context]
+        arguments: [@router, @form.factory, @doctrine.orm.entity_manager, @muzar_bazaar.model_service.item, @muzar_bazaar.query_suggester, @security.context]
 
     muzar_bazaar.controller.suggestion:
         class: Muzar\BazaarBundle\Controller\SuggestionController
@@ -57,10 +57,6 @@ services:
     muzar_bazaar.controller.user:
         class: Muzar\BazaarBundle\Controller\UserController
         arguments: [@router, @form.factory, @doctrine.orm.entity_manager, @fos_user.user_manager, @security.context]
-
-    muzar_bazaar.controller.item_edit:
-        class: Muzar\BazaarBundle\Controller\ItemEditController
-        arguments: [@router, @form.factory, @doctrine.orm.entity_manager, @muzar_bazaar.model_service.item]
 
 
     muzar_bazaar.controller.category:

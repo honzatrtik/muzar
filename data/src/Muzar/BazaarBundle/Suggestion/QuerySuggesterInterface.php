@@ -12,7 +12,7 @@ interface QuerySuggesterInterface
 	/**
 	 * Add query to index
 	 *
-*@param $query
+	 * @param $query
 	 * @param int $usages
 	 * @return mixed
 	 */

@@ -12,6 +12,7 @@ use Muzar\BazaarBundle\Entity\ItemService;
 use Muzar\BazaarBundle\Entity\User;
 use Muzar\BazaarBundle\Form\ItemType;
 use Muzar\BazaarBundle\Entity\ItemSearchQuery;
+use Muzar\BazaarBundle\Suggestion\QuerySuggesterInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
@@ -47,11 +48,15 @@ class ItemController
 	/** @var  SecurityContextInterface */
 	protected $securityContext;
 
+	/** @var  QuerySuggesterInterface */
+	protected $querySuggester;
+
 	public function __construct(
 		Router $router,
 		FormFactory $formFactory,
 		EntityManager $em,
 		ItemService $itemService,
+		QuerySuggesterInterface $querySuggester,
 		SecurityContextInterface $securityContext
 	)
 	{
@@ -59,6 +64,7 @@ class ItemController
 		$this->formFactory = $formFactory;
 		$this->em = $em;
 		$this->itemService = $itemService;
+		$this->querySuggester = $querySuggester;
 		$this->securityContext = $securityContext;
 	}
 
@@ -123,6 +129,12 @@ class ItemController
 
 		if ($searchQuery->isFilled())
 		{
+			if ($query = $searchQuery->getQuery())
+			{
+				// Add search query to suggester index
+				$this->querySuggester->add($query);
+			}
+
 			$result = $this->itemService->getItemsFulltext($searchQuery, $maxResults + 1, $startId);
 			$total = $this->itemService->getItemsFulltextTotal($searchQuery);
 		}

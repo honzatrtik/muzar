@@ -17,9 +17,9 @@ RUN apt-get update && \
     curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf && \
     sed -i "s/variables_order.*/variables_order = \"EGPCS\"/g" /etc/php5/apache2/php.ini && \
-    sed -i "s/;?realpath_cache_size = .*/realpath_cache_size = 4096k/g" /etc/php5/apache2/php.ini && \
-    sed -i "s/;?realpath_cache_ttl = .*/realpath_cache_ttl = 7200/g" /etc/php5/apache2/php.ini && \
-    echo -e "xdebug.remote_autostart=0\nxdebug.remote_enable=0\nxdebug.profiler_enable=0\n" >> /etc/php5/apache2/php.ini
+    echo "realpath_cache_size = 4096k" >> /etc/php5/apache2/php.ini && \
+    echo "realpath_cache_ttl = 7200" >> /etc/php5/apache2/php.ini && \
+    echo "xdebug.remote_autostart=0\nxdebug.remote_enable=0\nxdebug.profiler_enable=0\n" >> /etc/php5/apache2/php.ini
 
 # Add image configuration and scripts
 ADD initialize.sh /initialize.sh

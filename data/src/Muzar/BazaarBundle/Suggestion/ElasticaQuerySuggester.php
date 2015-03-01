@@ -39,6 +39,11 @@ class ElasticaQuerySuggester implements QuerySuggesterInterface
 	public function add($query, $usages = 1)
 	{
 
+		if (empty($query))
+		{
+			throw new \InvalidArgumentException('Query must not be empty.');
+		}
+
 		$data = array(
 			'script' => 'ctx._source.suggest.weight += usages',
 			'params' => array(
@@ -53,6 +58,7 @@ class ElasticaQuerySuggester implements QuerySuggesterInterface
 				)
 			),
 		);
+
 		$this->client->updateDocument($this->createId($query), $data, $this->index, $this->type);
 	}
 
@@ -76,7 +82,7 @@ class ElasticaQuerySuggester implements QuerySuggesterInterface
 				'text' => $query,
 				'completion' => array(
 					'field' => 'suggest',
-					'fuzzy' => true,
+					'fuzzy' => false,
 				),
 			),
 		);
@@ -98,7 +104,7 @@ class ElasticaQuerySuggester implements QuerySuggesterInterface
 
 	protected function getInputFromQuery($query)
 	{
-		return array_filter(array_map('trim', explode(' ', $query)));
+		return array_values(array_filter(array_map('trim', explode(' ', $query))));
 	}
 
 	protected function createId($query)

@@ -70,7 +70,14 @@ class ElasticaQuerySuggesterTest extends ApiTestCase
 
 		$this->assertInternalType('array', $suggestions);
 		$this->assertCount(1, $suggestions);
+	}
 
+	/**
+	 * @expectedException \InvalidArgumentException
+	 */
+	public function testAddEmpty()
+	{
+		$this->suggester->add('');
 	}
 
 
