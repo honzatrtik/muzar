@@ -37,11 +37,19 @@ class AdStore extends BaseStore {
     }
 
     hasNextLink() {
-        return this.getBinding().toJS('meta.nextLink');
+        return this.getMeta('nextLink');
     }
 
     getTotal() {
-        return this.getBinding().toJS('meta.total') || null;
+        return this.getMeta('total');
+    }
+
+    getMeta(name) {
+        var path = ['meta'];
+        if (name) {
+            path = path.concat(name.split('.'));
+        }
+        return this.getBinding().toJS(path) || null;
     }
 }
 
@@ -55,29 +63,52 @@ AdStore.handlers = {
             var routeStore = self.getStore(RouteStore);
             var binding = self.getBinding();
 
-            if (routeStore.getRoute() == 'list') {
+            var params;
+
+            if (_.indexOf(['list', 'listAll'], routeStore.getRoute()) !== -1) {
 
                 var store = self.getStore(CategoryStore);
                 binding.set('loading', true);
 
-                var params = {};
+                params = {};
                 var category = store.getActive();
                 if (category) {
                     params.category = category;
                 }
 
-                return load(params).then(function(data) {
+
+                return load(params).then(function (data) {
                     binding.atomically()
                         .set('loading', false)
                         .set('items', Imm.fromJS(data.data))
                         .set('meta', Imm.fromJS(data.meta))
                         .commit();
                 });
+
+            } else if (_.indexOf(['search'], routeStore.getRoute()) !== -1) {
+
+                binding.set('loading', true);
+
+                params = {};
+                var query = routeStore.getQuery('query');
+
+                if (query) {
+                    params.query = query;
+                }
+
+                return load(params).then(function (data) {
+                    binding.atomically()
+                        .set('loading', false)
+                        .set('items', Imm.fromJS(data.data))
+                        .set('meta', Imm.fromJS(data.meta))
+                        .commit();
+                });
+
             } else {
                 binding.atomically()
                     .set('loading', false)
                     .set('items', Imm.List())
-                    .set('meta', Imm.List())
+                    .set('meta', Imm.Map())
                     .commit();
             }
 

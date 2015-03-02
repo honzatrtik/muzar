@@ -34,6 +34,10 @@ class ItemControllerTest extends ApiTestCase
 		$this->assertArrayHasKey('data', $json);
 		$this->assertArrayHasKey('meta', $json);
 		$this->assertArrayHasKey('nextLink', $json['meta']);
+		$this->assertArrayHasKey('query', $json['meta']);
+		$this->assertArrayHasKey('total', $json['meta']);
+		$this->assertArrayHasKey('query', $json['meta']['query']);
+		$this->assertEquals('kytara', $json['meta']['query']['query']);
 	}
 
 	public function testAllPriceFilter()

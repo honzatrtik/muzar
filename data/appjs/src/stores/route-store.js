@@ -14,12 +14,20 @@ class RouteStore extends BaseStore {
         return this.binding.toJS('state.pathname');
     }
 
-    getParams() {
-        return this.binding.toJS('state.params');
+    getParam(name) {
+        var path = ['state', 'params'];
+        if (name) {
+            path.push(name);
+        }
+        return this.binding.toJS(path);
     }
 
-    getQuery() {
-        return this.binding.toJS('state.query');
+    getQuery(name) {
+        var path = ['state', 'query'];
+        if (name) {
+            path.push(name);
+        }
+        return this.binding.toJS(path);
     }
 
     getRoutes() {
@@ -34,7 +42,7 @@ class RouteStore extends BaseStore {
 RouteStore.storeName = 'RouteStore';
 RouteStore.handlers = {
     'ROUTE_CHANGED': function(state) {
-        this.binding.set('state', Imm.Map(state));
+        this.binding.set('state', Imm.fromJS(state));
     }
 };
 

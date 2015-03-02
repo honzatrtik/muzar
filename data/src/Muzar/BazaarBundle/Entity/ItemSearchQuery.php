@@ -187,6 +187,14 @@ class ItemSearchQuery
 		return $this;
 	}
 
+	public function toArray()
+	{
+		return array(
+			'query' => $this->query,
+			'priceFrom' => $this->priceFrom,
+			'priceTo' => $this->priceTo,
+		);
+	}
 
 	/**
 	 * Vypocita checksum query
@@ -194,11 +202,7 @@ class ItemSearchQuery
 	 */
 	public function createHash()
 	{
-		return sha1(json_encode(array(
-			$this->query,
-			$this->priceFrom,
-			$this->priceTo,
-		)));
+		return sha1(json_encode($this->toArray()));
 	}
 
 

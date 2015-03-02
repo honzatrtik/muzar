@@ -90,7 +90,7 @@ var List = React.createClass({
 
                 <div className="col-xs-12 col-sm-12 col-md-9">
 
-                    <h2>{title}{adStore.isLoading() ? <small> Loading...</small> : null}</h2>
+                    <h1>{title}{adStore.isLoading() ? <small> Loading...</small> : null}</h1>
                     {path ? <div><CategoryBreadcrumbs path={path}/></div> : null}
                     {items.toJS()}
                     {this.renderEmptyMessage()}

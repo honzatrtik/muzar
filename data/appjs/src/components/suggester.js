@@ -1,5 +1,6 @@
 "use strict";
 
+var debug = require('debug')('Suggester');
 var _ = require('lodash');
 var event = require('dom-event');
 var React = require('react/addons');
@@ -63,6 +64,7 @@ var Suggester = React.createClass({
 
         var self = this;
         Promise.resolve(this.props.suggestionsFunction.call(null, query)).then(function(data) {
+            debug(data.queries, data.categories, data.ads);
             self.setState({
                 queries: Imm.List(data.queries || []),
                 ads: Imm.List(data.ads || []),
@@ -78,9 +80,14 @@ var Suggester = React.createClass({
         var self = this;
         var query = this.state.query;
 
+        if (!query) {
+            return;
+        }
+
         this.setState({
             show: false,
-            activeTabIndex: 0
+            activeTabIndex: 0,
+            query: ''
         }, function() {
             self.transitionTo('search', {}, {
                 query: query
@@ -242,7 +249,7 @@ var Suggester = React.createClass({
     },
 
     renderQueries: function() {
-        var queries = this.state.queries.push(this.state.query);
+        var queries = this.state.queries.push(this.state.query).toSet(); // Make unique
         return (
             <div>
                 <small>Hledat</small>

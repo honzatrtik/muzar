@@ -9,36 +9,77 @@ var AdStore = require('../stores/ad-store.js');
 var Router = require('react-router');
 var Link = Router.Link;
 var AdPreview = require('./ad-preview.js');
-var CategoryMenu = require('./category-menu.js');
-var CategoryBreadcrumbs = require('./category-breadcrumbs.js');
+var cs = React.addons.classSet;
 
 var Search = React.createClass({
 
     mixins: [Morearty.Mixin, DispatcherMixin],
 
+    renderItem: function(item) {
+        item = item.toJS();
+        return <AdPreview key={item.id} item={item} />
+    },
+
+    renderEmptyMessage() {
+        var adStore = this.getStore(AdStore);
+        var items = adStore.getItems();
+        if (!items.size && !adStore.isLoading()) {
+            return (
+                <div>Nejsou tu žádné inzeráty</div>
+            );
+        } else {
+            return null;
+        }
+    },
+
+    renderFooter: function() {
+        var adStore = this.getStore(AdStore);
+        var items = adStore.getItems();
+        var hasNext = adStore.hasNextLink();
+
+        if (hasNext) {
+            var disabled = adStore.isLoading();
+            var classNames = cs({
+                'btn': true,
+                'btn-primary': true,
+                'btn-lg': true,
+                'btn-disabled': disabled
+            });
+            return (
+                <div className="row">
+                    <div className="text-center col-xs-12 col-sm-12 col-md-12">
+                        <button onClick={this.handleLoadNextButtonClick} disabled={disabled} type="submit" className={classNames}>Zobrazit další inzeráty</button>
+                        <div className="pull-right">{items.size}/{adStore.getTotal()}</div>
+                    </div>
+                </div>
+            );
+        } else {
+            return null;
+        }
+    },
+
     render() {
+
+        this.observeBinding(this.getStoreBinding(AdStore));
+        var adStore = this.getStore(AdStore);
+
+        var title = adStore.getMeta('query.query');
+
+        var items = adStore.getItems().map(this.renderItem);
 
         return (
 
             <div className="row">
                 <div className="col-xs-12 col-sm-12 col-md-12">
                     <div className="col-xs-12 col-sm-12 col-md-12 boxik">
-                        <h1 className>Výsledky hledání <i>"Marshall"</i></h1>
+                        <h1 className>Výsledky hledání
+                            <i>"{title}"</i>
+                            {adStore.isLoading() ? <small> Loading...</small> : null}
+                        </h1>
                     </div>
                     <div className="col-xs-12 col-sm-12 col-md-12 boxik">
                         <form className="form-inline" role="form">
-                            V kategorii
-                            <div className="btn-group">
-                                <button type="button" className="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                    vsechny <span className="caret" />
-                                </button>
-                                <ul className="dropdown-menu" role="menu">
-                                    <li><a href="#">Kytarove nastroje</a></li>
-                                    <li><a href="#">Basove nastroje</a></li>
-                                    <li><a href="#">Bici</a></li>
-                                </ul>
-                            </div>
-                            v okoli
+                            V okoli
                             <div className="btn-group">
                                 <button type="button" className="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                                     Ceska Republika <span className="caret" />
@@ -63,22 +104,25 @@ var Search = React.createClass({
                     </div>
                     <div className="col-xs-12 col-sm-12 col-md-12 well">
                         <form className="form-inline" role="form">
-                            Chceš poslat upozornění na email, když se objeví nový inzerát odpovidajici tomuto filtru? <button type="submit" className="btn btn-primary pull-right"><i className="glyphicon glyphicon-envelope" /> Upozornnit mě emailem</button>
+                            Chceš poslat upozornění na email, když se objeví nový inzerát odpovidajici tomuto filtru? <button type="submit" className="btn btn-primary pull-right"><i className="glyphicon glyphicon-envelope" /> Upozornit mě emailem</button>
                         </form>
                     </div>
                     <div className="col-xs-12 col-sm-12 col-md-12">
                         <p>
-                            Našli jsme ti <strong>10 inzerátů</strong>
+                            Našli jsme ti <strong>{adStore.getTotal()} inzerátů</strong>
                         </p>
                     </div>
+
                     <div className="col-xs-12 col-sm-12 col-md-12">
                         <div className="row">
-                        </div>
-                        <div className="row">
-                            <div className="text-center col-xs-12 col-sm-12 col-md-12">
-                                <button type="submit" className="btn btn-primary btn-lg">Zobrazit dalsi inzeraty</button>
-                                <div className="pull-right">50/651</div>
+
+                            <div className="col-xs-12 col-sm-12 col-md-12">
+                                {items.toJS()}
+                                {this.renderEmptyMessage()}
+                                {this.renderFooter()}
                             </div>
+
+
                         </div>
                     </div>
                 </div>

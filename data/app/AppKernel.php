@@ -44,16 +44,16 @@ class AppKernel extends Kernel
 	}
 
 	public function getCacheDir() {
-//		if (in_array($this->getEnvironment(), array('docker'))) {
-//			return sprintf('/dev/shm/%s/cache/%s', $this->getName(),  $this->getEnvironment());
-//		}
+		if (in_array($this->getEnvironment(), array('docker'))) {
+			return sprintf('/dev/shm/%s/cache/%s', $this->getName(),  $this->getEnvironment());
+		}
 		return parent::getCacheDir();
 	}
 
 	public function getLogDir() {
-//		if (in_array($this->getEnvironment(), array('docker'))) {
-//			return sprintf('/dev/shm/%s/logs/%s', $this->getName(),  $this->getEnvironment());
-//		}
+		if (in_array($this->getEnvironment(), array('docker'))) {
+			return sprintf('/dev/shm/%s/logs/%s', $this->getName(),  $this->getEnvironment());
+		}
 		return parent::getLogDir();
 	}
 }

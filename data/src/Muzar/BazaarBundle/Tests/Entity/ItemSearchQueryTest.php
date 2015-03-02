@@ -63,4 +63,20 @@ class ItemSearchQueryTest extends ApiTestCase
 		$this->assertEquals($q1->createHash(), $q2->createHash());
 
     }
+
+	public function testToArray()
+	{
+		$q1 = new ItemSearchQuery();
+
+		$q1
+			->setQuery('test')
+			->setPriceFrom(100)
+			->setPriceTo(1000);
+
+		$this->assertEquals(array(
+			'query' => 'test',
+			'priceFrom' => 100,
+			'priceTo' => 1000,
+		), $q1->toArray());
+	}
 }

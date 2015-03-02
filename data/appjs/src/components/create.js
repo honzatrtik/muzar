@@ -3,7 +3,7 @@
 var Morearty = require('morearty');
 var React = require('react');
 var DispatcherMixin = require('../dispatcher-mixin.js');
-//var AdForm = require('./ad-form.js');
+var AdForm = require('./ad-form.js');
 
 var Create = React.createClass({
 
@@ -12,7 +12,7 @@ var Create = React.createClass({
     render() {
 
         return (
-            <div />
+            <AdForm />
         );
     }
 });

@@ -147,11 +147,11 @@ class ItemController
 		if (count($result) === ($maxResults + 1))
 		{
 			$lastItem = array_pop($result);
-			$nextLink = $this->router->generate('muzar_bazaar_item_all', array(
+			$nextLink = $this->router->generate('muzar_bazaar_item_all', array_merge($searchQuery->toArray(), array(
 				'startId' => $lastItem->getId(),
 				'limit' => $maxResults,
 				'category' => $request->query->get('category'),
-			));
+			)));
 		}
 		else
 		{
@@ -162,7 +162,8 @@ class ItemController
 			'data' => $result,
 			'meta' => array(
 				'total' => $total,
-				'nextLink' => $nextLink
+				'nextLink' => $nextLink,
+				'query' => $searchQuery->toArray(),
 			),
 		);
 

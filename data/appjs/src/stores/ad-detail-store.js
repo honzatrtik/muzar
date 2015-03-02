@@ -39,14 +39,14 @@ AdDetailStore.handlers = {
             var store = self.getStore(RouteStore);
             if (store.getRoute() == 'detail') {
 
-                var id = store.getParams().id;
+                var id = store.getParam().id;
 
                 self.getBinding().atomically()
                     .set('id', id)
                     .remove('data')
                     .commit();
 
-                return load(store.getParams().id).then(function(data) {
+                return load(store.getParam().id).then(function(data) {
                     self.getBinding().set('data', Imm.Map(data.data));
                 }).catch(function(e) {
                     throw e;
