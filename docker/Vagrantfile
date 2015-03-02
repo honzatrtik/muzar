@@ -6,11 +6,10 @@ Vagrant.configure("2") do |config|
 	config.vm.define "elasticsearch" do |v|
 		v.vm.provider "docker" do |d|
 			d.name = "elasticsearch"
-			d.build_dir = "./docker/elasticsearch"
-			d.build_args = ["--force-rm=false"]
+			d.build_dir = "./elasticsearch"
 			d.volumes = ["/var/docker/elasticsearch:/data"]
 			d.ports = ["9200:9200"]
-			d.vagrant_vagrantfile = "./Vagrantfile.proxy"
+			d.vagrant_vagrantfile = "../Vagrantfile.proxy"
 	  	end
 	end
 
@@ -21,7 +20,7 @@ Vagrant.configure("2") do |config|
 			d.image = "tutum/mysql"
 			d.volumes = ["/var/docker/mysql:/var/lib/mysql"]
 			d.ports = ["3306:3306"]
-			d.vagrant_vagrantfile = "./Vagrantfile.proxy"
+			d.vagrant_vagrantfile = "../Vagrantfile.proxy"
 			d.env = {
 				'MYSQL_PASS'  => 'muzar',
 				'MYSQL_USER' => 'muzar',
@@ -29,7 +28,7 @@ Vagrant.configure("2") do |config|
 		  	}
 	  	end
 
-	  	v.vm.synced_folder "./docker/mysql", "/docker"
+	  	v.vm.synced_folder "./mysql", "/docker"
 	end
 
 	config.vm.define "redis" do |v|
@@ -37,7 +36,7 @@ Vagrant.configure("2") do |config|
 			d.name = "redis"
 			d.image = "tutum/redis"
 			d.ports = ["6379:6379"]
-			d.vagrant_vagrantfile = "./Vagrantfile.proxy"
+			d.vagrant_vagrantfile = "../Vagrantfile.proxy"
 			d.env = {
 				'REDIS_PASS'  => '**None**',
 		  	}
@@ -46,23 +45,24 @@ Vagrant.configure("2") do |config|
 
 
 	config.vm.define "apache-php" do |v|
+
+
 		v.vm.provider "docker" do |d|
 
 			d.name = "apache"
-			d.build_dir = "./docker/apache-php"
-			d.build_args = ["--force-rm=false"]
+			d.build_dir = "./apache-php"
 			d.ports = ["80:80"]
-			d.vagrant_vagrantfile = "./Vagrantfile.proxy"
+			d.vagrant_vagrantfile = "../Vagrantfile.proxy"
 			d.link("elasticsearch:elasticsearch")
 			d.link("mysql:mysql")
 			d.link("redis:redis")
 			d.env = {
 				'SYMFONY_ENV'  => 'docker',
 		  	}
-		  	d.volumes = ["/data:/data"]
 
 		end
 
+		v.vm.synced_folder "../data", "/data", owner: "www-data", group: "www-data"
 	end
 
 
