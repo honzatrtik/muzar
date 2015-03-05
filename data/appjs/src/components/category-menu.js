@@ -1,6 +1,5 @@
 "use strict";
 
-var _ = require('lodash');
 var Morearty = require('morearty');
 var React = require('react/addons');
 var Router = require('react-router');
@@ -20,7 +19,7 @@ var CategoryMenu = React.createClass({
         var store = this.getStore(CategoryStore);
 
         var items = store.getItems() ? store.getItems().toJS() : [];
-        var path = _.pluck(store.getActivePath(), 'str_id');
+        var path = store.getActivePath().map(category => category.str_id);
 
         var classNames = cs({
             'is-active': !path.length,

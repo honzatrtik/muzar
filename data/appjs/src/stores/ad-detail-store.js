@@ -6,7 +6,6 @@ var BaseStore = require('./base-store.js');
 var RouteStore = require('./route-store.js');
 var HttpError = require('../errors/http-error.js');
 var Imm = require('immutable');
-var _ = require('lodash');
 
 var req;
 function load(id) {

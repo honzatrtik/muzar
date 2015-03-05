@@ -8,7 +8,6 @@ var superagent = require('../superagent.js');
 var HttpError = require('../errors/http-error.js');
 var Imm = require('immutable');
 var urlParse = require('url-parse');
-var _ = require('lodash');
 
 var req;
 function load(params) {
@@ -45,10 +44,7 @@ class AdStore extends BaseStore {
     }
 
     getMeta(name) {
-        var path = ['meta'];
-        if (name) {
-            path = path.concat(name.split('.'));
-        }
+        var path = ['meta'].concat(name ? name.split('.') : []);
         return this.getBinding().toJS(path) || null;
     }
 }
@@ -65,7 +61,7 @@ AdStore.handlers = {
 
             var params;
 
-            if (_.indexOf(['list', 'listAll'], routeStore.getRoute()) !== -1) {
+            if (['list', 'listAll'].indexOf(routeStore.getRoute()) !== -1) {
 
                 var store = self.getStore(CategoryStore);
                 binding.set('loading', true);
@@ -76,6 +72,10 @@ AdStore.handlers = {
                     params.category = category;
                 }
 
+                binding.atomically()
+                    .set('items', Imm.List())
+                    .set('meta', Imm.Map())
+                    .commit();
 
                 return load(params).then(function (data) {
                     binding.atomically()
@@ -85,7 +85,7 @@ AdStore.handlers = {
                         .commit();
                 });
 
-            } else if (_.indexOf(['search'], routeStore.getRoute()) !== -1) {
+            } else if (['search'].indexOf(routeStore.getRoute()) !== -1) {
 
                 binding.set('loading', true);
 
@@ -95,6 +95,11 @@ AdStore.handlers = {
                 if (query) {
                     params.query = query;
                 }
+
+                binding.atomically()
+                    .set('items', Imm.List())
+                    .set('meta', Imm.Map())
+                    .commit();
 
                 return load(params).then(function (data) {
                     binding.atomically()

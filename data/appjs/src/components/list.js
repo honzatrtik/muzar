@@ -1,6 +1,5 @@
 "use strict";
 
-var _ = require('lodash');
 var React = require('react');
 var Morearty = require('morearty');
 var DispatcherMixin = require('../dispatcher-mixin.js');
@@ -11,7 +10,7 @@ var Link = Router.Link;
 var AdPreview = require('./ad-preview.js');
 var CategoryMenu = require('./category-menu.js');
 var CategoryBreadcrumbs = require('./category-breadcrumbs.js');
-var adLoadNextAction = require('../ad-load-next-action.js');
+var adLoadNextAction = require('../actions/ad-load-next-action.js');
 var cs = React.addons.classSet;
 
 var List = React.createClass({
@@ -76,7 +75,7 @@ var List = React.createClass({
         var adStore = this.getStore(AdStore);
 
         var path = categoryStore.getActivePath();
-        var title = path.length ? _.last(path).name : 'Všechny inzeráty';
+        var title = path.length ? path[path.length-1].name : 'Všechny inzeráty';
 
         var items = adStore.getItems().map(this.renderItem);
 

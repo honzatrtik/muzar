@@ -5,7 +5,7 @@ var debugBinding = require('debug')('Binding');
 
 require('debug').enable('*');
 
-var routeChangedAction = require('./src/route-changed-action.js');
+var routeChangedAction = require('./src/actions/route-changed-action.js');
 
 var React = require('react');
 var Router = require('react-router');

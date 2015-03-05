@@ -1,7 +1,6 @@
 "use strict";
 
 var debug = require('debug')('Suggester');
-var _ = require('lodash');
 var event = require('dom-event');
 var React = require('react/addons');
 var Promise = require('../promise.js');

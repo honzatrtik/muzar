@@ -48,14 +48,14 @@ var Navbar = React.createClass({
                     <div className="collapse navbar-collapse">
                         <ul className="nav navbar-nav">
                             <Suggester suggestionsFunction={getSuggestions} />
-                            <form className="navbar-form navbar-left" role="search">
-                            </form>
-                            <form className="navbar-btn navbar-right">
-                                <a className="btn btn-default" href="#"><span className="glyphicon glyphicon-plus" />
-                                    Přidat inzerát</a>
+                            <div className="navbar-btn navbar-right">
+                                <Link className="btn btn-default" to="create">
+                                    <span className="glyphicon glyphicon-plus" />{' '}Přidat inzerát
+                                </Link>
+
                                 <a className="btn btn-default" href="#"><span className="glyphicon glyphicon-lock" />
                                     Přihlásit</a>
-                            </form>
+                            </div>
                         </ul>
                     </div>
                 </div>

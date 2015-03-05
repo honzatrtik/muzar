@@ -1,7 +1,6 @@
 "use strict";
 
 var Imm = require('immutable');
-var _ = require('lodash');
 var BaseStore = require('./base-store.js');
 
 class RouteStore extends BaseStore {
@@ -35,7 +34,7 @@ class RouteStore extends BaseStore {
     }
 
     getRoute() {
-        return _.last(this.getRoutes())
+        return this.binding.get('state.routes').last();
     }
 }
 

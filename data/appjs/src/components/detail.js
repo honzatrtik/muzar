@@ -21,7 +21,13 @@ var Detail = React.createClass({
         var ad = adStore.getAd();
 
         if (!ad) {
-            return <div>Loading</div>;
+            return (
+                <div className="row">
+                    <div className="col-xs-12 col-sm-12 col-md-12">
+                        <h1 className="pull-left"><small> Loading...</small></h1>
+                    </div>
+                </div>
+            );
         }
 
         ad = ad.toJS();
@@ -33,7 +39,7 @@ var Detail = React.createClass({
                 <div className="row">
                     <div className="col-xs-12 col-sm-12 col-md-12">
                         <CategoryBreadcrumbs path={path} />
-                        <h2 className="pull-left">{ad.name}</h2>
+                        <h1>{ad.name}</h1>
                     </div>
                 </div>
 

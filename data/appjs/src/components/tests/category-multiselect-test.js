@@ -116,4 +116,22 @@ describe('CategoryMultiselect', function() {
 
     });
 
+    it('calls onChange prop function if value is changed', function(done) {
+
+        var CategoryMultiselect = require('../category-multiselect.js');
+
+        var cm = render(CategoryMultiselect, routeNames, {
+            items,
+            value: ['kytarove-nastroje', 'elektricke-kytary'],
+            onChange: function(value) {
+                assert.deepEqual(value, ['kytarove-nastroje', 'akusticke-a-klasicke-kytary']);
+                done();
+            }
+        });
+
+        var selects = TestUtils.scryRenderedDOMComponentsWithTag(cm, 'select');
+        TestUtils.Simulate.change(selects[1].getDOMNode(), { target: { value: 'akusticke-a-klasicke-kytary' } });
+
+    });
+
 });

@@ -1,8 +1,7 @@
 "use strict";
 
-var _ = require('lodash');
-var Promise = require('./promise.js');
-var AdStore = require('./stores/ad-store.js');
+var Promise = require('../promise.js');
+var AdStore = require('../stores/ad-store.js');
 
 module.exports = function adLoadNextAction(dispatcher) {
 

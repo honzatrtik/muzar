@@ -23,8 +23,8 @@ require.extensions['.js'] = function(module, filename) {
 
 
 var _ = require('lodash');
-var serverInitAction = require('./src/server-init-action.js');
-var routeChangedAction = require('./src/route-changed-action.js');
+var serverInitAction = require('./src/actions/server-init-action.js');
+var routeChangedAction = require('./src/actions/route-changed-action.js');
 
 var Promise = require('./src/promise.js');
 var serializer = require('./src/serializer.js');

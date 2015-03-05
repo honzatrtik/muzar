@@ -22,10 +22,6 @@ class BaseStore {
     getStore(store) {
         return this.dispatcher.getStore(store);
     }
-
-    shouldDehydrate() {
-        return false;
-    }
 }
 
 module.exports = BaseStore;

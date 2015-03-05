@@ -9,11 +9,35 @@ var less = require('gulp-less');
 var watchLess = require('gulp-watch-less');
 var sourcemaps = require('gulp-sourcemaps');
 var uglify = require('gulp-uglifyjs');
+var streamify = require('gulp-streamify');
 var plumber = require('gulp-plumber');
 var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
 var watchify = require('watchify');
 var es6ify = require('es6ify');
+
+var uglifyConfig = {
+    compress: {
+        sequences: true,  // join consecutive statemets with the “comma operator”
+        properties: true,  // optimize property access: a["foo"] → a.foo
+        dead_code: true,  // discard unreachable code
+        drop_debugger: true,  // discard “debugger” statements
+        unsafe: false, // some unsafe optimizations (see below)
+        conditionals: true,  // optimize if-s and conditional expressions
+        comparisons: true,  // optimize comparisons
+        evaluate: true,  // evaluate constant expressions
+        booleans: true,  // optimize boolean expressions
+        loops: true,  // optimize loops
+        unused: true,  // drop unused variables/functions
+        hoist_funs: true,  // hoist function declarations
+        hoist_vars: false, // hoist variable declarations
+        if_return: true,  // optimize if-s followed by return/continue
+        join_vars: true,  // join var declarations
+        cascade: true,  // try to cascade `right` into `left` in sequences
+        side_effects: false,  // drop side-effect-free statements
+        warnings: false  // warn about potentially dangerous optimizations/code
+    }
+};
 
 
 var bundlesConfig = [{
@@ -21,7 +45,6 @@ var bundlesConfig = [{
     files: ['./client.js'],
     dest: './build/'
 }];
-
 
 var lessConfig = {
     src: ['./less/all.less'],
@@ -95,6 +118,7 @@ function browserifyShare(config, watch){
 }
 
 
+
 function bundleShare(b, config) {
     return b.bundle()
         .on('error', function(e) {
@@ -102,10 +126,9 @@ function bundleShare(b, config) {
             this.end(); // http://latviancoder.com/story/error-handling-browserify-gulp
         })
         .pipe(source(config.name))
-        //.pipe(streamify(uglify()))
+        //.pipe(streamify(uglify(uglifyConfig)))
         .pipe(rename(function(path) {
             path.extname = '.js';
         }))
         .pipe(gulp.dest(config.dest));
 }
-

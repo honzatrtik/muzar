@@ -1,6 +1,5 @@
 "use strict";
 
-var _ = require('lodash');
 var React = require('react');
 var CategoryStore = require('../stores/category-store.js');
 var AdStore = require('../stores/ad-store.js');
@@ -8,6 +7,10 @@ var Router = require('react-router');
 var Link = Router.Link;
 
 var CategoryBreadcrumbs = React.createClass({
+
+    propTypes: {
+        path: React.PropTypes.array
+    },
 
     render() {
 
