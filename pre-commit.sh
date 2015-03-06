@@ -1,3 +1,4 @@
+#!/bin/sh
 # pre-commit.sh
 git stash -q --keep-index
 ./run_tests.sh
