@@ -156,6 +156,14 @@ class Category implements Node
 		return $this->ancestors;
 	}
 
+	/**
+	 * @JMS\VirtualProperty
+	 * @return int
+	 */
+	public function getDepth()
+	{
+		return count($this->getAncestors());
+	}
 
 	public function getName()
 	{

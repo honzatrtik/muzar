@@ -3,6 +3,12 @@ parameters:
 
 services:
 
+    muzar_bazaar.command.create_client_command:
+        class: Muzar\BazaarBundle\Command\CreateClientCommand
+        arguments: [@fos_oauth_server.client_manager.default]
+        tags:
+            -  { name: console.command }
+
     muzar_bazaar.query_suggester:
         class: Muzar\BazaarBundle\Suggestion\ElasticaQuerySuggester
         arguments: [@fos_elastica.client.default, 'website', 'query']
@@ -56,7 +62,7 @@ services:
 
     muzar_bazaar.controller.user:
         class: Muzar\BazaarBundle\Controller\UserController
-        arguments: [@router, @form.factory, @doctrine.orm.entity_manager, @fos_user.user_manager, @security.context]
+        arguments: [@router, @form.factory, @doctrine.orm.entity_manager, @security.context]
 
 
     muzar_bazaar.controller.category:

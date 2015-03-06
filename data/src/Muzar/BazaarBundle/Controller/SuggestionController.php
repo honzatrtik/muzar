@@ -94,6 +94,26 @@ class SuggestionController
 		}
 	}
 
+	protected function sortCategories(array & $categories)
+	{
+		usort($categories, function(Category $a, Category  $b) {
+			$countA = count($a->getAncestors());
+			$countB = count($b->getAncestors());
+			if ($countA > $countB)
+			{
+				return 1;
+			}
+			elseif ($countA < $countB)
+			{
+				return -1;
+			}
+			else
+			{
+				return 0;
+			}
+		});
+	}
+
 	protected function getCategories(CategorySearchQuery $searchQuery)
 	{
 		if ($this->cache)
@@ -102,6 +122,7 @@ class SuggestionController
 			if (!$categories = $this->cache->fetch($key))
 			{
 				$categories = $this->categoryService->getCategoriesFulltext($searchQuery, 5);
+				$this->sortCategories($categories);
 				$this->cache->save($key, $categories, self::CACHE_LIFETIME);
 			}
 			return $categories;

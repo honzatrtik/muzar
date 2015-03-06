@@ -23,6 +23,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\InsufficientAuthenticationException;
 use Symfony\Component\Security\Core\SecurityContextInterface;
@@ -35,9 +36,6 @@ class UserController
 
 	/** @var  Router */
 	protected $router;
-
-	/** @var  ItemService */
-	protected $userManager;
 
 	/** @var  EntityManager */
 	protected $em;
@@ -52,14 +50,12 @@ class UserController
 		Router $router,
 		FormFactory $formFactory,
 		EntityManager $em,
-		UserManager $userManager,
-		SecurityContextInterface $securityContext
+		TokenStorageInterface $securityContext
 	)
 	{
 		$this->router = $router;
 		$this->formFactory = $formFactory;
 		$this->em = $em;
-		$this->userManager = $userManager;
 		$this->securityContext = $securityContext;
 	}
 

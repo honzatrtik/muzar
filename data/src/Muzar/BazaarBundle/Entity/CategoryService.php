@@ -39,6 +39,11 @@ class CategoryService
 
 		$q = $query->getElasticaQuery();
 		$q->setSize($maxResults);
+		$q->addSort(array(
+			'depth' => array(
+				'order' => 'asc'
+			),
+		));
 
 		return $repository->find($q);
 	}

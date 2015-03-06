@@ -92,6 +92,20 @@ services:
     json_schema_validator:
         class: JsonSchema\Validator
 
+fos_user:
+    db_driver: orm
+    firewall_name: main
+    user_class: Muzar\BazaarBundle\Entity\User
+
+fos_oauth_server:
+    db_driver: orm       # Driver availables: orm, mongodb, or propel
+    client_class:        Muzar\BazaarBundle\Entity\Client
+    access_token_class:  Muzar\BazaarBundle\Entity\AccessToken
+    refresh_token_class: Muzar\BazaarBundle\Entity\RefreshToken
+    auth_code_class:     Muzar\BazaarBundle\Entity\AuthCode
+    service:
+        user_provider: fos_user.user_provider.username_email
+
 fos_elastica:
     clients:
         default: { host: localhost, port: 9200 }
@@ -151,6 +165,7 @@ fos_elastica:
                 category:
                     mappings:
                         id: { type: long }
+                        depth: { type: integer }
                         strId:
                             boost: 5
                         name:
@@ -184,10 +199,6 @@ doctrine_cache:
             namespace: app_cache_ns
             array: ~
 
-fos_user:
-    db_driver: orm
-    firewall_name: main
-    user_class: Muzar\BazaarBundle\Entity\User
 
 jms_serializer:
     metadata:

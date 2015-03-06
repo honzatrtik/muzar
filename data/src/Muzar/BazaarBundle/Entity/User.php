@@ -7,9 +7,9 @@
 namespace Muzar\BazaarBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
+use FOS\UserBundle\Model\User as BaseUser;
 
 /**
  * @ORM\Entity

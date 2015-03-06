@@ -23,6 +23,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\InsufficientAuthenticationException;
 use Symfony\Component\Security\Core\SecurityContextInterface;
@@ -57,7 +58,7 @@ class ItemController
 		EntityManager $em,
 		ItemService $itemService,
 		QuerySuggesterInterface $querySuggester,
-		SecurityContextInterface $securityContext
+		TokenStorageInterface $securityContext
 	)
 	{
 		$this->router = $router;
