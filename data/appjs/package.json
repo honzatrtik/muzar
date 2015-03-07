@@ -7,6 +7,7 @@
     "test": "mocha --debug --compilers js:\"./test-preprocessor.js\"  \"./src/**/tests/*.js\"",
     "start": "./node_modules/.bin/nodemon ./server.js",
     "prestart": "gulp less && gulp browserify",
+    "apidoc": "./node_modules/.bin/raml2html ./../doc/raml/api.raml > ./../doc/api.html",
     "precommit": [
       "test"
     ]
@@ -23,6 +24,7 @@
   "author": "honza.trtik@gmail.com",
   "license": "ISC",
   "devDependencies": {
+    "abao": "^0.3.1",
     "browserify": "^8.1.1",
     "cors": "^2.5.3",
     "deamdify": "^0.1.1",
@@ -46,6 +48,7 @@
     "node-jsx": "^0.12.4",
     "nodemon": "^1.3.6",
     "raml-mocker-server": "^0.1.1",
+    "raml2html": "^1.4.0",
     "react-tools": "^0.12",
     "reactify": "^1.0.0",
     "vinyl-buffer": "^1.0.0",

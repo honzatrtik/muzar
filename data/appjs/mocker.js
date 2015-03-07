@@ -6,7 +6,7 @@ var express = require('express');
 var app = express();
 
 raml({
-    path: __dirname + '/raml',
+    path: __dirname + '/../doc/raml',
     app: app
 }, function() {});
 
