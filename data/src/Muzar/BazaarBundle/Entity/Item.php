@@ -6,6 +6,7 @@
 
 namespace Muzar\BazaarBundle\Entity;
 
+use Cocur\Slugify\Slugify;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
@@ -16,7 +17,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @ORM\Entity(repositoryClass="Muzar\BazaarBundle\Entity\ItemRepository")
- * @ORM\Table(name="item", indexes={@ORM\Index(name="item_status_idx",columns={"status"})})
+ * @ORM\Table(name="item",indexes={@ORM\Index(name="item_status_idx",columns={"status"}), @ORM\Index(name="sluq_idx", columns={"slug"})})
  * @ORM\HasLifecycleCallbacks
  *
  * @JMS\ExclusionPolicy("all")
@@ -40,6 +41,12 @@ class Item
 	 * @JMS\Expose()
 	 */
 	protected $id;
+
+	/**
+	 * @ORM\Column(type="string")
+	 * @JMS\Expose()
+	 */
+	protected $slug;
 
 	/**
 	 * @ORM\Column(type="string", length=32)
@@ -307,6 +314,25 @@ class Item
 	}
 
 	/**
+	 * @return mixed
+	 */
+	public function getSlug()
+	{
+		return $this->slug;
+	}
+
+	/**
+	 * @param mixed $slug
+	 */
+	public function setSlug($slug)
+	{
+		$this->slug = $slug;
+		return $this;
+	}
+
+
+
+	/**
 	 * @param Contact $contact
 	 */
 	public function setContact(Contact $contact)
@@ -348,6 +374,18 @@ class Item
 		{
 			$this->setCreated(new \DateTime());
 		}
+		return $this;
+	}
+
+	/** @ORM\PrePersist */
+	public function setSlugOnPrePersist()
+	{
+		if (!$this->getId() && !$this->getSlug())
+		{
+			$slugify = new Slugify();
+			$this->setSlug(trim($slugify->slugify($this->getName())));
+		}
+		return $this;
 	}
 
 	/**

@@ -7,6 +7,7 @@
 namespace Muzar\BazaarBundle\DataFixtures\ORM;
 
 
+use Cocur\Slugify\Slugify;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
@@ -66,8 +67,10 @@ class LoadItemData extends AbstractFixture implements FixtureInterface, Containe
 			$item->setName($itemData['name']);
 			$item->setPrice($itemData['price']);
 
+
 			$created = new \DateTime();
 			$created->setTimestamp($itemData['created']);
+
 
 			$item->setCreated($created);
 
@@ -83,6 +86,7 @@ class LoadItemData extends AbstractFixture implements FixtureInterface, Containe
 				$item->setUser($user);
 			}
 
+			$item->setSlugOnPrePersist();
 			$em->persist($item);
 		}
 

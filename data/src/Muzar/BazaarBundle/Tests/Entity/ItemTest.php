@@ -17,8 +17,15 @@ class ItemTest extends ApiTestCase
 	protected function setUp()
 	{
 		parent::setUp();
-	}
 
+		$this->runCommand('doctrine:schema:drop', array(
+			'--force' => TRUE,
+			'--no-debug' => TRUE,
+		));
+		$this->runCommand('doctrine:schema:create', array(
+			'--no-debug' => TRUE,
+		));
+	}
 
 	/**
 	 * @expectedException \InvalidArgumentException
@@ -29,6 +36,26 @@ class ItemTest extends ApiTestCase
 		$item->setStatus('badstatus');
     }
 
+	public function testPrePersistHooks()
+	{
+		$item = new Item();
+		$item->setName('Fender Telecaster');
+
+		/** @var EntityManager $em */
+		/** @var EntityManager em */
+		$em = $this->getKernel()->getContainer()
+			->get('doctrine')
+			->getManager();
+		$em->persist($item);
+		$em->flush();
+
+
+		$this->assertNotEmpty($item->getId());
+		$this->assertNotEmpty($item->getSlug());
+		$this->assertNotEmpty($item->getCreated());
+
+		$this->assertEquals('fender-telecaster', $item->getSlug());
+	}
 
 	public function testValidatePrice()
 	{

@@ -70,6 +70,7 @@ class ItemControllerTest extends ApiTestCase
 
 		$this->assertArrayHasKey('data', $json);
 		$this->assertArrayHasKey('id', $json['data']);
+		$this->assertArrayHasKey('slug', $json['data']);
 		$this->assertArrayHasKey('link', $json['data']);
 	}
 

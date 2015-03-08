@@ -17,7 +17,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ItemService 
 {
-	const DEFAULT_MAX_RESULTS = 27;
+	const DEFAULT_MAX_RESULTS = 30;
 	const DEFAULT_CATEGORY_STR_ID = CategoryService::DEFAULT_CATEGORY_STR_ID;
 
 	/** @var EntityManager */

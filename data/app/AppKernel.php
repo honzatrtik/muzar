@@ -25,7 +25,7 @@ class AppKernel extends Kernel
 			new FOS\RestBundle\FOSRestBundle(),
 			new FOS\ElasticaBundle\FOSElasticaBundle(),
 			new FOS\UserBundle\FOSUserBundle(),
-			new Escape\WSSEAuthenticationBundle\EscapeWSSEAuthenticationBundle(),
+			new FOS\OAuthServerBundle\FOSOAuthServerBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test', 'docker'))) {
@@ -43,17 +43,13 @@ class AppKernel extends Kernel
 		$loader->load(__DIR__.'/config/'.$this->getEnvironment().'/config.yml');
 	}
 
-	public function getCacheDir() {
-		if (in_array($this->getEnvironment(), array('docker'))) {
-			return sprintf('/dev/shm/%s/cache/%s', $this->getName(),  $this->getEnvironment());
-		}
+	public function getCacheDir()
+	{
 		return parent::getCacheDir();
 	}
 
-	public function getLogDir() {
-		if (in_array($this->getEnvironment(), array('docker'))) {
-			return sprintf('/dev/shm/%s/logs/%s', $this->getName(),  $this->getEnvironment());
-		}
+	public function getLogDir()
+	{
 		return parent::getLogDir();
 	}
 }

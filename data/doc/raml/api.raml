@@ -29,6 +29,7 @@ version: 0.1
                 "data": [
                   {
                     "id": 1,
+                    "slug": "fender-telecaster-mexiko",
                     "name": "Fender Telecaster Mexico",
                     "image_url": "http://lorempixel.com/300/200",
                     "district": "Olomoucký kraj",
@@ -39,6 +40,7 @@ version: 0.1
                   },
                   {
                     "id": 2,
+                    "slug": "fender-telecaster-mexiko",
                     "name": "Fender Precision Bass",
                     "image_url": "http://lorempixel.com/300/200",
                     "district": "Královehradecký kraj",
@@ -49,6 +51,7 @@ version: 0.1
                   },
                   {
                     "id": 3,
+                    "slug": "fender-telecaster-mexiko",
                     "name": "Fender Telecaster Mexico",
                     "image_url": "http://lorempixel.com/300/200",
                     "district": "Olomoucký kraj",
@@ -59,6 +62,7 @@ version: 0.1
                   },
                   {
                     "id": 4,
+                    "slug": "fender-telecaster-mexiko",
                     "name": "Fender Precision Bass",
                     "image_url": "http://lorempixel.com/300/200",
                     "district": "Královehradecký kraj",
@@ -69,6 +73,7 @@ version: 0.1
                   },
                   {
                     "id": 5,
+                    "slug": "fender-telecaster-mexiko",
                     "name": "Fender Telecaster Mexico",
                     "image_url": "http://lorempixel.com/300/200",
                     "district": "Olomoucký kraj",
@@ -79,6 +84,7 @@ version: 0.1
                   },
                   {
                     "id": 6,
+                    "slug": "fender-telecaster-mexiko",
                     "name": "Fender Precision Bass",
                     "image_url": "http://lorempixel.com/300/200",
                     "district": "Královehradecký kraj",
@@ -89,6 +95,7 @@ version: 0.1
                   },
                   {
                     "id": 7,
+                    "slug": "fender-telecaster-mexiko",
                     "name": "Fender Telecaster Mexico",
                     "image_url": "http://lorempixel.com/300/200",
                     "district": "Olomoucký kraj",
@@ -99,6 +106,7 @@ version: 0.1
                   },
                   {
                     "id": 8,
+                    "slug": "fender-telecaster-mexiko",
                     "name": "Fender Precision Bass",
                     "image_url": "http://lorempixel.com/300/200",
                     "district": "Královehradecký kraj",
@@ -109,6 +117,7 @@ version: 0.1
                   },
                   {
                     "id": 9,
+                    "slug": "fender-telecaster-mexiko",
                     "name": "Fender Telecaster Mexico",
                     "image_url": "http://lorempixel.com/300/200",
                     "district": "Olomoucký kraj",
@@ -119,6 +128,7 @@ version: 0.1
                   },
                   {
                     "id": 10,
+                    "slug": "fender-telecaster-mexiko",
                     "name": "Fender Precision Bass",
                     "image_url": "http://lorempixel.com/300/200",
                     "district": "Královehradecký kraj",
@@ -141,12 +151,33 @@ version: 0.1
         200:
           body:
             application/json:
+              schema: |
+                {
+                  "$schema": "http://json-schema.org/draft-04/schema#",
+                  "id": "http://muzar.cz/ad-wrapper",
+                  "type": "object",
+                  "properties": {
+                    "meta": {
+                      "id": "http://muzar.cz/ad-wrapper/meta",
+                      "type": "object",
+                      "properties": {}
+                    },
+                    "data": {
+                     "$ref": "file:../schema/ad.json"
+                    }
+                  },
+                  "required": [
+                    "meta",
+                    "data"
+                  ]
+                }
               example: |
                 {
                   "meta": {
                   },
                   "data": {
                     "id": 2,
+                    "slug": "fender-telecaster-mexiko",
                     "name": "Fender Telecaster Mexico",
                     "status": "active",
                     "image_url": "http://placehold.it/300x200/008&text=2",
@@ -164,6 +195,19 @@ version: 0.1
                     "url": "/ads/2"
                   }
                 }
+    /inquiries:
+      post:
+        description: Sends an inquiry to ad owner.
+        body:
+          application/json:
+            example: |
+              {
+                "name": "John Doe",
+                "email": "john@doe.com",
+                "phone": "1234123123",
+                "text": "Im interrested!"
+              }
+
 
 
 /suggestions:
@@ -202,28 +246,6 @@ version: 0.1
                       "str_id": "akusticke-kontrabasy",
                       "name": "Akustické a kontrabasy",
                       "path": ["Baskytary", "Akustické a kontrabasy"]
-                    }
-                  ],
-                  "ads": [
-                    {
-                      "id": 1,
-                      "name": "Akusticka kytara Jumbo",
-                      "image_url": "http://lorempixel.com/300/200",
-                      "district": "Olomoucký kraj",
-                      "price": 900,
-                      "description": "",
-                      "created": "2013-12-12 12:45:30",
-                      "url": "/ads/10"
-                    },
-                    {
-                      "id": 2,
-                      "name": "Kontrabas akusticky, preklizka",
-                      "image_url": "http://lorempixel.com/300/200",
-                      "district": "Královehradecký kraj",
-                      "price": 20000,
-                      "description": "",
-                      "created": "2013-12-12 12:45:30",
-                      "url": "/ads/2"
                     }
                   ]
                 }

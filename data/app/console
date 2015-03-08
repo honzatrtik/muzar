@@ -1,6 +1,10 @@
 #!/usr/bin/env php
 <?php
 
+use \Symfony\Component\Console\Command;
+use \Symfony\Component\Console\Input;
+use \Symfony\Component\Console\Output;
+
 // if you don't want to setup permissions the proper way, just uncomment the following PHP line
 // read http://symfony.com/doc/current/book/installation.html#configuration-and-setup for more information
 umask(0000);
@@ -24,4 +28,13 @@ if ($debug) {
 
 $kernel = new AppKernel($env, $debug);
 $application = new Application($kernel);
+
+$application->add(new Command\Command('muzar:rebuid-data'))
+	->setCode(function(Input\InputInterface $input, Output\OutputInterface $output) use ($application) {
+		$application->find('doctrine:schema:drop')->run(new Input\StringInput('doctrine:schema:drop --force'), $output);
+		$application->find('doctrine:schema:create')->run(new Input\StringInput('doctrine:schema:create'), $output);
+		$application->find('doctrine:fixtures:load')->run(new Input\StringInput('doctrine:fixtures:load --no-interaction'), $output);
+		$application->find('fos:elastica:populate')->run(new Input\StringInput('fos:elastica:populate'), $output);
+	});
+
 $application->run($input);

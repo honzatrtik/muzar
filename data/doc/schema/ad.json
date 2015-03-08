@@ -1,0 +1,54 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://muzar.cz/ad",
+  "type": "object",
+  "properties": {
+    "id": {
+      "id": "http://muzar.cz/ad/id",
+      "type": "integer"
+    },
+    "slug": {
+      "id": "http://muzar.cz/ad/slug",
+      "type": "string"
+    },
+    "name": {
+      "id": "http://muzar.cz/ad/name",
+      "type": "string"
+    },
+    "image_url": {
+      "id": "http://muzar.cz/ad/image_url",
+      "type": "string"
+    },
+    "district": {
+      "id": "http://muzar.cz/ad/district",
+      "type": "string"
+    },
+    "price": {
+      "id": "http://muzar.cz/ad/price",
+      "type": "integer"
+    },
+    "description": {
+      "id": "http://muzar.cz/ad/description",
+      "type": "string"
+    },
+    "created": {
+      "id": "http://muzar.cz/ad/created",
+      "type": "string"
+    },
+    "url": {
+      "id": "http://muzar.cz/ad/url",
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "slug",
+    "name",
+    "image_url",
+    "district",
+    "price",
+    "description",
+    "created",
+    "url"
+  ]
+}

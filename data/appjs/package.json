@@ -7,6 +7,7 @@
     "test": "mocha --debug --compilers js:\"./test-preprocessor.js\"  \"./src/**/tests/*.js\"",
     "start": "./node_modules/.bin/nodemon ./server.js",
     "prestart": "gulp less && gulp browserify",
+    "apitest": "./node_modules/.bin/abao -f ./apitest-hooks.js ./../doc/raml/api.raml http://localhost:8080/api",
     "apidoc": "./node_modules/.bin/raml2html ./../doc/raml/api.raml > ./../doc/api.html",
     "precommit": [
       "test"
