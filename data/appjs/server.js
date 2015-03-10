@@ -1,26 +1,10 @@
 'use strict';
 
+require("babel/register")({
+    experimental: true
+});
+
 var debugError = require('debug')('Server error');
-
-var ReactTools = require('react-tools');
-var fs = require('fs');
-
-require.extensions['.js'] = function(module, filename) {
-    var src = fs.readFileSync(filename, {
-        encoding: 'utf8'
-    });
-    try {
-        src = ReactTools.transform(src, {
-            es5: true,
-            stripTypes: true,
-            harmony: true
-        });
-    } catch (e) {
-        throw new Error('Error transforming ' + filename + ' to JSX: ' + e.toString());
-    }
-    module._compile(src, filename);
-};
-
 
 var _ = require('lodash');
 var serverInitAction = require('./src/actions/server-init-action.js');
