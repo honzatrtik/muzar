@@ -13,9 +13,11 @@ muzar_scraper:
 
 _oauth2_authorize:
     resource: "@FOSOAuthServerBundle/Resources/config/routing/authorize.xml"
+    prefix:   /api
 
 _oauth2_token:
     resource: "@FOSOAuthServerBundle/Resources/config/routing/token.xml"
+    prefix:   /api
 
 
 _profiler:

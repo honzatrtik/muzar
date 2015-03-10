@@ -151,26 +151,6 @@ version: 0.1
         200:
           body:
             application/json:
-              schema: |
-                {
-                  "$schema": "http://json-schema.org/draft-04/schema#",
-                  "id": "http://muzar.cz/ad-wrapper",
-                  "type": "object",
-                  "properties": {
-                    "meta": {
-                      "id": "http://muzar.cz/ad-wrapper/meta",
-                      "type": "object",
-                      "properties": {}
-                    },
-                    "data": {
-                     "$ref": "file:../schema/ad.json"
-                    }
-                  },
-                  "required": [
-                    "meta",
-                    "data"
-                  ]
-                }
               example: |
                 {
                   "meta": {

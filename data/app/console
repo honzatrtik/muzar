@@ -35,6 +35,7 @@ $application->add(new Command\Command('muzar:rebuid-data'))
 		$application->find('doctrine:schema:create')->run(new Input\StringInput('doctrine:schema:create'), $output);
 		$application->find('doctrine:fixtures:load')->run(new Input\StringInput('doctrine:fixtures:load --no-interaction'), $output);
 		$application->find('fos:elastica:populate')->run(new Input\StringInput('fos:elastica:populate'), $output);
+		$application->find('oauth:client:create')->run(new Input\StringInput('oauth:client:create --grant-type="password" -p web'), $output);
 	});
 
 $application->run($input);

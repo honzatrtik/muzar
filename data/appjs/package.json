@@ -7,7 +7,7 @@
     "test": "mocha --debug --compilers js:\"./test-preprocessor.js\"  \"./src/**/tests/*.js\"",
     "start": "./node_modules/.bin/nodemon ./server.js",
     "prestart": "gulp less && gulp browserify",
-    "apitest": "./node_modules/.bin/abao -f ./apitest-hooks.js ./../doc/raml/api.raml http://localhost:8080/api",
+    "apitest": "./node_modules/.bin/abao -t 5000 -f ./apitest-hooks.js ./../doc/raml/api.raml http://localhost:8080/api",
     "apidoc": "./node_modules/.bin/raml2html ./../doc/raml/api.raml > ./../doc/api.html",
     "precommit": [
       "test"
@@ -70,6 +70,7 @@
     "lodash": "^3.0.0",
     "morearty": "0.7.9",
     "react": "^0.12",
+    "react-bootstrap": "^0.16.1",
     "react-router": "^0.11.6",
     "rsvp": "^3.0.17",
     "superagent": "^0.21.0",

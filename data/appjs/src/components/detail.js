@@ -65,7 +65,7 @@ var Detail = React.createClass({
 
                             <h4>Prodávající:</h4>
                             <p>
-                                Pavel Novák<br />
+                            {ad.user.username}<br />
                                 Třinec<br />
                                 <span className="text-muted">Ostravsky kraj</span><br />
                                 Tel: 736252366<br />
