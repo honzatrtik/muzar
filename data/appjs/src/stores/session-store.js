@@ -2,10 +2,26 @@
 
 var Imm = require('immutable');
 var BaseStore = require('./base-store.js');
-
 var superagent = require('../superagent.js');
+var config = require('../../config.js');
+
 
 class SessionStore extends BaseStore {
+
+    constructor(dispatcher) {
+        super(dispatcher);
+
+        var self = this;
+        superagent.use(function(req) {
+            var accessToken = self.getAccessToken();
+            if (accessToken) {
+                req.query({
+                    access_token: accessToken,
+                    client_id: config.api.clientId
+                });
+            }
+        });
+    }
 
     getAccessToken() {
         return this.getBinding().toJS('session.access_token');

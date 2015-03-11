@@ -3,6 +3,7 @@
 var Promise = require('../promise.js');
 var superagent = require('../superagent.js');
 var HttpError = require('../errors/http-error.js');
+var config = require('../../config.js');
 
 module.exports.loginAction = function loginAction(dispatcher, payload) {
 
@@ -12,7 +13,7 @@ module.exports.loginAction = function loginAction(dispatcher, payload) {
         grant_type: 'password',
         username: payload.username,
         password: payload.password,
-        client_id: '1_4d2s2e5atjk0w8kcsc0cwo8c048c00s484sscgwogo80cs4kw0'
+        client_id: config.api.clientId,
     });
 
     var promise = new Promise(function(resolve, reject) {
