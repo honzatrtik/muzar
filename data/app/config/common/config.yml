@@ -143,7 +143,13 @@ fos_elastica:
                 item:
                     mappings:
                         id: { type: long }
+                        status:
+                            type: string
+                            index: not_analyzed
                         price: { type: float }
+                        category_str_ids:
+                            type: string
+                            index: not_analyzed
                         name:
                             boost: 5
                             analyzer: my_czech
@@ -154,13 +160,10 @@ fos_elastica:
                     persistence:
                         driver: orm
                         model: Muzar\BazaarBundle\Entity\Item
-                        provider:
-                            query_builder_method: createStatusActiveQueryBuilder
+                        provider: ~
                         finder: ~
-                        listener:
-                            is_indexable_callback: isActive
                     serializer:
-                        groups: [elastica, Default]
+                        groups: [elastica]
 
                 category:
                     mappings:
@@ -180,7 +183,7 @@ fos_elastica:
                         provider: ~
                         finder: ~
                     serializer:
-                        groups: [elastica, Default]
+                        groups: [elastica]
 
                 query:
                     mappings:

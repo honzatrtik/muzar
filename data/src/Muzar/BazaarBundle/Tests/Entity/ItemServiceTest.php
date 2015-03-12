@@ -41,48 +41,56 @@ class ItemServiceTest extends ApiTestCase
 
 	public function testLimit()
 	{
-		$items = $this->service->getItems(ItemService::DEFAULT_CATEGORY_STR_ID, 1);
+		$items = $this->service->getItems(NULL, 1);
 		$this->assertCount(1, $items);
 	}
 
 	public function testStartId()
 	{
-		$items = $this->service->getItems(ItemService::DEFAULT_CATEGORY_STR_ID, 10);
+		$items = $this->service->getItems(NULL, 10);
 		$startId = $items[9]->getId();
-		$items = $this->service->getItems(ItemService::DEFAULT_CATEGORY_STR_ID, 10, $startId);
+		$items = $this->service->getItems(NULL, 10, $startId);
 
 		$this->assertEquals($startId, $items[0]->getId());
 	}
 
 	public function testResultAndTotalEqual()
     {
-		$items = $this->service->getItems(ItemService::DEFAULT_CATEGORY_STR_ID, PHP_INT_MAX);
-		$this->assertEquals($this->service->getItemsTotal(ItemService::DEFAULT_CATEGORY_STR_ID), count($items));
+		$items = $this->service->getItems(NULL, 32^2); // Elastica pretece na PHP_MAX_INT
+		$this->assertEquals($this->service->getItemsTotal(NULL), count($items));
     }
 
-	public function testFulltextQuery()
+	public function testQuery()
 	{
-		$holder = $this->getFulltextItemParamHolder('kytara');
-		$items = $this->service->getItemsFulltext($holder, 1024); // Jinak  preteceme
+		$holder = $this->getItemParamHolder('kytara');
+		$items = $this->service->getItems($holder, 1024); // Jinak  preteceme
 		foreach($items as $item)
 		{
 			$this->assertInstanceOf('Muzar\BazaarBundle\Entity\Item', $item);
 		}
 	}
 
-	protected function getFulltextItemParamHolder($query = '', $priceFrom = NULL, $priceTo = NULL)
+	public function testQueryAndCategoryAndPrice()
+	{
+		$holder = $this->getItemParamHolder('kytara', 1000, 5000, 'kytary');
+		$items = $this->service->getItems($holder, 1024);
+		
+	}
+
+	protected function getItemParamHolder($query = '', $priceFrom = NULL, $priceTo = NULL, $categoryStrId = NULL)
 	{
 		$holder = new ItemSearchQuery();
 		return $holder->setQuery($query)
 			->setPriceFrom($priceFrom)
-			->setPriceTo($priceTo);
+			->setPriceTo($priceTo)
+			->setCategoryStrId($categoryStrId);
 	}
 
-	public function testFulltextQueryResultAndTotalEqual()
+	public function testQueryResultAndTotalEqual()
 	{
-		$holder = $this->getFulltextItemParamHolder('kytara');
-		$items = $this->service->getItemsFulltext($holder, 1024); // Jinak  preteceme
-		$this->assertEquals($this->service->getItemsFulltextTotal($holder), count($items));
+		$holder = $this->getItemParamHolder('kytara');
+		$items = $this->service->getItems($holder, 1024); // Jinak  preteceme
+		$this->assertEquals($this->service->getItemsTotal($holder), count($items));
 	}
 
 	public function testGetItem()

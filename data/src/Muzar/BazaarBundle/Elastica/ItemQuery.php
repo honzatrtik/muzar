@@ -8,6 +8,8 @@ namespace Muzar\BazaarBundle\Elastica;
 
 use Elastica\Filter\AbstractFilter;
 use Elastica\Filter\BoolAnd;
+use Elastica\Filter\Term;
+use Elastica\Filter\Terms;
 use Elastica\Filter\Type;
 use Elastica\Query;
 use Muzar\BazaarBundle\Entity\ItemSearchQuery;
@@ -22,11 +24,6 @@ class ItemQuery extends Query
 
 	function __construct(ItemSearchQuery $categorySearchQuery)
 	{
-		if (!$categorySearchQuery->isFilled())
-		{
-			throw new \InvalidArgumentException('ItemSearchQuery must be filled!');
-		}
-
 		$query = $categorySearchQuery->getQuery();
 		parent::__construct($query ? new Query\QueryString($query) : new Query\MatchAll());
 
@@ -40,6 +37,11 @@ class ItemQuery extends Query
 		if ($range = array_filter($range))
 		{
 			$this->filters->addFilter(new \Elastica\Filter\Range('price', $range));
+		}
+
+		if ($categoryStrId = $categorySearchQuery->getCategoryStrId())
+		{
+			$this->filters->addFilter(new Terms('category_str_ids', array($categoryStrId)));
 		}
 
 		$this->setPostFilter($this->filters);

@@ -128,22 +128,15 @@ class ItemController
 
 		$searchQuery = ItemSearchQuery::createFromRequest($request);
 
-		if ($searchQuery->isFilled())
+		if ($query = $searchQuery->getQuery())
 		{
-			if ($query = $searchQuery->getQuery())
-			{
-				// Add search query to suggester index
-				$this->querySuggester->add($query);
-			}
+			// Add search query to suggester index
+			$this->querySuggester->add($query);
+		}
 
-			$result = $this->itemService->getItemsFulltext($searchQuery, $maxResults + 1, $startId);
-			$total = $this->itemService->getItemsFulltextTotal($searchQuery);
-		}
-		else
-		{
-			$result = $this->itemService->getItems($categoryStrId, $maxResults + 1, $startId);
-			$total = $this->itemService->getItemsTotal($categoryStrId);
-		}
+		$result = $this->itemService->getItems($searchQuery, $maxResults + 1, $startId);
+		$total = $this->itemService->getItemsTotal($searchQuery);
+
 
 		if (count($result) === ($maxResults + 1))
 		{
@@ -151,7 +144,6 @@ class ItemController
 			$nextLink = $this->router->generate('muzar_bazaar_item_all', array_merge($searchQuery->toArray(), array(
 				'startId' => $lastItem->getId(),
 				'limit' => $maxResults,
-				'category' => $request->query->get('category'),
 			)));
 		}
 		else
@@ -164,7 +156,7 @@ class ItemController
 			'meta' => array(
 				'total' => $total,
 				'nextLink' => $nextLink,
-				'query' => $searchQuery->toArray(),
+				'query' => $searchQuery,
 			),
 		);
 

@@ -27,6 +27,7 @@ class Category implements Node
 	 * @ORM\GeneratedValue
 	 *
 	 * @JMS\Expose()
+	 * @JMS\Groups({"elastica"})
 	 */
 	private $id;
 
@@ -44,6 +45,7 @@ class Category implements Node
 	 * @ORM\Column(type="string", length=128)
 	 *
 	 * @JMS\Expose()
+	 * @JMS\Groups({"elastica"})
 	 */
 	private $strId;
 
@@ -52,6 +54,7 @@ class Category implements Node
 	 * @ORM\Column(type="string", length=128)
 	 *
 	 * @JMS\Expose()
+	 * @JMS\Groups({"elastica"})
 	 */
 	private $name;
 
@@ -64,7 +67,7 @@ class Category implements Node
 	/**
 	 * @var Category[]
 	 */
-	private $ancestors;
+	private $ancestors = array();
 
 	function __construct()
 	{
@@ -132,6 +135,7 @@ class Category implements Node
 
 	/**
 	 * @JMS\VirtualProperty
+	 * @JMS\Groups({"elastica"})
 	 * @return string
 	 */
 	public function getPath()
@@ -142,7 +146,7 @@ class Category implements Node
 	/**
 	 * @param Category[] $ancestors
 	 */
-	public function setAncestors($ancestors)
+	public function setAncestors(array $ancestors)
 	{
 		$this->ancestors = $ancestors;
 		return $this;

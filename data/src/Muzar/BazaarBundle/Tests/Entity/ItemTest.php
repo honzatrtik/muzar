@@ -4,6 +4,7 @@ namespace Muzar\BazaarBundle\Tests\Entity;
 
 use Doctrine\ORM\EntityManager;
 use DoctrineExtensions\NestedSet\Manager;
+use Muzar\BazaarBundle\Entity\Category;
 use Muzar\BazaarBundle\Entity\Item;
 use Muzar\BazaarBundle\Entity\ItemService;
 use Muzar\BazaarBundle\Tests\ApiTestCase;
@@ -64,5 +65,18 @@ class ItemTest extends ApiTestCase
 
 		$errors = $validator->validate($item);
 		$this->assertNotEmpty($errors);
+	}
+
+	public function testGetCategoryStrIds()
+	{
+		$item = new Item();
+
+		$this->assertEquals(array(), $item->getCategoryStrIds());
+
+		$cat = new Category();
+		$cat->setStrId('test');
+		$item->setCategory($cat);
+
+		$this->assertEquals(array('test'), $item->getCategoryStrIds());
 	}
 }
