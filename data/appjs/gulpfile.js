@@ -3,7 +3,6 @@ var gulp = require('gulp');
 var rename = require('gulp-rename');
 var browserify = require('browserify');
 var deamdify = require('deamdify');
-var reactify = require('reactify');
 var util = require('gulp-util');
 var less = require('gulp-less');
 var watchLess = require('gulp-watch-less');
@@ -14,7 +13,7 @@ var plumber = require('gulp-plumber');
 var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
 var watchify = require('watchify');
-var es6ify = require('es6ify');
+var babelify = require('babelify');
 
 var uglifyConfig = {
     compress: {
@@ -104,14 +103,9 @@ function browserifyShare(config, watch){
         });
     }
 
-    b.transform(function(filename, options) {
-        options = options || {};
-        options.target = 'es5';
-        options.es6 = true;
-        options.stripTypes = true;
-        return reactify(filename, options);
-
-    });
+    b.transform(babelify.configure({
+        experimental: true
+    }));
     b.transform(deamdify);
 
     return bundleShare(b, config);

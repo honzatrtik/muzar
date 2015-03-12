@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --debug --compilers js:\"./test-preprocessor.js\"  \"./src/**/tests/*.js\"",
+    "test": "mocha --debug --compilers \"js:babel/register\"  \"./src/**/tests/*.js\"",
     "start": "./node_modules/.bin/nodemon ./server.js",
     "prestart": "gulp less && gulp browserify",
     "apitest": "./node_modules/.bin/abao -t 5000 -f ./apitest-hooks.js ./../doc/raml/api.raml http://localhost:8080/api",
@@ -26,6 +26,8 @@
   "license": "ISC",
   "devDependencies": {
     "abao": "^0.3.1",
+    "babel": "^4.7.8",
+    "babelify": "^5.0.4",
     "browserify": "^8.1.1",
     "cors": "^2.5.3",
     "deamdify": "^0.1.1",
