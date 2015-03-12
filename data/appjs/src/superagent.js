@@ -2,6 +2,7 @@
 
 var config = require('../config.js');
 var superagent = require('superagent');
+var Promise = require('./promise.js');
 
 var end = superagent.Request.prototype.end;
 superagent.Request.prototype.end = function() {
@@ -9,6 +10,18 @@ superagent.Request.prototype.end = function() {
     end.apply(this, arguments);
 };
 
+superagent.Request.prototype.promise = function() {
+    var self = this;
+    return new Promise(function(resolve, reject) {
+        self.end(function(res) {
+            if (res.ok) {
+                resolve(res.body);
+            } else {
+                reject(res);
+            }
+        });
+    });
+};
 
 
 var plugins = [];

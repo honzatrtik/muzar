@@ -23,7 +23,7 @@ class UserControllerTest extends ApiTestCase
 
 	public function testGet()
 	{
-		$this->setWsseUsername('jan.novak@mailinator.com');
+		$this->setUsername('jan.novak@mailinator.com');
 		$response = $this->request('GET', '/api/users/current');
 		$json = $this->assertJsonResponse($response, 200);
 
@@ -42,7 +42,7 @@ class UserControllerTest extends ApiTestCase
 
 	public function testGetItemSearchQueries()
 	{
-		$this->setWsseUsername('jan.novak@mailinator.com');
+		$this->setUsername('jan.novak@mailinator.com');
 		$response = $this->request('GET', '/api/users/current/watchdog');
 		$json = $this->assertJsonResponse($response, 200);
 

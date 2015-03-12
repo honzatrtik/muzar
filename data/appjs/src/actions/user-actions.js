@@ -13,7 +13,7 @@ module.exports.loginAction = function loginAction(dispatcher, payload) {
         grant_type: 'password',
         username: payload.username,
         password: payload.password,
-        client_id: config.api.clientId,
+        client_id: config.api.clientId
     });
 
     var promise = new Promise(function(resolve, reject) {

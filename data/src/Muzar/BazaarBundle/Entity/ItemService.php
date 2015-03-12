@@ -58,51 +58,6 @@ class ItemService
 		return $item;
 	}
 
-	public function getItems($categoryStrId = CategoryService::DEFAULT_CATEGORY_STR_ID, $maxResults = self::DEFAULT_MAX_RESULTS, $startId = NULL)
-	{
-		$builder = $this->getItemsQueryBuilder($categoryStrId);
-		if ($startId)
-		{
-			$builder->andWhere('i.id <= :startId')
-				->setParameter('startId', $startId);
-		}
-
-		// Nacteme o jeden prvek vic, abychom zjistili, zda mame dalsi stranku
-		$builder
-			->setMaxResults($maxResults)
-			->addOrderBy('i.id', 'DESC');
-
-		$query = $builder->getQuery();
-		$query->useResultCache(true, 30);
-
-		return $builder->getQuery()->getResult();
-	}
-
-
-	public function getItemsTotal($categoryStrId = CategoryService::DEFAULT_CATEGORY_STR_ID)
-	{
-		return $this->getItemsQueryBuilder($categoryStrId)->select('COUNT(i.id)')->getQuery()->getSingleScalarResult();
-	}
-
-
-	protected function getItemsQueryBuilder($categoryStrId, $alias = 'i', $categoryAlias = 'c')
-	{
-		/** @var ItemRepository $repository */
-		$repository = $this->em->getRepository('Muzar\BazaarBundle\Entity\Item');
-
-		// Pridame sebe
-		$categoryStrIds = array_map(function(Category $category) {
-			return $category->getStrId();
-		}, $this->categoryService->getDescendants($categoryStrId, TRUE));
-
-
-		$builder = $repository->createStatusActiveQueryBuilder($alias);
-		return $builder
-			->join($alias . '.category', $categoryAlias)
-			->andWhere($builder->expr()->in($categoryAlias . '.strId', $categoryStrIds));
-	}
-
-
 	/**
 	 * @param ItemSearchQuery $query
 	 * @return ItemQuery
@@ -112,14 +67,16 @@ class ItemService
 		$q = $query->getElasticaQuery();
 		$q->addSort(array(
 			'id' => array(
-				'order' => 'asc',
+				'order' => 'desc',
 			)
 		));
 		return $q;
 	}
 
-	public function getItemsFulltext(ItemSearchQuery $query, $maxResults = self::DEFAULT_MAX_RESULTS, $startId = NULL)
+	public function getItems(ItemSearchQuery $query = NULL, $maxResults = self::DEFAULT_MAX_RESULTS, $startId = NULL)
 	{
+		$query = $query ?: new ItemSearchQuery();
+
 		/** @var ElasticaBundle\Repository $repository */
 		$repository = $this->rm->getRepository('Muzar\BazaarBundle\Entity\Item');
 
@@ -137,7 +94,7 @@ class ItemService
 
 	}
 
-	public function getItemsFulltextTotal(ItemSearchQuery $query)
+	public function getItemsTotal(ItemSearchQuery $query)
 	{
 		/** @var ElasticaBundle\Repository $repository */
 		$repository = $this->rm->getRepository('Muzar\BazaarBundle\Entity\Item');

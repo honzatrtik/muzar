@@ -76,7 +76,7 @@ class ItemControllerTest extends ApiTestCase
 
 	public function testPost()
 	{
-		$this->setWsseUsername('jan.novak@mailinator.com');
+		$this->setUsername('jan.novak@mailinator.com');
 
 		/** @var CategoryService $cs */
 		$cs = $this->getKernel()->getContainer()->get('muzar_bazaar.model_service.category');
@@ -108,9 +108,16 @@ class ItemControllerTest extends ApiTestCase
 		$json = $this->assertJsonResponse($response, 201);
 	}
 
+	public function testEmptyPost()
+	{
+		$this->setUsername('jan.novak@mailinator.com');
+		$response = $this->request('POST', '/api/ads', array());
+		$json = $this->assertJsonResponse($response, 400);
+	}
+
 	public function testPostInvalid()
 	{
-		$this->setWsseUsername('jan.novak@mailinator.com');
+		$this->setUsername('jan.novak@mailinator.com');
 
 		/** @var CategoryService $cs */
 		$cs = $this->getKernel()->getContainer()->get('muzar_bazaar.model_service.category');
@@ -199,7 +206,7 @@ class ItemControllerTest extends ApiTestCase
 
 	public function testPut()
 	{
-		$this->setWsseUsername('jan.novak@mailinator.com');
+		$this->setUsername('jan.novak@mailinator.com');
 
 		/** @var CategoryService $cs */
 		$cs = $this->getKernel()->getContainer()->get('muzar_bazaar.model_service.category');
@@ -246,7 +253,7 @@ class ItemControllerTest extends ApiTestCase
 
 	public function testPutDifferentUser()
 	{
-		$this->setWsseUsername('jan.novak@mailinator.com');
+		$this->setUsername('jan.novak@mailinator.com');
 
 		/** @var CategoryService $cs */
 		$cs = $this->getKernel()->getContainer()->get('muzar_bazaar.model_service.category');
@@ -268,7 +275,7 @@ class ItemControllerTest extends ApiTestCase
 
 		$url = '/api/ads/' . $json['id'];
 
-		$this->setWsseUsername('josef.svoboda@mailinator.com');
+		$this->setUsername('josef.svoboda@mailinator.com');
 		$response = $this->request('PUT', $url,  array(
 			'name' => 'XXX',
 			'description' => '',

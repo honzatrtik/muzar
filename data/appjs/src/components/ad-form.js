@@ -8,7 +8,7 @@ var AdFormStore = require('../stores/ad-form-store.js');
 var CategoryMultiselect = require('./category-multiselect.js');
 var GooglePlaceAutocompleter = require('./google-place-autocompleter.js');
 var cs = React.addons.classSet;
-var { adFormSubmitAction } = require('../actions/ad-form-actions.js');
+var { adCreateAction } = require('../actions/ad-actions.js');
 
 
 var AdForm = React.createClass({
@@ -17,7 +17,7 @@ var AdForm = React.createClass({
 
     handleSubmit: function(event) {
         event.preventDefault();
-        this.executeAction(adFormSubmitAction);
+        this.executeAction(adCreateAction, this.getStore(AdFormStore).get());
     },
 
     renderErrors() {
@@ -103,7 +103,7 @@ var AdForm = React.createClass({
                     </div>
                 </div>
 
-                <CategoryMultiselect value={store.get('category')} onChange={store.getHandler('category')}  items={items.toJS()}/>
+                <CategoryMultiselect value={store.get('category') || []} onChange={store.getHandler('category')}  items={items.toJS()}/>
 
                 <div className="col-xs-12 col-sm-12 col-md-12">
 
@@ -190,7 +190,7 @@ var AdForm = React.createClass({
 
 
                 <div className="col-xs-12 col-sm-8 col-md-8">
-                    <button type="submit" className="btn btn-primary btn-lg">Pokračovat</button>
+                    <button disabled={store.isLoading()} type="submit" className="btn btn-primary btn-lg">Pokračovat</button>
                 </div>
 
 

@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="item_search_query", indexes={@ORM\Index(name="item_search_query_user_id_hash_idx",columns={"user_id","hash"})})
+ * @ORM\Table(name="item_search_query", indexes={@ORM\Index(name="item_search_query_user_id_hash_idx",columns={"user_id","hash"}),@ORM\Index(name="item_search_query_category_str_id_idx",columns={"category_str_id"})})
  * @ORM\HasLifecycleCallbacks
  * @ORM\EntityListeners({"Muzar\BazaarBundle\Entity\ItemSearchQueryListener"})
  * @JMS\ExclusionPolicy("all")
@@ -28,7 +28,6 @@ class ItemSearchQuery
 	 * @ORM\Column(type="integer")
 	 * @ORM\Id
 	 * @ORM\GeneratedValue(strategy="AUTO")
-	 * @JMS\Expose()
 	 */
 	protected $id;
 
@@ -38,6 +37,12 @@ class ItemSearchQuery
 	 * @JMS\Expose()
 	 */
 	protected $query;
+
+	/**
+	 * @ORM\Column(type="string", nullable=true)
+	 * @JMS\Expose()
+	 */
+	protected $categoryStrId;
 
 	/**
 	 * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
@@ -53,7 +58,6 @@ class ItemSearchQuery
 
 	/**
 	 * @ORM\Column(type="string")
-	 * @JMS\Expose()
 	 */
 	protected $hash;
 
@@ -62,7 +66,6 @@ class ItemSearchQuery
 	 * @var User
 	 * @ORM\ManyToOne(targetEntity="User", cascade={"persist"})
 	 * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
-	 * @JMS\Expose()
 	 * @Assert\NotBlank()
 	 **/
 	protected  $user;
@@ -79,7 +82,8 @@ class ItemSearchQuery
 		$itemSearchQuery
 			->setQuery($request->query->getAlnum('query'))
 			->setPriceFrom($request->query->get('priceFrom'))
-			->setPriceTo($request->query->get('priceTo'));
+			->setPriceTo($request->query->get('priceTo'))
+			->setCategoryStrId($request->query->get('category'));
 
 		return $itemSearchQuery;
 	}
@@ -154,6 +158,25 @@ class ItemSearchQuery
 	}
 
 	/**
+	 * @return mixed
+	 */
+	public function getCategoryStrId()
+	{
+		return $this->categoryStrId;
+	}
+
+	/**
+	 * @param mixed $categoryStrId
+	 */
+	public function setCategoryStrId($categoryStrId)
+	{
+		$this->categoryStrId = $categoryStrId;
+		return $this;
+	}
+
+
+
+	/**
 	 * @param \Muzar\BazaarBundle\Entity\User $user
 	 */
 	public function setUser($user)
@@ -191,6 +214,7 @@ class ItemSearchQuery
 	{
 		return array(
 			'query' => $this->query,
+			'categoryStrId' => $this->categoryStrId,
 			'priceFrom' => $this->priceFrom,
 			'priceTo' => $this->priceTo,
 		);
@@ -209,6 +233,7 @@ class ItemSearchQuery
 	public function isFilled()
 	{
 		return $this->getQuery()
+			|| $this->getCategoryStrId()
 			|| $this->getPriceFrom()
 			|| $this->getPriceTo();
 	}
@@ -218,10 +243,6 @@ class ItemSearchQuery
 	 */
 	public function getElasticaQuery()
 	{
-		if (!$this->isFilled())
-		{
-			throw new \RuntimeException('Must be filled!');
-		}
 		return new ItemQuery($this);
 	}
 

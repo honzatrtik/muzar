@@ -39,24 +39,29 @@ class Item
 	 * @ORM\Id
 	 * @ORM\GeneratedValue(strategy="AUTO")
 	 * @JMS\Expose()
+	 * @JMS\Groups({"elastica"})
+	 *
 	 */
 	protected $id;
 
 	/**
 	 * @ORM\Column(type="string")
 	 * @JMS\Expose()
+	 * @JMS\Groups({"elastica"})
 	 */
 	protected $slug;
 
 	/**
 	 * @ORM\Column(type="string", length=32)
 	 * @JMS\Expose()
+	 * @JMS\Groups({"elastica"})
 	 */
 	protected $status = self::STATUS_ACTIVE;
 
 	/**
 	 * @ORM\Column(type="string", length=1024)
 	 * @JMS\Expose()
+	 * @JMS\Groups({"elastica"})
 	 * @Assert\NotBlank()
 	 */
 	protected $name;
@@ -64,6 +69,7 @@ class Item
 	/**
 	 * @ORM\Column(type="string", nullable=true)
 	 * @JMS\Expose()
+	 * @JMS\Groups({"elastica"})
 	 *
 	 */
 	protected $description;
@@ -71,6 +77,7 @@ class Item
 	/**
 	 * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
 	 * @JMS\Expose()
+	 * @JMS\Groups({"elastica"})
 	 */
 	protected $price;
 
@@ -91,6 +98,7 @@ class Item
 	 * @ORM\Column(type="datetime")
 	 * @JMS\Type("DateTime")
 	 * @JMS\Expose()
+	 * @JMS\Groups({"elastica"})
 	 */
 	protected $created;
 
@@ -114,7 +122,7 @@ class Item
 	 * @var User
 	 * @ORM\ManyToOne(targetEntity="User", cascade={"persist"})
 	 * @JMS\Expose()
-	 * @Assert\NotBlank()
+	 * //@Assert\NotBlank()
 	 **/
 	private $user;
 
@@ -184,7 +192,7 @@ class Item
 	}
 
 	/**
-	 * @return mixed
+	 * @return Category
 	 */
 	public function getCategory()
 	{
@@ -288,6 +296,29 @@ class Item
 	public function getImageUrl()
 	{
 		return sprintf('http://placehold.it/300x200/%03X&text=%s', mt_rand(0, 0xF), urlencode($this->getId()));
+	}
+
+	/**
+	 * @JMS\VirtualProperty
+	 * @JMS\SerializedName("category_str_ids")
+	 * @JMS\Groups({"elastica"})
+	 * @return array
+	 */
+	public function getCategoryStrIds()
+	{
+
+		if ($category = $this->getCategory())
+		{
+			$categories = array_map(function(Category $c) {
+				return $c->getStrId();
+			}, $category->getAncestors());
+			array_push($categories, $category->getStrId());
+			return $categories;
+		}
+		else
+		{
+			return array();
+		}
 	}
 
 

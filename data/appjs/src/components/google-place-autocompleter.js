@@ -15,8 +15,7 @@ module.exports = React.createClass({
 
     propTypes: {
         input: React.PropTypes.func,
-        onChange: React.PropTypes.func,
-        value: React.PropTypes.object
+        onChange: React.PropTypes.func
     },
 
     getInitialState: function() {

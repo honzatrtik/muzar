@@ -1,5 +1,1 @@
-services:
-    muzar_bazaar.cors_listener:
-        class: Muzar\BazaarBundle\CorsResponseListener
-        tags:
-           - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
+

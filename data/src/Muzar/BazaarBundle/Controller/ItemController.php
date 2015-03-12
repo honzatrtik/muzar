@@ -84,20 +84,21 @@ class ItemController
 
 	/**
 	 * @Route("/ads", name="muzar_bazaar_item_post")
-	 * @Method("POST")
+	 * @Method({"POST","OPTIONS"})
 	 * @Rest\View(statusCode=201)
-	 * @Security("has_role('ROLE_USER')")
+	 *
 	 */
 	public function postAction(Request $request)
 	{
+		//@Security("has_role('ROLE_USER')")
 		$item = new Item();
-		$item->setUser($this->securityContext->getToken()->getUser());
+		//$item->setUser($this->securityContext->getToken()->getUser());
 		return $this->processForm($item, $request);
 	}
 
 	/**
 	 * @Route("/ads/{id}", name="muzar_bazaar_item_put", requirements={"id" = "\d+"})
-	 * @Method("PUT")
+	 * @Method({"PUT","OPTIONS"})
 	 * @Rest\View()
 	 * @Security("has_role('ROLE_USER')")
 	 */
@@ -178,7 +179,10 @@ class ItemController
 
 		$form = $this->getForm($item, $request->getMethod());
 		$form->handleRequest($request);
-
+		if (!$form->isSubmitted())
+		{
+			$form->submit(NULL);
+		}
 
 		if ($form->isValid())
 		{
