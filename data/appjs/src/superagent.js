@@ -37,8 +37,6 @@ alteredSuperagent.use = function(fn) {
 
 
 
-
-
 alteredSuperagent.use(function(request) {
 
     request.on('beforerequest', function(req) {

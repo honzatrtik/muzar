@@ -1,5 +1,7 @@
 'use strict';
 
+require('es6-shim');
+
 var debugError = require('debug')('Client error');
 var debugBinding = require('debug')('Binding');
 

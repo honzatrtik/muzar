@@ -12,7 +12,8 @@ var CategoryMenuLevel = React.createClass({
 
     propTypes: {
         path: React.PropTypes.array,
-        items: React.PropTypes.array.isRequired
+        items: React.PropTypes.array.isRequired,
+        query: React.PropTypes.object
     },
 
     render: function() {
@@ -20,6 +21,8 @@ var CategoryMenuLevel = React.createClass({
         var cs = React.addons.classSet;
         var path = this.props.path || [];
         var self = this;
+
+        var query = self.props.query || {};
 
         var items = this.props.items.map(function(item) {
 
@@ -33,9 +36,9 @@ var CategoryMenuLevel = React.createClass({
 
             return (
                 <li className={classNames} key={item.str_id}>
-                    <Link to="list" params={{category: item.str_id}}>{item.name}</Link>
+                    <Link to="list" params={{category: item.str_id}} query={query}>{item.name}</Link>
                     <ReactCSSTransitionGroup component="div" transitionLeave={false} transitionName="mainMenu">
-                        {expanded ? <CategoryMenuLevel items={item.children} path={active ? path.slice(1) : []}/> : null}
+                        {expanded ? <CategoryMenuLevel items={item.children} path={active ? path.slice(1) : []} query={query}/> : null}
                     </ReactCSSTransitionGroup>
                 </li>
             );

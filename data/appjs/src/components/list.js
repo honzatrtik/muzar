@@ -4,6 +4,7 @@ var React = require('react');
 var Morearty = require('morearty');
 var DispatcherMixin = require('../dispatcher-mixin.js');
 var CategoryStore = require('../stores/category-store.js');
+var RouteStore = require('../stores/route-store.js');
 var AdStore = require('../stores/ad-store.js');
 var Router = require('react-router');
 var Link = Router.Link;
@@ -12,6 +13,7 @@ var CategoryMenu = require('./category-menu.js');
 var CategoryBreadcrumbs = require('./category-breadcrumbs.js');
 var adLoadNextAction = require('../actions/ad-load-next-action.js');
 var cs = React.addons.classSet;
+var ListFilters = require('./list-filters');
 
 var List = React.createClass({
 
@@ -68,6 +70,7 @@ var List = React.createClass({
 
     render: function() {
 
+        this.observeBinding(this.getStoreBinding(RouteStore));
         this.observeBinding(this.getStoreBinding(AdStore));
         this.observeBinding(this.getStoreBinding(CategoryStore));
 
@@ -88,6 +91,8 @@ var List = React.createClass({
                 </div>
 
                 <div className="col-xs-12 col-sm-12 col-md-9">
+
+                    <ListFilters />
 
                     <h1>{title}{adStore.isLoading() ? <small> Loading...</small> : null}</h1>
                     {path ? <div><CategoryBreadcrumbs path={path}/></div> : null}

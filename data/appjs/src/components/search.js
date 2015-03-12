@@ -9,6 +9,7 @@ var RouteStore = require('../stores/route-store.js');
 var Router = require('react-router');
 var Link = Router.Link;
 var AdPreview = require('./ad-preview.js');
+var ListFilters = require('./list-filters.js');
 var cs = React.addons.classSet;
 
 
@@ -62,29 +63,7 @@ var Search = React.createClass({
     renderFilters() {
         return (
             <div className="col-xs-12 col-sm-12 col-md-12">
-                <form className="form-inline" role="form">
-                    V okoli
-                    <div className="btn-group">
-                        <button type="button" className="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                            Ceska Republika <span className="caret" />
-                        </button>
-                        <ul className="dropdown-menu" role="menu">
-                            <input type="text" className="form-control" />
-                            <li><a href="#">Basove nastroje</a></li>
-                            <li><a href="#">Bici</a></li>
-                        </ul>
-                    </div>
-                    V cene
-                    <div className="btn-group">
-                        <button type="button" className="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                            nerozhoduje <span className="caret" />
-                        </button>
-                        <ul className="dropdown-menu" role="menu">
-                            <li><a href="#">Od</a></li>
-                            <li><a href="#">Do</a></li>
-                        </ul>
-                    </div>
-                </form>
+                <ListFilters />
             </div>
         );
     },

@@ -6,6 +6,8 @@ require("babel/register")({
 
 var debugError = require('debug')('Server error');
 
+var config = Object.assign(require('./config.js'), require('./server-config.js'));
+
 var _ = require('lodash');
 var serverInitAction = require('./src/actions/server-init-action.js');
 var routeChangedAction = require('./src/actions/route-changed-action.js');
@@ -24,6 +26,7 @@ var routes = require('./src/routes.js');
 var express = require('express');
 var exphbs  = require('express-handlebars');
 var app = express();
+
 
 
 function responseError(res, e) {
@@ -135,12 +138,13 @@ var server = app.listen(3000, '127.0.0.1', function() {
 
 });
 
+if (config.enableMockApi) {
+    var mockerServer = require('./mocker.js').listen(3030, '127.0.0.1', function(server) {
 
-var mockerServer = require('./mocker.js').listen(3030, '127.0.0.1', function(server) {
+        var host = mockerServer.address().address;
+        var port = mockerServer.address().port;
 
-    var host = mockerServer.address().address;
-    var port = mockerServer.address().port;
+        console.log('Api listening at http://%s:%s', host, port);
 
-    console.log('Api listening at http://%s:%s', host, port);
-
-});
+    });
+}

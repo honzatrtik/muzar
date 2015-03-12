@@ -94,7 +94,7 @@ CategoryStore.handlers = {
         return this.dispatcher.waitForPromises(RouteStore, function() {
             var store = self.getStore(RouteStore);
             if (store.getRoute() == 'list') {
-                var category = store.getParam().category;
+                var category = store.getParam('category');
                 if (!self.getPath(category).length) {
                     throw new HttpError(404, 'Category not found: ' + category);
                 }

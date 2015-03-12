@@ -66,11 +66,11 @@ AdStore.handlers = {
                 var store = self.getStore(CategoryStore);
                 binding.set('loading', true);
 
-                params = {};
-                var category = store.getActive();
-                if (category) {
-                    params.category = category;
-                }
+                params = Imm.Map({
+                    category: store.getActive(),
+                    priceFrom: routeStore.getQuery('priceFrom'),
+                    priceTo: routeStore.getQuery('priceTo')
+                }).filter(v => v).toJS();
 
                 binding.atomically()
                     .set('items', Imm.List())
@@ -89,12 +89,13 @@ AdStore.handlers = {
 
                 binding.set('loading', true);
 
-                params = {};
-                var query = routeStore.getQuery('query');
 
-                if (query) {
-                    params.query = query;
-                }
+                params = Imm.Map({
+                    query: routeStore.getQuery('query'),
+                    priceFrom: routeStore.getQuery('priceFrom'),
+                    priceTo: routeStore.getQuery('priceTo')
+                }).filter(v => v).toJS();
+
 
                 binding.atomically()
                     .set('items', Imm.List())

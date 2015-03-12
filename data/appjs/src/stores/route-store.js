@@ -18,7 +18,7 @@ class RouteStore extends BaseStore {
         if (name) {
             path.push(name);
         }
-        return this.binding.toJS(path);
+        return this.binding.get(path);
     }
 
     getQuery(name) {
@@ -26,7 +26,7 @@ class RouteStore extends BaseStore {
         if (name) {
             path.push(name);
         }
-        return this.binding.toJS(path);
+        return this.binding.get(path);
     }
 
     getRoutes() {
