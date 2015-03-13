@@ -29,7 +29,7 @@ module.exports = React.createClass({
         var maps = google.maps;
         var input = this.refs.input.getDOMNode();
 
-        var autocomplete = new maps.places.Autocomplete(input, {
+        var autocomplete = this.autocomplete = new maps.places.Autocomplete(input, {
             types: ['(cities)']
         });
 
@@ -49,6 +49,13 @@ module.exports = React.createClass({
                 event.preventDefault();
                 google.maps.event.trigger(autocomplete, 'place_changed');
             }
+        });
+    },
+
+    componentWillUnmount: function() {
+        google.maps.event.clearInstanceListeners(this.autocomplete);
+        document.getElementsByClassName('pac-container').forEach(function(el) {
+            el.remove();
         });
     },
 
