@@ -43,7 +43,7 @@ module.exports = function formErrorWrapperFactory(StoreClass) {
                     </Tooltip>
                 );
             }
-            result.push(<div>{children}</div>);
+            result.push(<div key="wrapper">{children}</div>);
 
             return React.createElement(element, props, result);
         }

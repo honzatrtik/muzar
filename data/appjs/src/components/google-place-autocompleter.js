@@ -8,6 +8,8 @@ var keyCodes = require('../utils/event-key-codes.js');
 var cs = React.addons.classSet;
 var Imm = require('immutable');
 
+import { normalizePlace } from '../utils/google-place-utils.js';
+
 
 module.exports = React.createClass({
 
@@ -20,7 +22,7 @@ module.exports = React.createClass({
 
     getInitialState: function() {
         return {
-            place: this.props.value || {}
+            place: this.props.value ? normalizePlace(this.props.value) : null
         };
     },
 
@@ -36,9 +38,12 @@ module.exports = React.createClass({
         var self = this;
         maps.event.addListener(autocomplete, 'place_changed', function() {
             var place = autocomplete.getPlace();
+            place = place ? normalizePlace(place) : null;
+
             self.setState({
                 place
             });
+
             if (self.props.onChange) {
                 self.props.onChange(place);
             }
@@ -66,7 +71,7 @@ module.exports = React.createClass({
     clear: function() {
         var self = this;
         this.setState({
-            place: {}
+            place: null
         }, function() {
             self.refs.input.getDOMNode().value = '';
         });

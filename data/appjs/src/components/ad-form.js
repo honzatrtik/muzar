@@ -6,10 +6,12 @@ var DispatcherMixin = require('../dispatcher-mixin.js');
 var CategoryStore = require('../stores/category-store.js');
 var AdFormStore = require('../stores/ad-form-store.js');
 var CategoryMultiselect = require('./category-multiselect.js');
+var GeolocateButton = require('./geolocate-button.js');
 var GooglePlaceAutocompleter = require('./google-place-autocompleter.js');
 var cs = React.addons.classSet;
 var { adCreateAction } = require('../actions/ad-actions.js');
 var Wrapper = require('./form-error-wrapper.js')(AdFormStore);
+var getGooglePlace = require('../utils/get-google-place.js')(require('../../config').google.mapsApiKey);
 
 var AdForm = React.createClass({
 
@@ -46,6 +48,13 @@ var AdForm = React.createClass({
         });
     },
 
+    handleGeolocate: function(position) {
+
+        let { latitude, longitude } = position.coords;
+        var handler = this.getStore(AdFormStore).getHandler('contact.place');
+        getGooglePlace(latitude, longitude).then(handler);
+
+    },
 
     renderAutocompleter: function() {
 
@@ -57,7 +66,7 @@ var AdForm = React.createClass({
         if (value) {
             result.push(
                 <div key="display" className="form-control">
-                    <span dangerouslySetInnerHTML={{__html: value.adr_address}}></span>{' '}<a onClick={this.handleResetButtonClick}>změnit</a>
+                    <span>{value.formatted_address}</span>{' '}<a onClick={this.handleResetButtonClick}>změnit</a>
                 </div>
             );
         }
@@ -165,7 +174,7 @@ var AdForm = React.createClass({
                             <Wrapper name="contact.place" className="form-group">
                                 <label className="control-label" htmlFor="contact.place">Město nebo obec</label>
                                 {this.renderAutocompleter()}
-                                <button className="btn btn-default">Moje poloha</button>
+                                <GeolocateButton onGeolocate={this.handleGeolocate} className="btn btn-default">Moje poloha</GeolocateButton>
                             </Wrapper>
                         </div>
                     </div>

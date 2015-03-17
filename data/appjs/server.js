@@ -111,7 +111,8 @@ app.get('*', function(req, res) {
                     res.render('default', {
                         html: html,
                         state: '<script>' + res.locals.state + '</script>',
-                        title: 'Some title'
+                        title: 'Some title',
+                        config: config
                     });
 
                 });
