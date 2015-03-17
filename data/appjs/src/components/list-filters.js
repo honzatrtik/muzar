@@ -18,7 +18,10 @@ var ListFilters = React.createClass({
     handlePriceFilterSubmit: function(values) {
         var routeStore = this.getStore(RouteStore);
 
-        var query = routeStore.getQuery().merge(Imm.Map(values).filter(v => v)).toJS();
+        var query = routeStore.getQuery()
+            .delete('priceFrom')
+            .delete('priceTo')
+            .merge(Imm.Map(values).filter(v => v)).toJS();
         this.transitionTo(routeStore.getRoute(), routeStore.getParam().toJS(), query);
 
         this.refs.priceFilterDropdown.setDropdownState(false);

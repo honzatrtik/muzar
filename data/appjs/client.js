@@ -31,6 +31,8 @@ var router = Router.create({
     location: Router.HistoryLocation
 });
 
+require('./src/router-container.js').set(router);
+
 router.run(function(Handler, state) {
 
     React.withContext(context, function () {

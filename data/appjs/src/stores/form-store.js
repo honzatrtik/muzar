@@ -49,15 +49,6 @@ class FormStore extends BaseStore {
         return !!this.getBinding().toJS('dirty');
     }
 
-    validate() {
-        var self = this;
-        if (!this.isDirty()) {
-            return;
-        }
-
-        self.getBinding().clear('errors');
-        self.getBinding().set('dirty', false);
-    }
 
     getHandler(name) {
         var self = this;

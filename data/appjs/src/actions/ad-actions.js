@@ -9,6 +9,10 @@ module.exports.adCreateAction = function adCreateAction(dispatcher, payload) {
 
     dispatcher.dispatch('AD_CREATE');
 
+    if (payload.category) {
+        payload.category = payload.category[payload.category.length - 1];
+    }
+
     var promise = superagent.post('/ads').send(payload).promise();
 
     return promise.then(function(body) {
@@ -16,6 +20,7 @@ module.exports.adCreateAction = function adCreateAction(dispatcher, payload) {
     }).catch(function(res) {
         if (res.status == 400) {
             return dispatcher.dispatch('AD_CREATE_FAIL', res.body);
+
         } else {
             throw new HttpError(res.status);
         }

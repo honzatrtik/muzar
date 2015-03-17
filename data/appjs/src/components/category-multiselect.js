@@ -21,7 +21,7 @@ var CategoryMultiselect = React.createClass({
 
     renderCategoryOption: function(item) {
         return (
-            <option key={item.str_id} value={item.str_id}>{item.name}</option>
+            <option key={item.id} value={item.id}>{item.name}</option>
         );
     },
 
@@ -31,7 +31,6 @@ var CategoryMultiselect = React.createClass({
 
         value = value.slice(0, index + 1).filter((v) => v.length);
 
-
         var self = this;
         var onChange = this.props.onChange;
         this.setState(value);
@@ -40,22 +39,22 @@ var CategoryMultiselect = React.createClass({
         }
     },
 
-    findItemChildren(strId) {
-        if (!strId) {
+    findItemChildren(id, items) {
+        if (!id) {
             return [];
         }
 
-        var createMap = function(items, map) {
-            items.forEach(category => {
-                map[category.str_id] = category;
+        var createMap = function(i, map) {
+            i.forEach(category => {
+                map[category.id] = category;
                 createMap(category.children || [], map);
             });
         };
 
         var map = {};
-        createMap(this.props.items, map);
-        return map[strId]
-            ? map[strId].children || []
+        createMap(items || this.props.items, map);
+        return map[id]
+            ? map[id].children || []
             : [];
     },
 
@@ -63,10 +62,15 @@ var CategoryMultiselect = React.createClass({
 
         var value = this.state.value;
 
+
+        var itemsFirst = this.props.items;
+        var itemsSecond = this.findItemChildren(value[0], itemsFirst);
+        var itemsThird = this.findItemChildren(value[1], itemsSecond);
+
         var items = [
-            this.props.items,
-            this.findItemChildren(value[0]),
-            this.findItemChildren(value[1])
+            itemsFirst,
+            itemsSecond,
+            itemsThird
         ];
 
         var disabled = [

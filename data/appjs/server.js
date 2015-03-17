@@ -86,6 +86,8 @@ app.get('*', function(req, res) {
         }
     });
 
+    require('./src/router-container.js').set(router);
+
     try {
 
         router.run(function(Handler, state) {

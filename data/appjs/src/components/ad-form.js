@@ -9,7 +9,7 @@ var CategoryMultiselect = require('./category-multiselect.js');
 var GooglePlaceAutocompleter = require('./google-place-autocompleter.js');
 var cs = React.addons.classSet;
 var { adCreateAction } = require('../actions/ad-actions.js');
-
+var Wrapper = require('./form-error-wrapper.js')(AdFormStore);
 
 var AdForm = React.createClass({
 
@@ -94,54 +94,54 @@ var AdForm = React.createClass({
         return (
             <form onSubmit={this.handleSubmit}>
 
-                {this.renderErrors()}
-
                 <div className="col-xs-12 col-sm-12 col-md-12">
-                    <div className="form-group">
-                        <label htmlFor="name">Název prodávané věci</label>
+                    <Wrapper name="name" className="form-group">
+                        <label className="control-label" htmlFor="name">Název prodávané věci</label>
                         <Morearty.DOM.input id="name" value={store.get('name')} onChange={store.getHandler('name')} className="form-control" placeholder="např. Gibson 1956 Les Paul Goldtop" />
-                    </div>
+                    </Wrapper>
                 </div>
 
-                <CategoryMultiselect value={store.get('category') || []} onChange={store.getHandler('category')}  items={items.toJS()}/>
+                <Wrapper name="category">
+                    <CategoryMultiselect value={store.get('category') || []} onChange={store.getHandler('category')}  items={items.toJS()}/>
+                </Wrapper>
 
                 <div className="col-xs-12 col-sm-12 col-md-12">
 
                     <div className="row">
                         <div className="col-xs-12 col-sm-4 col-md-4">
-                            <div className="form-group">
-                                <label id="price">Cena</label>
+                            <Wrapper name="price" className="form-group">
+                                <label className="control-label" id="price">Cena</label>
                                 <Morearty.DOM.input id="price" value={store.get('price')} onChange={store.getHandler('price')}  type="text" className="form-control" placeholder="např. 1000" disabled={store.get('negotiatedPrice')} />
                                 <span className="pull-right">Kč</span>
-                            </div>
+                            </Wrapper>
                         </div>
                         <div className="col-xs-12 col-sm-3 col-md-3">
-                            <div className="form-group">
+                            <Wrapper name="negotiatedPrice" className="form-group">
                                 <br />
-                                <label>
+                                <label className="control-label">
                                     <Morearty.DOM.input value={store.get('negotiatedPrice')} onChange={store.getHandler('negotiatedPrice')}  type="checkbox"/>{' '}
                                     Cena dohodou
                                 </label>
-                            </div>
+                            </Wrapper>
                         </div>
                         <div className="col-xs-12 col-sm-5 col-md-5">
-                            <div className="form-group">
+                            <Wrapper name="allowSendingByMail" className="form-group">
                                 <br />
-                                <label>
+                                <label className="control-label">
                                     <Morearty.DOM.input value={store.get('allowSendingByMail')} onChange={store.getHandler('allowSendingByMail')}  type="checkbox" />{' '}
                                     Jsem ochoten zboží poslat poštou
                                 </label>
-                            </div>
+                            </Wrapper>
                         </div>
                     </div>
 
                 </div>
 
                 <div className="col-xs-12 col-sm-12 col-md-12">
-                    <div className="form-group">
-                        <label id="description">Popis prodávané věci</label>
+                    <Wrapper name="description" className="form-group">
+                        <label className="control-label" id="description">Popis prodávané věci</label>
                         <Morearty.DOM.textarea id="description" value={store.get('description')} onChange={store.getHandler('description')}  className="form-control" rows="3" placeholder="např. Stáří, opotřebení" />
-                    </div>
+                    </Wrapper>
                 </div>
 
 
@@ -152,37 +152,37 @@ var AdForm = React.createClass({
                     </h3>
 
                     <div className="row">
-                        <div className="col-xs-12 col-sm-6 col-md-6">
+                        <Wrapper name="contact.email" className="col-xs-12 col-sm-6 col-md-6">
                             <div className="form-group">
-                                <label htmlFor="contact.email">Email</label>{' '}<span className="help-block-inline">(pro odpovědi)</span>
+                                <label className="control-label" htmlFor="contact.email">Email</label>{' '}<span className="help-block-inline">(pro odpovědi)</span>
                                 <Morearty.DOM.input id="contact.email" value={store.get('contact.email')} onChange={store.getHandler('contact.email')} className="form-control" placeholder="Na ten vám budou chodit všechny odpovědi" />
                             </div>
-                        </div>
+                        </Wrapper>
                     </div>
 
                     <div className="row">
                         <div className="col-xs-12 col-sm-12 col-md-12">
-                            <div className="form-group">
-                                <label htmlFor="contact.place">Město nebo obec</label>
+                            <Wrapper name="contact.place" className="form-group">
+                                <label className="control-label" htmlFor="contact.place">Město nebo obec</label>
                                 {this.renderAutocompleter()}
                                 <button className="btn btn-default">Moje poloha</button>
-                            </div>
+                            </Wrapper>
                         </div>
                     </div>
 
 
                     <div className="row">
-                        <div className="col-xs-12 col-sm-6 col-md-6">
+                        <Wrapper name="contact.name" className="col-xs-12 col-sm-6 col-md-6">
                             <div value={store.get('contact.name')} onChange={store.getHandler('contact.name')} className="form-group">
-                                <label htmlFor="contact.name">Jmeno a příjmení nebo přezívka</label>
+                                <label className="control-label" htmlFor="contact.name">Jmeno a příjmení nebo přezívka</label>
                                 <Morearty.DOM.input id="contact.name" className="form-control" type="text" placeholder="Ať kupujicí ví, s kým má tu čest" />
                             </div>
-                        </div>
+                        </Wrapper>
                         <div className="col-xs-12 col-sm-6 col-md-6">
-                            <div className="form-group">
-                                <label htmlFor="contact.phone">Telefon</label>{' '}<span className="help-block-inline">(Volitelné)</span>
+                            <Wrapper name="contact.phone" className="form-group">
+                                <label className="control-label" htmlFor="contact.phone">Telefon</label>{' '}<span className="help-block-inline">(Volitelné)</span>
                                 <Morearty.DOM.input id="contact.phone" value={store.get('contact.phone')} onChange={store.getHandler('contact.phone')} className="form-control" type="text" placeholder="Pro rychlejší komunikaci" />
-                            </div>
+                            </Wrapper>
                         </div>
                     </div>
 

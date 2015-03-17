@@ -11,41 +11,41 @@ var Promise = require('../../promise.js');
 
 var items = [
     {
-        "str_id": "kytarove-nastroje",
+        "id": "kytarove-nastroje",
         "name": "Kytarové nastroje",
         "newSince": 10,
         "children": [
             {
-                "str_id": "elektricke-kytary",
+                "id": "elektricke-kytary",
                 "name": "Elektrické kytary",
                 "newSince": 15,
                 children: [
                     {
-                        "str_id": "lp",
+                        "id": "lp",
                         "name": "LP",
                         "newSince": 15
                     },
                     {
-                        "str_id": "strat",
+                        "id": "strat",
                         "name": "Strat",
                         "newSince": 15
                     }
                 ]
             },
             {
-                "str_id": "kytarove-aparaty",
+                "id": "kytarove-aparaty",
                 "name": "Kytarové aparáty",
                 "newSince": 1
             },
             {
-                "str_id": "akusticke-a-klasicke-kytary",
+                "id": "akusticke-a-klasicke-kytary",
                 "name": "Akustické a klasické kytary",
                 "newSince": 2
             }
         ]
     },
     {
-        "str_id": "bici-nastroje",
+        "id": "bici-nastroje",
         "name": "Bicí nastroje",
         "newSince": 28
     }

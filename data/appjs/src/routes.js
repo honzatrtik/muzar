@@ -14,6 +14,7 @@ var List = require('./components/list.js');
 var Search = require('./components/search.js');
 var Detail = require('./components/detail.js');
 var Create = require('./components/create.js');
+var CreateSuccess = require('./components/create-success.js');
 var ErrorPage = require('./components/error-page.js');
 
 module.exports = (
@@ -23,6 +24,7 @@ module.exports = (
         <Route name="list" path="list/:category" handler={List}/>
         <Route name="search" path="search" handler={Search}/>
         <Route name="create" path="create" handler={Create}/>
+        <Route name="createSuccess" path="create-success" handler={CreateSuccess}/>
         <Redirect from="/" to="listAll" />
         <NotFoundRoute name="404" handler={ErrorPage} />
     </Route>

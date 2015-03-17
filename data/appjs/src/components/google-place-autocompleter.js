@@ -54,9 +54,6 @@ module.exports = React.createClass({
 
     componentWillUnmount: function() {
         google.maps.event.clearInstanceListeners(this.autocomplete);
-        document.getElementsByClassName('pac-container').forEach(function(el) {
-            el.remove();
-        });
     },
 
     focus: function() {
