@@ -8,35 +8,28 @@ describe('Symfony error transformer', function () {
 
     it('transforms well :)', function (done) {
 
-        var errors = {
-            "children": {
-                "name": {"errors": ["Tato hodnota nesmí být prázdná."]},
-                "description": [],
-                "price": {"errors": ["Cena musí být kladné celé číslo nebo dohodou."]},
-                "negotiablePrice": [],
-                "allowSendingByMail": [],
-                "category": {"errors": ["Tato hodnota nesmí být prázdná."]},
-                "contact": {
-                    "children": {
-                        "email": {"errors": ["Tato hodnota nesmí být prázdná."]},
-                        "name": [],
-                        "phone": [],
-                        "lat": [],
-                        "lng": [],
-                        "place": [],
-                        "reference": []
-                    }
-                }
-            }
-        };
+        var errors = [{
+                "property_path": "price",
+                "message": "Cena musí být kladné celé číslo nebo dohodou."
+            }, {"property_path": "name", "message": "Tato hodnota nesmí být prázdná."}, {
+                "property_path": "category",
+                "message": "Tato hodnota nesmí být prázdná."
+            }, {
+                "property_path": "contact.email",
+                "message": "Tato hodnota nesmí být prázdná."
+            }, {
+                "property_path": "contact.email",
+                "message": "Tato hodnota musí být email."
+            }, {"property_path": "contact.name", "message": "Tato hodnota nesmí být prázdná."}
+        ];
 
         var expected = {
-            name: ["Tato hodnota nesmí být prázdná."],
             price: ["Cena musí být kladné celé číslo nebo dohodou."],
+            name: ["Tato hodnota nesmí být prázdná."],
             category: ["Tato hodnota nesmí být prázdná."],
-            "contact.email": ["Tato hodnota nesmí být prázdná."]
+            "contact.email": ["Tato hodnota nesmí být prázdná.", "Tato hodnota musí být email."],
+            "contact.name": ["Tato hodnota nesmí být prázdná."]
         };
-
 
         assert.deepEqual(transform(errors), expected);
         done();

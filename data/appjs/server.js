@@ -34,7 +34,7 @@ function responseError(res, e) {
     debugError(e);
 
     if (e instanceof HttpError) {
-        res.status(e.status);
+        res.status(e.status || 400);
     } else {
         res.status(500);
     }

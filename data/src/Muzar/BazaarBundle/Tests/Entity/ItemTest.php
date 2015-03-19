@@ -5,6 +5,7 @@ namespace Muzar\BazaarBundle\Tests\Entity;
 use Doctrine\ORM\EntityManager;
 use DoctrineExtensions\NestedSet\Manager;
 use Muzar\BazaarBundle\Entity\Category;
+use Muzar\BazaarBundle\Entity\Contact;
 use Muzar\BazaarBundle\Entity\Item;
 use Muzar\BazaarBundle\Entity\ItemService;
 use Muzar\BazaarBundle\Tests\ApiTestCase;
@@ -58,9 +59,10 @@ class ItemTest extends ApiTestCase
 		$this->assertEquals('fender-telecaster', $item->getSlug());
 	}
 
-	public function testValidatePrice()
+	public function testValidate()
 	{
 		$item = new Item();
+		$item->setContact(new Contact());
 		$validator = $this->getKernel()->getContainer()->get('validator');
 
 		$errors = $validator->validate($item);

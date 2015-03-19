@@ -9,15 +9,13 @@ namespace Muzar\BazaarBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\ExecutionContextInterface;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 
 /**
  * @ORM\Entity(repositoryClass="Muzar\BazaarBundle\Entity\ContactRepository")
  * @ORM\Table(name="contact", indexes={
- * 		@ORM\Index(name="contact_email_idx",columns={"email"}),
- * 		@ORM\Index(name="contact_lat_idx",columns={"lat"}),
- * 		@ORM\Index(name="contact_lng_idx",columns={"lng"})
+ * 		@ORM\Index(name="contact_email_idx",columns={"email"})
  * })
  * @ORM\HasLifecycleCallbacks
  *
@@ -45,41 +43,27 @@ class Contact
 	/**
 	 * @ORM\Column(type="string", nullable=true)
 	 * @JMS\Expose()
+	 * @Assert\NotBlank()
+	 * @JMS\Groups({"elastica"})
 	 */
 	protected $name;
 
 	/**
 	 * @ORM\Column(type="string", nullable=true)
 	 * @JMS\Expose()
+	 *
 	 */
 	protected $phone;
 
 
-
 	/**
-	 * @ORM\Column(type="float", nullable=true)
+	 * @ORM\Column(type="json_array")
 	 * @JMS\Expose()
+	 * @Assert\NotBlank()
+	 * @JMS\Groups({"elastica"})
 	 */
-	protected $lat;
+	protected $place = array();
 
-	/**
-	 * @ORM\Column(type="float", nullable=true)
-	 * @JMS\Expose()
-	 */
-	protected $lng;
-
-
-	/**
-	 * @ORM\Column(type="string", nullable=true)
-	 * @JMS\Expose()
-	 */
-	protected $place;
-
-	/**
-	 * @ORM\Column(type="string", nullable=true)
-	 * @JMS\Expose()
-	 */
-	protected $reference;
 
 
 
@@ -118,40 +102,6 @@ class Contact
 	}
 
 	/**
-	 * @param mixed $lat
-	 */
-	public function setLat($lat)
-	{
-		$this->lat = $lat;
-		return $this;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getLat()
-	{
-		return $this->lat;
-	}
-
-	/**
-	 * @param mixed $lng
-	 */
-	public function setLng($lng)
-	{
-		$this->lng = $lng;
-		return $this;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getLng()
-	{
-		return $this->lng;
-	}
-
-	/**
 	 * @param mixed $name
 	 */
 	public function setName($name)
@@ -186,43 +136,42 @@ class Contact
 	}
 
 	/**
-	 * @param string $place
+	 * @param array $place
 	 */
-	public function setPlace($place)
+	public function setPlace(array $place)
 	{
 		$this->place = $place;
 		return $this;
 	}
 
 	/**
-	 * @return string
+	 * @return array
 	 */
 	public function getPlace()
 	{
 		return $this->place;
 	}
 
-	/**
-	 * @param string $reference
-	 */
-	public function setReference($reference)
-	{
-		$this->reference = $reference;
-		return $this;
-	}
 
 	/**
-	 * @return mixed
+	 * @Assert\Callback
 	 */
-	public function getReference()
+	public function validatePlace(ExecutionContextInterface $context)
 	{
-		return $this->reference;
+		if ($place = $this->getPlace())
+		{
+			foreach(array('place_id', 'lat', 'lng', 'address_components') as $requiredKey)
+			{
+				if (empty($place[$requiredKey]))
+				{
+					$context
+						->buildViolation('Město nebo obec není správně zadané.')
+						->atPath('place')
+						->addViolation();
+					break;
+				}
+			}
+		}
 	}
-
-
-
-
-
-
 
 }

@@ -4,8 +4,6 @@ var FormStore = require('./form-store.js');
 var transform = require('../utils/symfony-form-error-transformer.js');
 var Imm = require('immutable');
 
-var routerContainer = require('../router-container.js').get();
-
 class AdFormStore  extends FormStore {
     isLoading() {
         return this.getBinding().toJS('loading');
@@ -43,8 +41,10 @@ AdFormStore.handlers = {
     'AD_CREATE_SUCCESS': function(data) {
         this.getBinding().atomically()
             .set('loading', false)
-            .set('createdAd', Imm.Map(data.data));
+            .set('createdAd', Imm.Map(data.data))
+            .commit();
 
+        var routerContainer = require('../router-container.js').get();
         routerContainer.transitionTo('createSuccess');
     }
 };

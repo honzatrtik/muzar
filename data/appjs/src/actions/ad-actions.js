@@ -18,6 +18,11 @@ module.exports.adCreateAction = function adCreateAction(dispatcher, payload) {
     return promise.then(function(body) {
         return dispatcher.dispatch('AD_CREATE_SUCCESS', body);
     }).catch(function(res) {
+
+        if (res instanceof Error) {
+            throw res;
+        }
+
         if (res.status == 400) {
             return dispatcher.dispatch('AD_CREATE_FAIL', res.body);
 

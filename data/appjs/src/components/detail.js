@@ -47,7 +47,7 @@ var Detail = React.createClass({
                     <div className="col-xs-12 col-sm-8 col-md-8">
 
                         <div className="thumbnail">
-                            <img src={ad.image_url} alt={ad.name} />
+                            <img width="100%" src={ad.image_url} alt={ad.name} />
                         </div>
                     </div>
 
@@ -65,7 +65,7 @@ var Detail = React.createClass({
 
                             <h4>Prodávající:</h4>
                             <p>
-                            {ad.user.username}<br />
+                            {ad.user && ad.user.username}<br />
                                 Třinec<br />
                                 <span className="text-muted">Ostravsky kraj</span><br />
                                 Tel: 736252366<br />

@@ -13,7 +13,7 @@ $loader->unregister();
 $apcLoader->register(true);
 
 $env = getenv('SYMFONY_ENV') ?: 'prod';
-$debug = false;
+$debug = true;
 
 require_once __DIR__.'/../app/AppKernel.php';
 

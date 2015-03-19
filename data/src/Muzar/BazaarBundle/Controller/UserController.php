@@ -17,7 +17,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\Form\Form;
-use Symfony\Component\Form\FormFactory;
+use Symfony\Component\Form\Validator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -40,7 +40,7 @@ class UserController
 	/** @var  EntityManager */
 	protected $em;
 
-	/** @var  FormFactory */
+	/** @var  Validator */
 	protected $formFactory;
 
 	/** @var  SecurityContextInterface */
@@ -48,7 +48,7 @@ class UserController
 
 	public function __construct(
 		Router $router,
-		FormFactory $formFactory,
+		Validator $formFactory,
 		EntityManager $em,
 		TokenStorageInterface $securityContext
 	)

@@ -14,7 +14,6 @@ use Muzar\BazaarBundle\Entity\Category;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
-
 /**
  * @ORM\Entity(repositoryClass="Muzar\BazaarBundle\Entity\ItemRepository")
  * @ORM\Table(name="item",indexes={@ORM\Index(name="item_status_idx",columns={"status"}), @ORM\Index(name="sluq_idx", columns={"slug"})})
@@ -107,14 +106,16 @@ class Item
 	 * @ORM\ManyToOne(targetEntity="Category", inversedBy="items")
 	 * @JMS\Expose()
 	 * @Assert\NotBlank()
+	 * @Assert\Valid()
 	 **/
-	protected  $category;
+	protected $category;
 
 	/**
 	 * @var Contact
 	 * @ORM\ManyToOne(targetEntity="Contact", cascade={"persist"})
 	 * @JMS\Expose()
 	 * @Assert\NotBlank()
+	 * @Assert\Valid()
 	 **/
 	private $contact;
 
@@ -122,6 +123,7 @@ class Item
 	 * @var User
 	 * @ORM\ManyToOne(targetEntity="User", cascade={"persist"})
 	 * @JMS\Expose()
+	 * @Assert\Valid()
 	 * //@Assert\NotBlank()
 	 **/
 	private $user;
@@ -185,7 +187,7 @@ class Item
 	/**
 	 * @param Category $category
 	 */
-	public function setCategory(Category $category)
+	public function setCategory(Category $category = NULL)
 	{
 		$this->category = $category;
 		return $this;
@@ -295,7 +297,7 @@ class Item
 	 */
 	public function getImageUrl()
 	{
-		return sprintf('http://placehold.it/300x200/%03X&text=%s', mt_rand(0, 0xF), urlencode($this->getId()));
+		return sprintf('https://placeimg.com/300/200/people/grayscale?%d', $this->getId());
 	}
 
 	/**
@@ -434,5 +436,21 @@ class Item
 		}
 	}
 
+	/**
+	 * @Assert\Callback
+	 */
+	public function validateCategory(ExecutionContextInterface $context)
+	{
+		if ($category = $this->getCategory())
+		{
+			if ($category->getDepth() < 1)
+			{
+				$context
+					->buildViolation(sprintf('Musíte upřesnit kategorii, vyberte nějakou podkategorii kategorie "%s".', $category->getName()))
+					->atPath('category')
+					->addViolation();
+			}
+		}
+	}
 
 }

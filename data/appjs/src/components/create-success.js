@@ -6,6 +6,8 @@ var DispatcherMixin = require('../dispatcher-mixin.js');
 var AdPreview = require('./ad-preview.js');
 var AdFormStore = require('../stores/ad-form-store.js');
 
+import HttpError from '../errors/http-error.js';
+
 var Create = React.createClass({
 
     mixins: [DispatcherMixin],
@@ -13,7 +15,10 @@ var Create = React.createClass({
     render() {
 
         var store = this.getStore(AdFormStore);
-
+        var item = store.getCreatedAd();
+        if (!item) {
+            throw new HttpError(404);
+        }
 
         return (
             <div className="row">
@@ -30,7 +35,7 @@ var Create = React.createClass({
                     </div>
                 </div>
 
-                <AdPreview item={item}/>
+                <AdPreview item={item.toJS()}/>
 
             </div>
         );

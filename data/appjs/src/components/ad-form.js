@@ -120,15 +120,15 @@ var AdForm = React.createClass({
                         <div className="col-xs-12 col-sm-4 col-md-4">
                             <Wrapper name="price" className="form-group">
                                 <label className="control-label" id="price">Cena</label>
-                                <Morearty.DOM.input id="price" value={store.get('price')} onChange={store.getHandler('price')}  type="text" className="form-control" placeholder="např. 1000" disabled={store.get('negotiatedPrice')} />
+                                <Morearty.DOM.input id="price" value={store.get('price')} onChange={store.getHandler('price')}  type="text" className="form-control" placeholder="např. 1000" disabled={store.get('negotiablePrice')} />
                                 <span className="pull-right">Kč</span>
                             </Wrapper>
                         </div>
                         <div className="col-xs-12 col-sm-3 col-md-3">
-                            <Wrapper name="negotiatedPrice" className="form-group">
+                            <Wrapper name="negotiablePrice" className="form-group">
                                 <br />
                                 <label className="control-label">
-                                    <Morearty.DOM.input value={store.get('negotiatedPrice')} onChange={store.getHandler('negotiatedPrice')}  type="checkbox"/>{' '}
+                                    <Morearty.DOM.input value={store.get('negotiablePrice')} onChange={store.getHandler('negotiablePrice')}  type="checkbox"/>{' '}
                                     Cena dohodou
                                 </label>
                             </Wrapper>

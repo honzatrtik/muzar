@@ -56,7 +56,7 @@ class ItemServiceTest extends ApiTestCase
 
 	public function testResultAndTotalEqual()
     {
-		$items = $this->service->getItems(NULL, 32^2); // Elastica pretece na PHP_MAX_INT
+		$items = $this->service->getItems(NULL, 1024); // Elastica pretece na PHP_MAX_INT
 		$this->assertEquals($this->service->getItemsTotal(NULL), count($items));
     }
 
@@ -90,7 +90,7 @@ class ItemServiceTest extends ApiTestCase
 	{
 		$holder = $this->getItemParamHolder('kytara');
 		$items = $this->service->getItems($holder, 1024); // Jinak  preteceme
-		$this->assertEquals($this->service->getItemsTotal($holder), count($items));
+		$this->assertEquals(count($items), $this->service->getItemsTotal($holder));
 	}
 
 	public function testGetItem()

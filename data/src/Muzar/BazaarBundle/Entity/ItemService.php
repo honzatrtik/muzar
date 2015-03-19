@@ -94,11 +94,12 @@ class ItemService
 
 	}
 
-	public function getItemsTotal(ItemSearchQuery $query)
+	public function getItemsTotal(ItemSearchQuery $query = NULL)
 	{
+		$query = $query ?: new ItemSearchQuery();
+
 		/** @var ElasticaBundle\Repository $repository */
 		$repository = $this->rm->getRepository('Muzar\BazaarBundle\Entity\Item');
-
 		$q = $this->createFulltextQuery($query);
 		return $repository->createPaginatorAdapter($q)->getTotalHits();
 	}

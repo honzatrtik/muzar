@@ -40,6 +40,14 @@ services:
 
 
 
+
+    muzar_bazaar.property_accessor:
+        class: Muzar\BazaarBundle\PropertyAccessor
+
+    muzar_bazaar.entity_utils:
+        class: Muzar\BazaarBundle\Entity\Utils
+        arguments: [@muzar_bazaar.property_accessor]
+
     muzar_bazaar.model_service.item:
         class: Muzar\BazaarBundle\Entity\ItemService
         arguments: [@doctrine.orm.entity_manager, @fos_elastica.manager, @muzar_bazaar.model_service.category]
@@ -51,7 +59,7 @@ services:
 
     muzar_bazaar.controller.item:
         class: Muzar\BazaarBundle\Controller\ItemController
-        arguments: [@router, @form.factory, @doctrine.orm.entity_manager, @muzar_bazaar.model_service.item, @muzar_bazaar.query_suggester, @security.context]
+        arguments: [@router, @validator, @doctrine.orm.entity_manager, @muzar_bazaar.entity_utils, @muzar_bazaar.model_service.item, @muzar_bazaar.query_suggester, @security.context]
 
     muzar_bazaar.controller.suggestion:
         class: Muzar\BazaarBundle\Controller\SuggestionController

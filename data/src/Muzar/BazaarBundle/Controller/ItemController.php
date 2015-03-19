@@ -4,29 +4,26 @@ namespace Muzar\BazaarBundle\Controller;
 
 use Doctrine\ORM\EntityManager;
 use FOS\RestBundle\Controller\Annotations as Rest;
-use Muzar\BazaarBundle\Entity\CategoryService;
+use FOS\RestBundle\View\ExceptionWrapperHandler;
+use FOS\RestBundle\View\View;
+use Muzar\BazaarBundle\Entity\Contact;
 use Muzar\BazaarBundle\Entity\Item;
-use Muzar\BazaarBundle\Entity\ItemRepository;
 use DoctrineExtensions\NestedSet;
 use Muzar\BazaarBundle\Entity\ItemService;
-use Muzar\BazaarBundle\Entity\User;
-use Muzar\BazaarBundle\Form\ItemType;
+use Muzar\BazaarBundle\Entity\Utils;
 use Muzar\BazaarBundle\Entity\ItemSearchQuery;
 use Muzar\BazaarBundle\Suggestion\QuerySuggesterInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Symfony\Bundle\FrameworkBundle\Routing\Router;
-use Symfony\Component\Form\Form;
-use Symfony\Component\Form\FormFactory;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
+use Symfony\Bundle\FrameworkBundle\Routing\Router;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\InsufficientAuthenticationException;
 use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Validator\Validator\RecursiveValidator;
 
 /**
  * @Route(service="muzar_bazaar.controller.item")
@@ -43,8 +40,11 @@ class ItemController
 	/** @var  EntityManager */
 	protected $em;
 
-	/** @var  FormFactory */
-	protected $formFactory;
+	/** @var Utils  */
+	protected $utils;
+
+	/** @var  RecursiveValidator */
+	protected $validator;
 
 	/** @var  SecurityContextInterface */
 	protected $securityContext;
@@ -54,16 +54,18 @@ class ItemController
 
 	public function __construct(
 		Router $router,
-		FormFactory $formFactory,
+		RecursiveValidator $validator,
 		EntityManager $em,
+		Utils $utils,
 		ItemService $itemService,
 		QuerySuggesterInterface $querySuggester,
 		TokenStorageInterface $securityContext
 	)
 	{
 		$this->router = $router;
-		$this->formFactory = $formFactory;
+		$this->validator = $validator;
 		$this->em = $em;
+		$this->utils = $utils;
 		$this->itemService = $itemService;
 		$this->querySuggester = $querySuggester;
 		$this->securityContext = $securityContext;
@@ -92,8 +94,10 @@ class ItemController
 	{
 		//@Security("has_role('ROLE_USER')")
 		$item = new Item();
+		$item->setContact(new Contact());
+
 		//$item->setUser($this->securityContext->getToken()->getUser());
-		return $this->processForm($item, $request);
+		return $this->processRequest($item, $request);
 	}
 
 	/**
@@ -110,7 +114,7 @@ class ItemController
 			throw new InsufficientAuthenticationException();
 		}
 
-		return $this->processForm($item, $request);
+		return $this->processRequest($item, $request);
 	}
 
 
@@ -163,37 +167,38 @@ class ItemController
 
     }
 
-
-	protected function getForm(Item $item, $method = 'POST')
+	protected function transformRequest(Request $request)
 	{
-		$categories = $this->itemService->getSelectableCategories();
-		return $this->formFactory->createNamedBuilder(NULL, new ItemType($categories), $item, array(
-			'method' => $method
-		))->getForm();
+		if ($category = $request->request->get('category'))
+		{
+			$entity = $this->em->getRepository('Muzar\BazaarBundle\Entity\Category')
+				->findOneBy(array('id' => $category));
 
-
+			$request->request->set('category', $entity);
+		}
 	}
 
-	protected function processForm(Item $item, Request $request)
+	protected function processRequest(Item $item, Request $request)
 	{
+		$this->transformRequest($request);
+		$data = $request->request->all();
+		$this->utils->fromArray($item, $data);
 
-		$form = $this->getForm($item, $request->getMethod());
-		$form->handleRequest($request);
-		if (!$form->isSubmitted())
+		$violations = $this->validator->validate($item);
+
+		if (count($violations))
 		{
-			$form->submit(NULL);
+			return View::create(array(
+				'errors' => $violations,
+			), Response::HTTP_BAD_REQUEST);
 		}
 
-		if ($form->isValid())
-		{
-			$this->em->persist($item);
-			$this->em->flush();
-			return $item;
-		}
-		else
-		{
-			return $form;
-		}
+		$this->em->persist($item);
+		$this->em->flush();
+		return array(
+			'data' => $item,
+			'meta' => new \stdClass(),
+	);
 
 	}
 
