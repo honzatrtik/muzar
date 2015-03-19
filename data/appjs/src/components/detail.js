@@ -7,6 +7,10 @@ var AdDetailStore = require('../stores/ad-detail-store.js');
 var CategoryStore = require('../stores/category-store.js');
 var CategoryBreadcrumbs = require('./category-breadcrumbs.js');
 
+import moment from 'moment';
+require('moment/locale/cs');
+
+
 var Detail = React.createClass({
 
     mixins: [Morearty.Mixin, DispatcherMixin],
@@ -30,8 +34,7 @@ var Detail = React.createClass({
             );
         }
 
-        ad = ad.toJS();
-        var path = categoryStore.getPath(ad.category.str_id);
+        var path = categoryStore.getPath(ad.getIn(['category', 'str_id']));
 
         return (
             <div>
@@ -39,7 +42,7 @@ var Detail = React.createClass({
                 <div className="row">
                     <div className="col-xs-12 col-sm-12 col-md-12">
                         <CategoryBreadcrumbs path={path} />
-                        <h1>{ad.name}</h1>
+                        <h1>{ad.get('name')}</h1>
                     </div>
                 </div>
 
@@ -47,7 +50,7 @@ var Detail = React.createClass({
                     <div className="col-xs-12 col-sm-8 col-md-8">
 
                         <div className="thumbnail">
-                            <img width="100%" src={ad.image_url} alt={ad.name} />
+                            <img width="100%" src={ad.get('image_url')} alt={ad.get('name')} />
                         </div>
                     </div>
 
@@ -57,7 +60,7 @@ var Detail = React.createClass({
 
                         <div className="thumbnail">
 
-                            <h3 className="pull-left">Cena: {ad.price}</h3>
+                            <h3 className="pull-left">Cena: {ad.get('price')}</h3>
 
                             <a href="" className="btn btn-primary btn-lg pull-right">Kontaktovat</a>
 
@@ -65,15 +68,15 @@ var Detail = React.createClass({
 
                             <h4>Prodávající:</h4>
                             <p>
-                            {ad.user && ad.user.username}<br />
-                                Třinec<br />
-                                <span className="text-muted">Ostravsky kraj</span><br />
-                                Tel: 736252366<br />
+                            {ad.getIn(['user', 'username'])}<br />
+                                {ad.getIn(['contact', 'district'])}<br />
+                                <span className="text-muted">{ad.getIn(['contact', 'region'])}</span><br />
+                                Tel: {ad.getIn(['contact', 'phone'])}<br />
                             </p>
 
                             <p>
-                                <span className="glyphicon glyphicon-time"></span> před 5 hodinami<br />
-                                <span className="glyphicon glyphicon-eye-open"></span> zobrazeno 250x
+                                <span className="glyphicon glyphicon-time"></span> {moment(ad.get('created')).fromNow()}<br />
+                                {/*<span className="glyphicon glyphicon-eye-open"></span> zobrazeno 250x*/}
                             </p>
                         </div>
 

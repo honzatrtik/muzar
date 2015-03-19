@@ -104,7 +104,7 @@ class LoadCategoryData extends AbstractFixture implements FixtureInterface, Cont
 	 */
 	function getOrder()
 	{
-		return 0;
+		return 10;
 	}
 
 

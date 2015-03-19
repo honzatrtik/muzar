@@ -13,7 +13,9 @@ use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManager;
+use Muzar\BazaarBundle\Entity\Contact;
 use Muzar\BazaarBundle\Entity\Item;
+use Muzar\BazaarBundle\Entity\Utils;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Muzar\BazaarBundle\Entity\Category;
@@ -55,21 +57,25 @@ class LoadItemData extends AbstractFixture implements FixtureInterface, Containe
 			return strpos($name, 'user') !== FALSE;
 		});
 
+		// Ziskame si reference na Users
+		$contactReferenceNames = array_filter(array_keys($this->referenceRepository->getReferences()), function($name) {
+			return strpos($name, 'contact') !== FALSE;
+		});
+
 
 		$path = __DIR__ . '/../../Resources/fixtures/item.yml';
 		$data = Yaml::parse(file_get_contents($path));
 
 		$em = $this->getManager();
+		$utils = $this->getEntityUtils();
 
 		foreach($data as $itemData)
 		{
-			$item = new Item();
-			$item->setName($itemData['name']);
-			$item->setPrice($itemData['price']);
-
-
 			$created = new \DateTime();
-			$created->setTimestamp($itemData['created']);
+			$itemData['created'] = $created->setTimestamp($itemData['created']);
+
+			$item = new Item();
+			$utils->fromArray($item, $itemData);
 
 
 			$item->setCreated($created);
@@ -86,11 +92,25 @@ class LoadItemData extends AbstractFixture implements FixtureInterface, Containe
 				$item->setUser($user);
 			}
 
+			if (count($contactReferenceNames) && ($index = array_rand($contactReferenceNames)) !== NULL)
+			{
+				$contact = $this->getReference($contactReferenceNames[$index]);
+				$item->setContact($contact);
+			}
+
 			$item->setSlugOnPrePersist();
 			$em->persist($item);
 		}
 
 		$em->flush();
+	}
+
+	/**
+	 * @return Utils
+	 */
+	protected function getEntityUtils()
+	{
+		return $this->container->get('muzar_bazaar.entity_utils');
 	}
 
 	/**
@@ -108,7 +128,7 @@ class LoadItemData extends AbstractFixture implements FixtureInterface, Containe
 	 */
 	function getOrder()
 	{
-		return 2;
+		return 30;
 	}
 
 

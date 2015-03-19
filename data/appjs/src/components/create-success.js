@@ -35,7 +35,7 @@ var Create = React.createClass({
                     </div>
                 </div>
 
-                <AdPreview item={item.toJS()}/>
+                <AdPreview item={item}/>
 
             </div>
         );

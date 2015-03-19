@@ -182,6 +182,8 @@ fos_elastica:
                             analyzer: my_czech
                         created:
                     persistence:
+                        elastica_to_model_transformer:
+                            ignore_missing: true
                         driver: orm
                         model: Muzar\BazaarBundle\Entity\Item
                         provider: ~
@@ -203,6 +205,8 @@ fos_elastica:
                             boost: 3
                             analyzer: my_czech
                     persistence:
+                        elastica_to_model_transformer:
+                            ignore_missing: true
                         driver: orm
                         model: Muzar\BazaarBundle\Entity\Category
                         provider: ~

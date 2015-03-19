@@ -46,7 +46,7 @@ AdDetailStore.handlers = {
                     .commit();
 
                 return load(id).then(function(data) {
-                    self.getBinding().set('data', Imm.Map(data.data));
+                    self.getBinding().set('data', Imm.fromJS(data.data));
                 }).catch(function(e) {
                     throw e;
                 });

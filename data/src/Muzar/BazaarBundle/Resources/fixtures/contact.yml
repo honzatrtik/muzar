@@ -1,0 +1,26 @@
+- name: Honza Trtik
+  phone: "774334455"
+  email: honza@bandzone.cz
+  place:
+    lat: 23
+    lng: 22
+    place_id: "sadasdasdasd"
+    address_components:
+      locality: Podebrady
+      country: CR
+      administrative_area_level_1: Stredocesky kraj
+      administrative_area_level_2: Nymburk
+
+- name: Michal Novak
+  phone: "777123456"
+  email: mjk@mjk.cz
+  place:
+    lat: 23
+    lng: 22
+    place_id: "sadasd"
+    address_components:
+      locality: Pribram
+      country: CR
+      administrative_area_level_1: Stredocesky kraj
+      administrative_area_level_2: Pribram
+

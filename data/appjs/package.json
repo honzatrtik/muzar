@@ -66,6 +66,7 @@
     "express-state": "^1.2.0",
     "immutable": "^3.5.0",
     "lodash": "^3.0.0",
+    "moment": "^2.9.0",
     "morearty": "0.7.9",
     "react": "^0.12",
     "react-bootstrap": "^0.16.1",

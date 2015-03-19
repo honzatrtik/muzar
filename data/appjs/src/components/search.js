@@ -18,8 +18,7 @@ var Search = React.createClass({
     mixins: [Morearty.Mixin, DispatcherMixin],
 
     renderItem: function(item) {
-        item = item.toJS();
-        return <AdPreview key={item.id} item={item} />
+        return <AdPreview key={item.get('id')} item={item} />
     },
 
     renderEmptyMessage() {
@@ -124,7 +123,7 @@ var Search = React.createClass({
 
                     {this.renderFilters()}
                     {this.renderWatchdog()}
-                    {this.renderResultCount()}
+                    {!!items.size && this.renderResultCount()}
 
 
 
@@ -133,7 +132,7 @@ var Search = React.createClass({
                         <div className="row">
 
                             <div className="col-xs-12 col-sm-12 col-md-12">
-                                {items.toJS()}
+                                {items.toArray()}
                                 {this.renderEmptyMessage()}
                                 {this.renderFooter()}
                             </div>

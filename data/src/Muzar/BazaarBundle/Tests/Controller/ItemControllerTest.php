@@ -31,6 +31,8 @@ class ItemControllerTest extends ApiTestCase
 		));
 		$json = $this->assertJsonResponse($response, 200);
 
+
+		$this->assertEquals(count($json['data']), $json['meta']['total']);
 		$this->assertArrayHasKey('data', $json);
 		$this->assertArrayHasKey('meta', $json);
 		$this->assertArrayHasKey('nextLink', $json['meta']);

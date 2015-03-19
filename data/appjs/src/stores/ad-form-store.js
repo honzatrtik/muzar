@@ -41,7 +41,7 @@ AdFormStore.handlers = {
     'AD_CREATE_SUCCESS': function(data) {
         this.getBinding().atomically()
             .set('loading', false)
-            .set('createdAd', Imm.Map(data.data))
+            .set('createdAd', Imm.fromJS(data.data))
             .commit();
 
         var routerContainer = require('../router-container.js').get();

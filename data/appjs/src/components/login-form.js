@@ -6,6 +6,7 @@ var DispatcherMixin = require('../dispatcher-mixin.js');
 var LoginFormStore = require('../stores/login-form-store.js');
 var cs = React.addons.classSet;
 var { loginAction } = require('../actions/user-actions.js');
+var Wrapper = require('./form-error-wrapper.js')(LoginFormStore);
 
 
 var LoginForm = React.createClass({
@@ -19,22 +20,6 @@ var LoginForm = React.createClass({
         this.executeAction(loginAction, store.get());
     },
 
-    renderErrors() {
-        var store = this.getStore(LoginFormStore);
-        var errors = store.getErrors();
-
-        if (errors.size) {
-            return (
-                <ul>
-                    {errors.map((error, key) => <li key={key}>{error}</li>).toJS()}
-                </ul>
-            );
-        } else {
-            return null;
-        }
-    },
-
-
     render: function () {
 
         this.observeBinding(this.getStoreBinding(LoginFormStore));
@@ -44,18 +29,16 @@ var LoginForm = React.createClass({
         return (
             <form onSubmit={this.handleSubmit}>
 
-                {this.renderErrors()}
-
-                <div className="col-xs-12 col-sm-12 col-md-12">
+                <Wrapper name="form" className="col-xs-12 col-sm-12 col-md-12">
                     <div className="form-group">
 
                         <div className="row">
 
                             <div className="col-xs-12 col-sm-6 col-md-6">
-                                <div className="form-group">
+                                <Wrapper name="password" className="form-group">
                                     <label htmlFor="username">Přihlašovací mail</label>
                                     <Morearty.DOM.input id="username" value={store.get('username')} onChange={store.getHandler('username')}  className="form-control" type="text" />
-                                </div>
+                                </Wrapper>
                             </div>
 
                         </div>
@@ -63,10 +46,10 @@ var LoginForm = React.createClass({
                         <div className="row">
 
                             <div className="col-xs-12 col-sm-6 col-md-6">
-                                <div className="form-group">
+                                <Wrapper name="password" className="form-group">
                                     <label htmlFor="password">Heslo</label>
                                     <Morearty.DOM.input id="password" value={store.get('password')} onChange={store.getHandler('password')}  className="form-control" type="password" />
-                                </div>
+                                </Wrapper>
                             </div>
 
                         </div>
@@ -75,7 +58,7 @@ var LoginForm = React.createClass({
                         {/*<p><a href="">Zapomnel jsi heslo?</a></p> */}
 
                     </div>
-                </div>
+                </Wrapper>
 
 
                 <div className="col-xs-12 col-sm-8 col-md-8">

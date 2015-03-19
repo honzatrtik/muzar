@@ -63,8 +63,7 @@ var List = React.createClass({
     },
 
     renderItem: function(item) {
-        item = item.toJS();
-        return <AdPreview key={item.id} item={item} />
+        return <AdPreview key={item.get('id')} item={item} />
     },
 
 
@@ -96,7 +95,7 @@ var List = React.createClass({
 
                     <h1>{title}{adStore.isLoading() ? <small> Loading...</small> : null}</h1>
                     {path ? <div><CategoryBreadcrumbs path={path}/></div> : null}
-                    {items.toJS()}
+                    {items.toArray()}
                     {this.renderEmptyMessage()}
                     {this.renderFooter()}
                 </div>

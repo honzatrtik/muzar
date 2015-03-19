@@ -104,6 +104,7 @@ class Item
 	/**
 	 * @var Category
 	 * @ORM\ManyToOne(targetEntity="Category", inversedBy="items")
+	 * @ORM\JoinColumn(nullable=false)
 	 * @JMS\Expose()
 	 * @Assert\NotBlank()
 	 * @Assert\Valid()
@@ -113,6 +114,7 @@ class Item
 	/**
 	 * @var Contact
 	 * @ORM\ManyToOne(targetEntity="Contact", cascade={"persist"})
+	 * @ORM\JoinColumn(nullable=false)
 	 * @JMS\Expose()
 	 * @Assert\NotBlank()
 	 * @Assert\Valid()

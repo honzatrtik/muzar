@@ -79,7 +79,7 @@ class LoadUserData extends AbstractFixture implements FixtureInterface, Containe
 	 */
 	function getOrder()
 	{
-		return 1;
+		return 20;
 	}
 
 

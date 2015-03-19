@@ -58,9 +58,8 @@ class Contact
 
 	/**
 	 * @ORM\Column(type="json_array")
-	 * @JMS\Expose()
+	 * @JMS\Exclude()
 	 * @Assert\NotBlank()
-	 * @JMS\Groups({"elastica"})
 	 */
 	protected $place = array();
 
@@ -150,6 +149,68 @@ class Contact
 	public function getPlace()
 	{
 		return $this->place;
+	}
+
+	/**
+	 * @JMS\VirtualProperty
+	 * @JMS\SerializedName("address_components")
+	 * @JMS\Groups({"elastica"})
+	 */
+	public function getAddressComponents()
+	{
+		return isset($this->place['address_components'])
+			? $this->place['address_components']
+			: NULL;
+	}
+
+	/**
+	 * @JMS\VirtualProperty
+	 * @JMS\SerializedName("region")
+	 * @JMS\Groups({"elastica"})
+	 */
+	public function getRegion()
+	{
+		return isset($this->place['address_components']['administrative_area_level_1'])
+			? $this->place['address_components']['administrative_area_level_1']
+			: NULL;
+	}
+
+	/**
+	 * @JMS\VirtualProperty
+	 * @JMS\SerializedName("district")
+	 * @JMS\Groups({"elastica"})
+	 */
+	public function getDistrict()
+	{
+		return isset($this->place['address_components']['administrative_area_level_2'])
+			? $this->place['address_components']['administrative_area_level_2']
+			: NULL;
+	}
+
+
+	/**
+	 * @JMS\VirtualProperty
+	 * @JMS\SerializedName("city")
+	 * @JMS\Groups({"elastica"})
+	 */
+	public function getCity()
+	{
+		return isset($this->place['address_components']['locality'])
+			? $this->place['address_components']['locality']
+			: NULL;
+	}
+
+
+	/**
+	 * @JMS\VirtualProperty
+	 * @JMS\SerializedName("country")
+	 * @JMS\Groups({"elastica"})
+	 */
+	public function getCountry()
+	{
+		return isset($this->place['address_components']['country'])
+			? $this->place['address_components']['country']
+			: NULL;
 	}
 
 
