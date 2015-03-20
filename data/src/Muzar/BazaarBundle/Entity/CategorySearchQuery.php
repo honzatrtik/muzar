@@ -7,8 +7,9 @@
 namespace Muzar\BazaarBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Elastica\Query;
+use Elastica\Query\Prefix;
 use JMS\Serializer\Annotation as JMS;
-use Muzar\BazaarBundle\Elastica\PrefixCategoryQuery;
 use Symfony\Component\Validator\Constraints as Assert;
 
 use Symfony\Component\HttpFoundation\Request;
@@ -69,15 +70,24 @@ class CategorySearchQuery
 	}
 
 	/**
-	 * @return PrefixCategoryQuery
+	 * @return Query
 	 */
-	public function getElasticaQuery()
+	public function createElasticaQuery()
 	{
 		if (!$this->isFilled())
 		{
 			throw new \RuntimeException('Must be filled!');
 		}
-		return new PrefixCategoryQuery($this);
+
+		$query = $this->getQuery();
+
+		/**
+		 * See http://www.elasticsearch.org/guide/en/elasticsearch/guide/current/_query_time_search_as_you_type.html
+		 */
+		$prefix = new Prefix();
+		$prefix->setPrefix('path', $query);
+
+		return new Query($prefix);
 	}
 
 

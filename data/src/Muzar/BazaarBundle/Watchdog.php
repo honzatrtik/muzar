@@ -60,7 +60,7 @@ class Watchdog
 
 		return $this->percolator->registerQuery(
 			$this->createId($itemSearchQuery),
-			$itemSearchQuery->getElasticaQuery(),
+			$itemSearchQuery->createElasticaQuery(),
 			array(
 				'user' => array(
 					'id' => $itemSearchQuery->getUser()->getId(),

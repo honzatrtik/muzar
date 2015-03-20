@@ -154,7 +154,6 @@ class Contact
 	/**
 	 * @JMS\VirtualProperty
 	 * @JMS\SerializedName("address_components")
-	 * @JMS\Groups({"elastica"})
 	 */
 	public function getAddressComponents()
 	{

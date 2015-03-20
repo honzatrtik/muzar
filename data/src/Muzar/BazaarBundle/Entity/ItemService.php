@@ -8,10 +8,9 @@ namespace Muzar\BazaarBundle\Entity;
 
 use DoctrineExtensions\NestedSet;
 use Doctrine\ORM\EntityManager;
-use Elastica\Query\Match;
-use Elastica\Query\MatchAll;
+use Elastica\Query;
 use FOS\ElasticaBundle;
-use Muzar\BazaarBundle\Elastica\ItemQuery;
+use Muzar\BazaarBundle\Elastica\QueryFactory;
 use Muzar\BazaarBundle\Entity\ItemSearchQuery;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -60,11 +59,11 @@ class ItemService
 
 	/**
 	 * @param ItemSearchQuery $query
-	 * @return ItemQuery
+	 * @return Query
 	 */
 	protected function createFulltextQuery(ItemSearchQuery $query)
 	{
-		$q = $query->getElasticaQuery();
+		$q = $query->createElasticaQuery();
 		$q->addSort(array(
 			'id' => array(
 				'order' => 'desc',
@@ -85,7 +84,7 @@ class ItemService
 
 		if ($startId)
 		{
-			$q->addFilter(new \Elastica\Filter\Range('id', array(
+			$q->setPostFilter(new \Elastica\Filter\Range('id', array(
 				'lte' => $startId
 			)));
 		}

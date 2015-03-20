@@ -128,7 +128,7 @@ class LoadItemData extends AbstractFixture implements FixtureInterface, Containe
 	 */
 	function getOrder()
 	{
-		return 30;
+		return 40;
 	}
 
 

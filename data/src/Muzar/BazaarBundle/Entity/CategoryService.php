@@ -37,7 +37,7 @@ class CategoryService
 		/** @var ElasticaBundle\Repository $repository */
 		$repository = $this->rm->getRepository('Muzar\BazaarBundle\Entity\Category');
 
-		$q = $query->getElasticaQuery();
+		$q = $query->createElasticaQuery();
 		$q->setSize($maxResults);
 		$q->addSort(array(
 			'depth' => array(

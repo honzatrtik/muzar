@@ -116,6 +116,7 @@ class Item
 	 * @ORM\ManyToOne(targetEntity="Contact", cascade={"persist"})
 	 * @ORM\JoinColumn(nullable=false)
 	 * @JMS\Expose()
+	 * @JMS\Groups({"elastica"})
 	 * @Assert\NotBlank()
 	 * @Assert\Valid()
 	 **/

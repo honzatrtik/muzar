@@ -79,4 +79,16 @@ class ItemSearchQueryTest extends ApiTestCase
 		), $q1->toArray());
 	}
 
+
+	public function testT()
+	{
+		$q1 = new ItemSearchQuery();
+
+		$q1
+			->setDistrict('Nymburk');
+
+		echo json_encode($q1->createElasticaQuery()->toArray());
+
+	}
+
 }

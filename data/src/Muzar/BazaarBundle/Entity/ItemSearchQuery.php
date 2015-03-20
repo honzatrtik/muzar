@@ -9,9 +9,15 @@ namespace Muzar\BazaarBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
-use Muzar\BazaarBundle\Elastica\ItemQuery;
+use Muzar\BazaarBundle\Elastica\QueryFactory;
 use Symfony\Component\Validator\Constraints as Assert;
-
+use Elastica\Filter\AbstractFilter;
+use Elastica\Filter\BoolAnd;
+use Elastica\Filter\Nested;
+use Elastica\Filter\Prefix;
+use Elastica\Filter\Terms;
+use Elastica\Filter\Type;
+use Elastica\Query;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -56,11 +62,23 @@ class ItemSearchQuery
 	 */
 	protected $priceTo;
 
+
+	/**
+	 * @ORM\Column(type="string", nullable=true)
+	 * @JMS\Expose()
+	 */
+	protected $region;
+
+	/**
+	 * @ORM\Column(type="string", nullable=true)
+	 * @JMS\Expose()
+	 */
+	protected $district;
+
 	/**
 	 * @ORM\Column(type="string")
 	 */
 	protected $hash;
-
 
 	/**
 	 * @var User
@@ -174,6 +192,39 @@ class ItemSearchQuery
 		return $this;
 	}
 
+	/**
+	 * @return mixed
+	 */
+	public function getDistrict()
+	{
+		return $this->district;
+	}
+
+	/**
+	 * @param mixed $district
+	 */
+	public function setDistrict($district)
+	{
+		$this->district = $district;
+		return $this;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getRegion()
+	{
+		return $this->region;
+	}
+
+	/**
+	 * @param mixed $region
+	 */
+	public function setRegion($region)
+	{
+		$this->region = $region;
+		return $this;
+	}
 
 
 	/**
@@ -229,21 +280,46 @@ class ItemSearchQuery
 		return sha1(json_encode($this->toArray()));
 	}
 
-
-	public function isFilled()
-	{
-		return $this->getQuery()
-			|| $this->getCategoryStrId()
-			|| $this->getPriceFrom()
-			|| $this->getPriceTo();
-	}
-
 	/**
-	 * @return ItemQuery
+	 * @return Query
 	 */
-	public function getElasticaQuery()
+	public function createElasticaQuery()
 	{
-		return new ItemQuery($this);
+		$created = new Query\Filtered();
+
+		$filters = new \Elastica\Filter\BoolAnd();
+		$filters->addFilter(new Type('item'));
+
+		$range = array();
+		$range['gte'] = $this->getPriceFrom();
+		$range['lte'] = $this->getPriceTo();
+
+		if ($range = array_filter($range))
+		{
+			$filters->addFilter(new \Elastica\Filter\Range('price', $range));
+		}
+
+		if ($categoryStrId = $this->getCategoryStrId())
+		{
+			$filters->addFilter(new Terms('category_str_ids', array($categoryStrId)));
+		}
+
+		if ($district = $this->getDistrict())
+		{
+			$filters->addFilter(new Prefix('contact.district', $district));
+		}
+
+		if ($region = $this->getRegion())
+		{
+			$filters->addFilter(new Prefix('contact.region', $district));
+		}
+
+		$query = $this->getQuery();
+
+		$created->setQuery($query ? new Query\QueryString($query) : new Query\MatchAll());
+		$created->setFilter($filters);
+
+		return new Query($created);
 	}
 
 
