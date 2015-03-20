@@ -20,27 +20,22 @@ class ItemSearchQueryTest extends ApiTestCase
 	}
 
 
-	public function testIsFilled()
+	public function testSetters()
 	{
 		$q = new ItemSearchQuery();
 
-		$this->assertFalse($q->isFilled());
-
 		$q->setPriceTo(2000);
-		$this->assertTrue($q->isFilled());
-
-
-		$q->setPriceTo(NULL);
-		$this->assertFalse($q->isFilled());
+		$this->assertEquals(2000, $q->getPriceTo());
 
 		$q->setPriceFrom(10000);
-		$this->assertTrue($q->isFilled());
-
-		$q->setPriceFrom(NULL);
-		$this->assertFalse($q->isFilled());
+		$this->assertEquals(10000, $q->getPriceFrom());
 
 		$q->setQuery('kytara');
-		$this->assertTrue($q->isFilled());
+		$this->assertEquals('kytara', $q->getQuery());
+
+		$q->setCategoryStrId(4);
+		$this->assertEquals(4, $q->getCategoryStrId());
+
 	}
 
 	public function testGetHash()
@@ -62,6 +57,9 @@ class ItemSearchQueryTest extends ApiTestCase
 		$this->assertNotEmpty($q1->createHash());
 		$this->assertEquals($q1->createHash(), $q2->createHash());
 
+		$q2->setCategoryStrId(4);
+		$this->assertNotEquals($q1->createHash(), $q2->createHash());
+
     }
 
 	public function testToArray()
@@ -77,6 +75,8 @@ class ItemSearchQueryTest extends ApiTestCase
 			'query' => 'test',
 			'priceFrom' => 100,
 			'priceTo' => 1000,
+			'categoryStrId' => NULL,
 		), $q1->toArray());
 	}
+
 }

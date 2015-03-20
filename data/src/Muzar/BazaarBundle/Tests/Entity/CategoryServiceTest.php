@@ -34,7 +34,6 @@ class CategoryServiceTest extends ApiTestCase
 		$rm = $this->getKernel()->getContainer()->get('fos_elastica.manager');
 
 		$this->service = new CategoryService($em, $rm, $nsm);
-		$this->runCommandDropCreateFixtures();
 
 	}
 
@@ -45,7 +44,7 @@ class CategoryServiceTest extends ApiTestCase
 
 		$testBranch = function(array $branch) use ($self, & $testBranch) {
 
-			$this->assertArrayHasKey('strId', $branch);
+			$this->assertArrayHasKey('str_id', $branch);
 			$this->assertArrayHasKey('name', $branch);
 			$this->assertArrayHasKey('children', $branch);
 

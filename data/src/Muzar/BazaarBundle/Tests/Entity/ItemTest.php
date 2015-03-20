@@ -19,14 +19,6 @@ class ItemTest extends ApiTestCase
 	protected function setUp()
 	{
 		parent::setUp();
-
-		$this->runCommand('doctrine:schema:drop', array(
-			'--force' => TRUE,
-			'--no-debug' => TRUE,
-		));
-		$this->runCommand('doctrine:schema:create', array(
-			'--no-debug' => TRUE,
-		));
 	}
 
 	/**
@@ -44,7 +36,6 @@ class ItemTest extends ApiTestCase
 		$item->setName('Fender Telecaster');
 
 		/** @var EntityManager $em */
-		/** @var EntityManager em */
 		$em = $this->getKernel()->getContainer()
 			->get('doctrine')
 			->getManager();

@@ -461,3 +461,34 @@ version: 0.1
                     }
                   ]
                 }
+
+
+/geo:
+  /regions:
+    get:
+      description: Loads region category tree.
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  "meta": {
+                  },
+                  "data":  [
+                    {
+                      "name": "Středočeský kraj"
+                    },
+                    {
+                      "name": "Karlovarský kraj",
+                      "children": [
+                        {
+                          "name": "Sokolov"
+                        },
+                        {
+                          "name": "Karlovarský kraj"
+                        }
+                      ]
+                    }
+                  ]
+                }

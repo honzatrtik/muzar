@@ -21,20 +21,6 @@ class WatchdogTest extends ApiTestCase
 
 		$persister = $this->get('fos_elastica.object_persister.website.item');
 
-
-		$this->runCommand('doctrine:schema:drop', array(
-			'--force' => TRUE,
-			'--no-debug' => TRUE,
-		));
-		$this->runCommand('doctrine:schema:create', array(
-			'--no-debug' => TRUE,
-		));
-		$this->runCommand('fos:elastica:populate', array(
-			'--no-debug' => TRUE,
-		));
-
-
-
 		$em = $this->get('doctrine')->getManager();
 		$index = $this->get('fos_elastica.index');
 

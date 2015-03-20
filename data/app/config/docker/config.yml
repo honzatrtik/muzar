@@ -22,7 +22,9 @@ web_profiler:
     intercept_redirects: false
 
 doctrine:
+
     orm:
+        auto_generate_proxy_classes: true
         metadata_cache_driver:
             type: redis
             host: redis

@@ -8,11 +8,6 @@ use Muzar\BazaarBundle\Tests\ApiTestCase;
 
 class UserControllerTest extends ApiTestCase
 {
-	protected function setUp()
-	{
-		parent::setUp();
-		$this->runCommandDropCreateFixtures();
-	}
 
 
 	public function testGetNotLoggedIn()

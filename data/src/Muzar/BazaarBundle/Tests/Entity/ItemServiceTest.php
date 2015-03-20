@@ -35,7 +35,6 @@ class ItemServiceTest extends ApiTestCase
 		$cs = $this->getKernel()->getContainer()->get('muzar_bazaar.model_service.category');
 
 		$this->service = new ItemService($em, $rm, $cs);
-		$this->runCommandDropCreateFixtures();
 
 	}
 

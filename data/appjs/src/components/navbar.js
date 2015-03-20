@@ -10,30 +10,15 @@ var { Modal } = require('react-bootstrap');
 var DispatcherMixin = require('../dispatcher-mixin.js');
 var SessionStore = require('../stores/session-store.js');
 var LoginFormStore = require('../stores/login-form-store.js');
+var RouteStore = require('../stores/route-store.js');
 var { loginFormToggleAction } = require('../actions/user-actions.js');
 
-// Move!
-var superagent = require('../superagent.js');
-var HttpError = require('../errors/http-error.js');
+import { getSuggestions } from '../utils/api-utils.js';
 
-var req;
-function getSuggestions(query) {
-    req && req.abort();
-    req = superagent.get('/suggestions');
-    req.query({
-        query: query
-    });
-
-    return new Promise(function(resolve, reject) {
-        req.end(function(res) {
-            if (res.ok) {
-                resolve(res.body.data);
-            } else {
-                reject(new HttpError(res.error.status, res.error.text));
-            }
-        });
-    });
-}
+var getSuggestionsAbortable = function(query) {
+    var req;
+    return getSuggestions(query, req);
+};
 
 
 var Navbar = React.createClass({
@@ -84,6 +69,7 @@ var Navbar = React.createClass({
 
         this.observeBinding(this.getStoreBinding(SessionStore));
         this.observeBinding(this.getStoreBinding(LoginFormStore));
+        this.observeBinding(this.getStoreBinding(RouteStore));
 
         var store = this.getStore(SessionStore);
 
@@ -102,7 +88,7 @@ var Navbar = React.createClass({
                     </div>
                     <div className="collapse navbar-collapse">
                         <ul className="nav navbar-nav">
-                            <Suggester suggestionsFunction={getSuggestions} />
+                            <Suggester suggestionsFunction={getSuggestionsAbortable} />
                             <div className="navbar-btn navbar-right">
                                 <Link className="btn btn-default" to="create">
                                     <span className="glyphicon glyphicon-plus" />{' '}Přidat inzerát

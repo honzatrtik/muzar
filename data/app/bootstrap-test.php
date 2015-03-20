@@ -1,4 +1,3 @@
-#!/usr/bin/env php
 <?php
 
 use Symfony\Component\Console\Command;
@@ -18,14 +17,11 @@ require_once __DIR__.'/bootstrap.php.cache';
 require_once __DIR__.'/AppKernel.php';
 
 
-$input = new ArgvInput();
+$input = new Input\StringInput('muzar:rebuild-data');
 $env = $input->getParameterOption(array('--env', '-e'), getenv('SYMFONY_ENV') ?: 'dev');
-$debug = getenv('SYMFONY_DEBUG') !== '0' && !$input->hasParameterOption(array('--no-debug', '')) && $env !== 'prod';
-
-if ($debug) {
-    Debug::enable();
-}
+$debug = FALSE;
 
 $kernel = new AppKernel($env, $debug);
 $application = new Application($kernel);
+$application->setAutoExit(FALSE);
 $application->run($input);

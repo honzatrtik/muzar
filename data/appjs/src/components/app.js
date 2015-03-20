@@ -5,6 +5,7 @@ var Promise = require('../promise.js');
 
 var Router = require('react-router');
 var Navbar = require('./navbar.js');
+var ScrollToTopLink = require('./scroll-to-top-link.js');
 
 var morearty = require('../bootstrap-morearty.js')();
 
@@ -27,6 +28,8 @@ var App = React.createClass({
                     <Router.RouteHandler/>
 
                 </div>
+
+                <ScrollToTopLink />
             </div>
 
         );

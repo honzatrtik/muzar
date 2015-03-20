@@ -7,11 +7,6 @@ use Muzar\BazaarBundle\Tests\ApiTestCase;
 
 class SuggestionControllerTest extends ApiTestCase
 {
-	protected function setUp()
-	{
-		parent::setUp();
-		$this->runCommandDropCreateFixtures();
-	}
 
 	public function testGetWithoutQuery()
     {

@@ -38,18 +38,10 @@ class CategoryListenerTest extends ApiTestCase
 		$this->em->flush();
 
 
-		$this->runCommand('doctrine:schema:drop', array(
-			'--force' => TRUE
-		));
-		$this->runCommand('doctrine:schema:create');
-
 	}
 
 	public function testPathIsSet()
 	{
-		$rootCategory = new Category();
-		$rootCategory->setStrId('root');
-		$rootCategory->setName('Root');
 
 		$category1 = new Category();
 		$category1->setStrId('1');
@@ -60,7 +52,7 @@ class CategoryListenerTest extends ApiTestCase
 		$category2->setName('2');
 
 		// Root node pro kategorie
-		$rootNodeWrapper = $this->nsm->createRoot($rootCategory);
+		$rootNodeWrapper = $this->nsm->fetchTree();
 		$category1NodeWrapper = $rootNodeWrapper->addChild($category1);
 		$category1NodeWrapper->addChild($category2);
 
@@ -72,20 +64,17 @@ class CategoryListenerTest extends ApiTestCase
 
 	public function testGetAncestors()
 	{
-		$rootCategory = new Category();
-		$rootCategory->setStrId('root');
-		$rootCategory->setName('Root');
 
 		$category1 = new Category();
-		$category1->setStrId('1');
-		$category1->setName('1');
+		$category1->setStrId('3');
+		$category1->setName('3');
 
 		$category2 = new Category();
-		$category2->setStrId('2');
-		$category2->setName('2');
+		$category2->setStrId('4');
+		$category2->setName('4');
 
 		// Root node pro kategorie
-		$rootNodeWrapper = $this->nsm->createRoot($rootCategory);
+		$rootNodeWrapper = $this->nsm->fetchTree();
 		$category1NodeWrapper = $rootNodeWrapper->addChild($category1);
 		$category1NodeWrapper->addChild($category2);
 

@@ -11,18 +11,6 @@ use Muzar\BazaarBundle\Tests\ApiTestCase;
 
 class OAuthTest extends ApiTestCase
 {
-	protected function setUp()
-	{
-		parent::setUp();
-		$this->runCommand('doctrine:schema:drop', array(
-			'--force' => TRUE,
-			'--no-debug' => TRUE,
-		));
-		$this->runCommand('doctrine:schema:create', array(
-			'--no-debug' => TRUE,
-		));
-	}
-
 
 	public function testGetTokenGrantTypePassword()
     {
@@ -41,7 +29,7 @@ class OAuthTest extends ApiTestCase
 		$user = $manipulator->create('test', 'testpass', 'test@bandzone.cz', TRUE, FALSE);
 
 
-		$response = $this->request('GET', '/oauth/v2/token', array(
+		$response = $this->request('GET', '/api/oauth/v2/token', array(
 			'grant_type' => 'password',
 			'username' => 'test@bandzone.cz',
 			'password' => 'testpass',
