@@ -44,13 +44,19 @@ class AppKernel extends Kernel
 		$loader->load(__DIR__.'/config/'.$this->getEnvironment().'/config.yml');
 	}
 
-	public function getCacheDir()
-	{
+	public function getCacheDir() {
+		if (in_array($this->getEnvironment(), array('docker')))
+		{
+			return sprintf('/data-cache/%s/cache/%s', $this->getName(),  $this->getEnvironment());
+		}
 		return parent::getCacheDir();
 	}
 
-	public function getLogDir()
-	{
+	public function getLogDir() {
+		if (in_array($this->getEnvironment(), array('docker')))
+		{
+			return sprintf('/data-cache/%s/logs/%s', $this->getName(),  $this->getEnvironment());
+		}
 		return parent::getLogDir();
 	}
 }
