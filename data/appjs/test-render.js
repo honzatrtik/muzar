@@ -17,6 +17,11 @@ var Route = Router.Route;
 var _ = require('lodash');
 var TestLocation = require('react-router/modules/locations/TestLocation.js');
 
+var Dispatcher = require('./src/bootstrap-dispatcher.js');
+var morearty = require('./src/bootstrap-morearty.js')(true);
+var dispatcher = new Dispatcher({
+    morearty: morearty
+});
 
 module.exports = function render(component, links, props) {
 
@@ -34,12 +39,19 @@ module.exports = function render(component, links, props) {
         }));
     });
 
+    var context = {
+        dispatcher: dispatcher,
+        morearty: morearty
+    };
+
     var renderedComponent;
 
     TestLocation.history = ['/test'];
     Router.run(routes, TestLocation, function(Handler) {
 
-        var mainComponent = React.render(React.createFactory(Handler)(props), document.createElement('div'));
+        var mainComponent = React.withContext(context, function () {
+            return React.render(React.createFactory(Handler)(props), document.createElement('div'));
+        });
 
         // If nesting components, we take first component of type (we presume breadth first search)
         renderedComponent = TestUtils.scryRenderedComponentsWithType(mainComponent, component)[0];

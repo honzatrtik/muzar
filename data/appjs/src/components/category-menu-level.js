@@ -6,13 +6,13 @@ var Router = require('react-router');
 var Link = Router.Link;
 var CategoryStore = require('../stores/category-store.js');
 var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
-
+import Imm from 'immutable';
 
 var CategoryMenuLevel = React.createClass({
 
     propTypes: {
         path: React.PropTypes.array,
-        items: React.PropTypes.array.isRequired,
+        items: React.PropTypes.instanceOf(Imm.List).isRequired,
         query: React.PropTypes.object
     },
 
@@ -26,26 +26,27 @@ var CategoryMenuLevel = React.createClass({
 
         var items = this.props.items.map(function(item) {
 
-            var active = item.str_id === path[0];
+            var active = item.get('str_id') === path[0];
             var classNames = cs({
                 'is-active': active,
                 'mainMenu-level-item': true
             });
 
-            var expanded = (self.props.expanded || active) && item.children;
+            var children = item.get('children');
+            var expanded = (self.props.expanded || active) && children && children.size;
 
             return (
-                <li className={classNames} key={item.str_id}>
-                    <Link to="list" params={{category: item.str_id}} query={query}>{item.name}</Link>
+                <li className={classNames} key={item.get('str_id')}>
+                    <Link to="list" params={{category: item.get('str_id')}} query={query}>{item.get('name')}</Link>
                     <ReactCSSTransitionGroup component="div" transitionLeave={false} transitionName="mainMenu">
-                        {expanded ? <CategoryMenuLevel items={item.children} path={active ? path.slice(1) : []} query={query}/> : null}
+                        {expanded ? <CategoryMenuLevel items={item.get('children')} path={active ? path.slice(1) : []} query={query}/> : null}
                     </ReactCSSTransitionGroup>
                 </li>
             );
         });
 
         return (
-            <ul className="mainMenu-level">{items}</ul>
+            <ul className="mainMenu-level">{items.toArray()}</ul>
         );
 
     }

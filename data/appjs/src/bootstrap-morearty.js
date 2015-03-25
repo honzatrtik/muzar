@@ -10,7 +10,10 @@ var morearty;
 module.exports = function(refresh) {
 
     if (!morearty || refresh) {
-        var initialState = (typeof window !== 'undefined') ? serializer.unserialize(window.serializedState) : {};
+
+        var initialState = ((typeof window !== 'undefined') && (typeof window.serializedState === 'string'))
+            ? serializer.unserialize(window.serializedState)
+            : {};
 
         morearty = Morearty.createContext({
             initialState: initialState

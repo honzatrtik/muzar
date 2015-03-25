@@ -9,6 +9,7 @@ var CategoryStore = require('../stores/category-store.js');
 var RouteStore = require('../stores/route-store.js');
 var CategoryMenuLevel = require('./category-menu-level.js');
 var cs = React.addons.classSet;
+import Imm from 'immutable';
 
 var CategoryMenu = React.createClass({
 
@@ -22,9 +23,9 @@ var CategoryMenu = React.createClass({
         var store = this.getStore(CategoryStore);
         var routeStore = this.getStore(RouteStore);
 
-        var query = routeStore.getQuery().toJS();
+        var query = routeStore.getQuery();
 
-        var items = store.getItems() ? store.getItems().toJS() : [];
+        var items = store.getItems() ? store.getItems() : Imm.List();
         var path = store.getActivePath().map(category => category.str_id);
 
         var classNames = cs({

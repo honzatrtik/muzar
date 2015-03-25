@@ -34,7 +34,7 @@ class RouteStore extends BaseStore {
     }
 
     getRoute() {
-        return this.binding.get('state.routes').last();
+        return (this.binding.get('state.routes') || Imm.List()).last();
     }
 }
 

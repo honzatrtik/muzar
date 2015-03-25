@@ -6,8 +6,9 @@ var render = require('../../../test-render.js');
 var React = require('react/addons');
 var TestUtils = React.addons.TestUtils;
 var assert = require('assert');
+import Imm from 'immutable';
 
-var items = [
+var items = Imm.fromJS([
     {
         "str_id": "kytarove-nastroje",
         "name": "Kytarové nastroje",
@@ -35,7 +36,7 @@ var items = [
         "name": "Bicí nastroje",
         "newSince": 28
     }
-];
+]);
 
 describe('CategoryMenuLevel', function() {
 
