@@ -8,10 +8,6 @@ framework:
     profiler:
         collect: false
 
-fos_elastica:
-    clients:
-        default: { host: 127.0.0.1, port: 9200 }
-
 web_profiler:
     toolbar: false
     intercept_redirects: false

@@ -37,5 +37,6 @@ class RebuildDataCommand extends ContainerAwareCommand
 
 		$application->find('fos:elastica:populate')->run(new Input\StringInput('fos:elastica:populate'), $output);
 		$application->find('oauth:client:create')->run(new Input\StringInput('oauth:client:create --grant-type="password" -p web'), $output);
+		$application->find('cache:clear')->run(new Input\StringInput('cache:clear'), $output);
 	}
 }

@@ -54,7 +54,6 @@ class ApiTestCase extends WebTestCase
 	protected function tearDown()
 	{
 		parent::tearDown();
-		$this->printMemoryUsage();
 	}
 
 	protected function printMemoryUsage()

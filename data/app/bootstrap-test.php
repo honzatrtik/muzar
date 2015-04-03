@@ -18,7 +18,7 @@ require_once __DIR__.'/AppKernel.php';
 
 
 $input = new Input\StringInput('muzar:rebuild-data');
-$env = $input->getParameterOption(array('--env', '-e'), getenv('SYMFONY_ENV') ?: 'dev');
+$env = $input->getParameterOption(array('--env', '-e'), getenv('SYMFONY_ENV') ?: 'test');
 $debug = FALSE;
 
 $kernel = new AppKernel($env, $debug);

@@ -147,6 +147,12 @@ fos_elastica:
                                 type: custom
                                 tokenizer: standard
                                 filter: [ stopwords_CZ, cs_CZ, lowercase, stopwords_CZ, remove_duplicities ]
+
+                            ascii_folding:
+                                type: custom
+                                tokenizer: whitespace
+                                filter:  [ lowercase, asciifolding ]
+
                         filter:
                             my_stemmer:
                                 type: stemmer
@@ -179,19 +185,20 @@ fos_elastica:
                             properties:
                                 region:
                                     type: string
-                                    index: not_analyzed
+                                    index_analyzer: ascii_folding
+                                    search_analyzer: ascii_folding
                                 district:
                                     type: string
-                                    index: not_analyzed
+                                    index_analyzer: ascii_folding
+                                    search_analyzer: ascii_folding
                                 city:
                                     type: string
-                                    index: not_analyzed
+                                    index_analyzer: ascii_folding
+                                    search_analyzer: ascii_folding
                                 country:
                                     type: string
-                                    index: not_analyzed
-                                name:
-                                    type: string
-                                    index: not_analyzed
+                                    index_analyzer: ascii_folding
+                                    search_analyzer: ascii_folding
                         name:
                             boost: 5
                             analyzer: my_czech
@@ -239,8 +246,8 @@ fos_elastica:
                         count: { type: long }
                         suggest:
                             type: completion
-                            index_analyzer: simple
-                            search_analyzer: simple
+                            index_analyzer: ascii_folding
+                            search_analyzer: ascii_folding
                             payloads: false
 
 

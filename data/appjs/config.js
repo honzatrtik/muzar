@@ -1,8 +1,7 @@
 module.exports = {
 
     api: {
-        //urlPrefix: 'http://localhost:3030',
-        urlPrefix: 'http://192.168.59.104:8080/api',
+        urlPrefix:  'http://' + process.env.DOCKER_IP + ':8080/api',
         clientId: '1_4d2s2e5atjk0w8kcsc0cwo8c048c00s484sscgwogo80cs4kw0'
     },
 

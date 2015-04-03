@@ -12,6 +12,7 @@ var streamify = require('gulp-streamify');
 var plumber = require('gulp-plumber');
 var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
+var envify = require('envify');
 var watchify = require('watchify');
 var babelify = require('babelify');
 
@@ -103,6 +104,7 @@ function browserifyShare(config, watch){
         });
     }
 
+    b.transform(envify);
     b.transform(babelify.configure({
         experimental: true
     }));
