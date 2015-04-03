@@ -72,6 +72,36 @@ class ElasticaQuerySuggesterTest extends ApiTestCase
 		$this->assertCount(1, $suggestions);
 	}
 
+	public function testGetI18()
+	{
+		$this->suggester->add('činel');
+
+		$this->getClient()->refreshAll();
+
+		$suggestions = $this->suggester->get('cin');
+
+		$this->assertInternalType('array', $suggestions);
+		$this->assertCount(1, $suggestions);
+	}
+
+	public function testGetSort()
+	{
+		$this->suggester->add('Epiphone DOT toad');
+		$this->suggester->add('Epiphone DOT toad');
+		$this->suggester->add('Epiphone Les Junior');
+		$this->suggester->add('Epiphone Les Junior');
+		$this->suggester->add('Epiphone Les Junior');
+
+		$this->getClient()->refreshAll();
+
+		$suggestions = $this->suggester->get('epiph');
+
+		$this->assertInternalType('array', $suggestions);
+		$this->assertCount(2, $suggestions);
+		$this->assertEquals('Epiphone Les Junior', $suggestions[0]);
+
+	}
+
 	/**
 	 * @expectedException \InvalidArgumentException
 	 */

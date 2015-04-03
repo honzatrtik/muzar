@@ -10,6 +10,7 @@ namespace Muzar\BazaarBundle\Suggestion;
 use Elastica\Client;
 use Elastica\Query;
 use Elastica\Request;
+use Elastica\Result;
 
 class ElasticaQuerySuggester implements QuerySuggesterInterface
 {
@@ -45,17 +46,13 @@ class ElasticaQuerySuggester implements QuerySuggesterInterface
 		}
 
 		$data = array(
-			'script' => 'ctx._source.suggest.weight += usages',
+			'script' => 'ctx._source.weight += usages',
 			'params' => array(
 				'usages' => $usages,
 			),
 			'upsert' => array(
 				'query' => $query,
-				'suggest' => array(
-					'input' => $this->getInputFromQuery($query),
-					'output' => $query,
-					'weight' => $usages,
-				)
+				'weight' => $usages,
 			),
 		);
 
@@ -75,36 +72,31 @@ class ElasticaQuerySuggester implements QuerySuggesterInterface
 
 		$index = $this->client->getIndex($this->index);
 
-		$suggestType = $this->type . '-' . 'suggest';
+		$matchQuery = new Query\Match();
+		$matchQuery->setFieldQuery('query', $query)
+			->setFieldOperator('query', 'or');
 
-		$query = array(
-			$suggestType => array(
-				'text' => $query,
-				'completion' => array(
-					'field' => 'suggest',
-					'fuzzy' => false,
-				),
-			),
-		);
+		$functionScoreQuery = new Query\FunctionScore();
+		$functionScoreQuery->setQuery($matchQuery)
+			->setParam('field_value_factor', array(
+				'field' => 'weight',
+				'factor' => 1,
+				'modifier' => 'ln1p',
+			));
 
-		$response = $index->request('_suggest', Request::GET, $query, array(
-			'limit' => $limit
-		));
 
-		$data = $response->getData();
-		if (empty($data[$suggestType][0]['options']))
-		{
-			return array();
-		}
+		$q = new Query($functionScoreQuery);
+		$q->setSize($limit);
 
-		return array_map(function($result) {
-			return $result['text'];
-		}, $data[$suggestType][0]['options']);
-	}
+		$resultSet = $index->search($q);
+		$results = $resultSet->getResults();
 
-	protected function getInputFromQuery($query)
-	{
-		return array_values(array_filter(array_map('trim', explode(' ', $query))));
+		return array_map(function(Result $r) {
+			$s = $r->getSource();
+			return $s['query'];
+		}, $results);
+
+
 	}
 
 	protected function createId($query)
