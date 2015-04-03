@@ -26,10 +26,11 @@ var CategoryMenu = React.createClass({
         var query = routeStore.getQuery();
 
         var items = store.getItems() ? store.getItems() : Imm.List();
-        var path = store.getActivePath().map(category => category.str_id);
+        var path = store.getActivePath().map(category => category.get('str_id'));
+
 
         var classNames = cs({
-            'is-active': !path.length,
+            'is-active': !path.count(),
             'mainMenu-level-item': true
         });
 
@@ -38,7 +39,7 @@ var CategoryMenu = React.createClass({
 
                 <ul className="mainMenu-level">
                     <li className={classNames}>
-                        <Link to="listAll" query={query}>Vše</Link>
+                        <Link to="listAll" query={query.toJS()}>Vše</Link>
                     </li>
                 </ul>
 

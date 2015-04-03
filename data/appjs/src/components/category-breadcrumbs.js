@@ -5,32 +5,25 @@ var CategoryStore = require('../stores/category-store.js');
 var AdStore = require('../stores/ad-store.js');
 var Router = require('react-router');
 var Link = Router.Link;
+import Imm from 'immutable';
 
 var CategoryBreadcrumbs = React.createClass({
 
     propTypes: {
-        path: React.PropTypes.array
+        path: React.PropTypes.instanceOf(Imm.List)
     },
 
     render() {
 
-        var path = this.props.path || [];
+        var path = this.props.path || Imm.List();
         var breadcrumbs = path.map(function(part) {
             return (
-                <Link key={part.str_id} to="list" params={{ category: part.str_id }}>{part.name}</Link>
+                <Link key={part.get('str_id')} to="list" params={{ category: part.get('str_id') }}>{part.get('name')}</Link>
             );
-        });
-
-        var i = 0;
-        breadcrumbs = breadcrumbs.map(function(link) {
-            var key = 'separator-' + (i++);
-            return [<span key={key}>&nbsp;&raquo;&nbsp;</span>, link]
-        }).reduce(function(result, i) {
-            return result.concat(i);
-        }, []).slice(1);
+        }).interpose(' / ');
 
         return (
-            <div>{breadcrumbs}</div>
+            <div>{breadcrumbs.toArray()}</div>
         );
 
     }

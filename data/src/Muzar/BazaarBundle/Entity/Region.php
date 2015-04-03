@@ -4,12 +4,14 @@ namespace Muzar\BazaarBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * Region
  *
  * @ORM\Table(name="region")
  * @ORM\Entity
+ * @JMS\ExclusionPolicy("all")
  */
 class Region
 {
@@ -26,6 +28,7 @@ class Region
      * @var string
      *
      * @ORM\Column(name="code", type="string", length=7, nullable=false)
+     * @JMS\Expose()
      */
     private $code;
 
@@ -33,13 +36,16 @@ class Region
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=80, nullable=false)
+     * @JMS\Expose()
      */
     private $name;
 
 
     /**
      * @var ArrayCollection
-     * @ORM\OneToMany(targetEntity="District", mappedBy="product")
+     * @ORM\OneToMany(targetEntity="District", mappedBy="region")
+     * @JMS\MaxDepth(0)
+     * @JMS\Expose()
      **/
     private $districts;
 
@@ -110,7 +116,4 @@ class Region
     {
         return $this->districts;
     }
-
-
-
 }

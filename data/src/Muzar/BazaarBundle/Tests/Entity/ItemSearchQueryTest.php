@@ -76,19 +76,9 @@ class ItemSearchQueryTest extends ApiTestCase
 			'priceFrom' => 100,
 			'priceTo' => 1000,
 			'categoryStrId' => NULL,
+			'district' => NULL,
+			'region' => NULL,
 		), $q1->toArray());
-	}
-
-
-	public function testT()
-	{
-		$q1 = new ItemSearchQuery();
-
-		$q1
-			->setDistrict('Nymburk');
-
-		echo json_encode($q1->createElasticaQuery()->toArray());
-
 	}
 
 }

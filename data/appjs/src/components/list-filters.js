@@ -7,6 +7,7 @@ var cs = React.addons.classSet;
 var { DropdownButton, ButtonGroup, Glyphicon, Button } = require('react-bootstrap');
 var AdStore = require('../stores/ad-store.js');
 var RouteStore = require('../stores/route-store.js');
+var GeoStore = require('../stores/geo-store.js');
 var PriceFilter = require('./price-filter.js');
 var LocationFilter = require('./location-filter.js');
 var Router = require('react-router');
@@ -80,22 +81,7 @@ var ListFilters = React.createClass({
             priceTitle.push('nezáleží');
         }
 
-        var regions = Imm.fromJS([
-            {
-                "name": "Středočeský kraj"
-            },
-            {
-                "name": "Karlovarský kraj",
-                "children": [
-                    {
-                        "name": "Sokolov"
-                    },
-                    {
-                        "name": "Karlovy Vary"
-                    }
-                ]
-            }
-        ]);
+        var regions = this.getStore(GeoStore).getItems();
 
         var region = routeStore.getQuery('region');
         var district = routeStore.getQuery('district');

@@ -11,22 +11,22 @@ import Imm from 'immutable';
 var CategoryMenuLevel = React.createClass({
 
     propTypes: {
-        path: React.PropTypes.array,
+        path: React.PropTypes.instanceOf(Imm.List),
         items: React.PropTypes.instanceOf(Imm.List).isRequired,
-        query: React.PropTypes.object
+        query: React.PropTypes.instanceOf(Imm.Map)
     },
 
     render: function() {
 
         var cs = React.addons.classSet;
-        var path = this.props.path || [];
+        var path = this.props.path || Imm.List([]);
         var self = this;
 
-        var query = self.props.query || {};
+        var query = self.props.query || Imm.Map();
 
         var items = this.props.items.map(function(item) {
 
-            var active = item.get('str_id') === path[0];
+            var active = item.get('str_id') === path.first();
             var classNames = cs({
                 'is-active': active,
                 'mainMenu-level-item': true
@@ -37,9 +37,9 @@ var CategoryMenuLevel = React.createClass({
 
             return (
                 <li className={classNames} key={item.get('str_id')}>
-                    <Link to="list" params={{category: item.get('str_id')}} query={query}>{item.get('name')}</Link>
+                    <Link to="list" params={{category: item.get('str_id')}} query={query.toJS()}>{item.get('name')}</Link>
                     <ReactCSSTransitionGroup component="div" transitionLeave={false} transitionName="mainMenu">
-                        {expanded ? <CategoryMenuLevel items={item.get('children')} path={active ? path.slice(1) : []} query={query}/> : null}
+                        {expanded ? <CategoryMenuLevel items={item.get('children')} path={active ? path.slice(1) : Imm.List()} query={query}/> : null}
                     </ReactCSSTransitionGroup>
                 </li>
             );

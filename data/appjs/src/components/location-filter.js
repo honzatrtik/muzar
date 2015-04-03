@@ -40,7 +40,7 @@ export default React.createClass({
 
     renderRegion: function(region) {
 
-        var districts = region.get('children', Imm.List());
+        var districts = region.get('districts', Imm.List());
         return (
             <li key={region.get('name')}>
                 <h3><a onClick={this.handleClick.bind(this, region, null)}>{region.get('name')}</a></h3>

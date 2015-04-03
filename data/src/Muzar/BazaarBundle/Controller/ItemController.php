@@ -127,7 +127,6 @@ class ItemController
     {
 
 		$maxResults = $request->query->get('limit', ItemService::DEFAULT_MAX_RESULTS);
-		$categoryStrId = $request->query->get('category', ItemService::DEFAULT_CATEGORY_STR_ID);
 		$startId = $request->query->get('startId');
 
 

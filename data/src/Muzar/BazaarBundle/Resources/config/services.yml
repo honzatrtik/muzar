@@ -56,6 +56,10 @@ services:
         class: Muzar\BazaarBundle\Entity\CategoryService
         arguments: [@doctrine.orm.entity_manager, @fos_elastica.manager, @muzar_bazaar.nsm.category]
 
+    muzar_bazaar.model_service.geo:
+        class: Muzar\BazaarBundle\Entity\GeoService
+        arguments: [@doctrine.orm.entity_manager]
+
 
     muzar_bazaar.controller.item:
         class: Muzar\BazaarBundle\Controller\ItemController
@@ -76,6 +80,10 @@ services:
     muzar_bazaar.controller.category:
         class: Muzar\BazaarBundle\Controller\CategoryController
         arguments: [@router, @doctrine.orm.entity_manager, @muzar_bazaar.model_service.category]
+
+    muzar_bazaar.controller.geo:
+        class: Muzar\BazaarBundle\Controller\GeoController
+        arguments: [@router, @muzar_bazaar.model_service.geo]
 
 
 

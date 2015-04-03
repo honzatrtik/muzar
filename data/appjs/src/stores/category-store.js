@@ -59,12 +59,13 @@ class CategoryStore extends BaseStore {
 
     getPath(category) {
         var node = this.getMap()[category];
+        var path = [];
         if (node) {
-            return node.getPath().map(function(node) {
+            path = node.getPath().map(function(node) {
                 return node.model;
             }).slice(1);
         }
-        return [];
+        return Imm.fromJS(path);
     }
 
     getActivePath() {
@@ -72,7 +73,7 @@ class CategoryStore extends BaseStore {
         if (active) {
             return this.getPath(active);
         }
-        return [];
+        return Imm.List([]);
     }
 
     getActive() {
@@ -95,7 +96,7 @@ CategoryStore.handlers = {
             var store = self.getStore(RouteStore);
             if (store.getRoute() == 'list') {
                 var category = store.getParam('category');
-                if (!self.getPath(category).length) {
+                if (!self.getPath(category).size) {
                     throw new HttpError(404, 'Category not found: ' + category);
                 }
                 self.getBinding().set('active', category);

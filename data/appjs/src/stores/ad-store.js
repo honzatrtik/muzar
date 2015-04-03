@@ -69,7 +69,9 @@ AdStore.handlers = {
                 params = Imm.Map({
                     category: store.getActive(),
                     priceFrom: routeStore.getQuery('priceFrom'),
-                    priceTo: routeStore.getQuery('priceTo')
+                    priceTo: routeStore.getQuery('priceTo'),
+                    region: routeStore.getQuery('region'),
+                    district: routeStore.getQuery('district')
                 }).filter(v => v).toJS();
 
                 binding.atomically()
@@ -93,7 +95,9 @@ AdStore.handlers = {
                 params = Imm.Map({
                     query: routeStore.getQuery('query'),
                     priceFrom: routeStore.getQuery('priceFrom'),
-                    priceTo: routeStore.getQuery('priceTo')
+                    priceTo: routeStore.getQuery('priceTo'),
+                    region: routeStore.getQuery('region'),
+                    district: routeStore.getQuery('district')
                 }).filter(v => v).toJS();
 
 

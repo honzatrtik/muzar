@@ -4,12 +4,14 @@ namespace Muzar\BazaarBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * District
  *
  * @ORM\Table(name="district", indexes={@ORM\Index(name="region_id", columns={"region_id"})})
  * @ORM\Entity
+ * @JMS\ExclusionPolicy("all")
  */
 class District
 {
@@ -26,6 +28,7 @@ class District
      * @var string
      *
      * @ORM\Column(name="code", type="string", length=9, nullable=false)
+     * @JMS\Expose()
      */
     private $code;
 
@@ -33,6 +36,7 @@ class District
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=80, nullable=false)
+     * @JMS\Expose()
      */
     private $name;
 

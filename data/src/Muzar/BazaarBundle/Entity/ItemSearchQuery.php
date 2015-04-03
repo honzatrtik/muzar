@@ -98,7 +98,9 @@ class ItemSearchQuery
 		/** @var ItemSearchQuery $itemSearchQuery */
 		$itemSearchQuery = new static();
 		$itemSearchQuery
-			->setQuery($request->query->getAlnum('query'))
+			->setDistrict($request->query->get('district'))
+			->setRegion($request->query->get('region'))
+			->setQuery($request->query->get('query'))
 			->setPriceFrom($request->query->get('priceFrom'))
 			->setPriceTo($request->query->get('priceTo'))
 			->setCategoryStrId($request->query->get('category'));
@@ -268,6 +270,8 @@ class ItemSearchQuery
 			'categoryStrId' => $this->categoryStrId,
 			'priceFrom' => $this->priceFrom,
 			'priceTo' => $this->priceTo,
+			'district' => $this->district,
+			'region' => $this->region
 		);
 	}
 
@@ -304,15 +308,30 @@ class ItemSearchQuery
 			$filters->addFilter(new Terms('category_str_ids', array($categoryStrId)));
 		}
 
+		$locationQuery = array();
 		if ($district = $this->getDistrict())
 		{
-			$filters->addFilter(new Prefix('contact.district', $district));
+			$locationQuery['contact.district'] = $district;
 		}
 
 		if ($region = $this->getRegion())
 		{
-			$filters->addFilter(new Prefix('contact.region', $district));
+			$locationQuery['contact.region'] = $region;
 		}
+
+		if (count($locationQuery))
+		{
+
+			$q = [];
+			array_walk($locationQuery, function($string, $field) use (&$q) {
+				$q[] = "$field:$string";
+			});
+
+			$locationQuery = new Query\QueryString(join(' AND ', $q));
+			$locationQuery->setParam('analyzer', 'ascii_folding_geo');
+			$filters->addFilter(new \Elastica\Filter\Query($locationQuery));
+		}
+
 
 		$query = $this->getQuery();
 

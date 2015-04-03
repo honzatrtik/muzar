@@ -77,7 +77,7 @@ var List = React.createClass({
         var adStore = this.getStore(AdStore);
 
         var path = categoryStore.getActivePath();
-        var title = path.length ? path[path.length-1].name : 'Všechny inzeráty';
+        var title = path.size ? path.last().get('name') : 'Všechny inzeráty';
 
         var items = adStore.getItems().map(this.renderItem);
 

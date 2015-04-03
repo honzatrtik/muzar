@@ -153,10 +153,21 @@ fos_elastica:
                                 tokenizer: whitespace
                                 filter:  [ lowercase, asciifolding ]
 
+                            ascii_folding_geo:
+                                type: custom
+                                tokenizer: whitespace
+                                filter:  [ stopwords_geo, lowercase, asciifolding ]
+
                         filter:
                             my_stemmer:
                                 type: stemmer
                                 name: czech
+
+                            stopwords_geo:
+                                type: stop
+                                stopwords: [ region, kraj, okres ]
+                                ignore_case: true
+
                             stopwords_CZ:
                                 type: stop
                                 stopwords: [ právě, že, _czech_ ]
@@ -185,20 +196,20 @@ fos_elastica:
                             properties:
                                 region:
                                     type: string
-                                    index_analyzer: ascii_folding
-                                    search_analyzer: ascii_folding
+                                    index_analyzer: ascii_folding_geo
+                                    search_analyzer: ascii_folding_geo
                                 district:
                                     type: string
-                                    index_analyzer: ascii_folding
-                                    search_analyzer: ascii_folding
+                                    index_analyzer: ascii_folding_geo
+                                    search_analyzer: ascii_folding_geo
                                 city:
                                     type: string
-                                    index_analyzer: ascii_folding
-                                    search_analyzer: ascii_folding
+                                    index_analyzer: ascii_folding_geo
+                                    search_analyzer: ascii_folding_geo
                                 country:
                                     type: string
-                                    index_analyzer: ascii_folding
-                                    search_analyzer: ascii_folding
+                                    index_analyzer: ascii_folding_geo
+                                    search_analyzer: ascii_folding_geo
                         name:
                             boost: 5
                             analyzer: my_czech

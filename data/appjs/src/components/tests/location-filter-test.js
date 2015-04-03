@@ -15,7 +15,7 @@ var regions = Imm.fromJS([
     },
     {
         "name": "Karlovarský kraj",
-        "children": [
+        "districts": [
             {
                 "name": "Sokolov"
             },
