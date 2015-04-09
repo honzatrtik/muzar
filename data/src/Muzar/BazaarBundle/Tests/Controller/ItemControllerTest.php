@@ -279,79 +279,79 @@ class ItemControllerTest extends ApiTestCase
 //	}
 
 
-	public function testPut()
-	{
-		$this->setUsername('jan.novak@mailinator.com');
-
-		/** @var CategoryService $cs */
-		$cs = $this->getKernel()->getContainer()->get('muzar_bazaar.model_service.category');
-		$categories = $cs->getSelectableCategories();
-
-		$key = array_rand($categories);
-
-		$response = $this->request('POST', '/api/ads', array(
-			'name' => 'Kytara',
-			'description' => '',
-			'price' => 200,
-			'category' => $categories[$key]->getId(),
-			'contact' => array(
-				'name' => 'Jan Trtik',
-				'place' => array (
-					'lat' => 23,
-					'lng' => 22,
-					'place_id' => 'sadasd',
-					'address_components' => array (
-						'locality' => 'Pribram',
-						'country' => 'CR',
-						'administrative_area_level_1' => 'Stredocesky kraj',
-						'administrative_area_level_2' => 'Pribram',
-					),
-
-				),
-				'email' => 'pepik@novak.cz',
-			),
-		));
-		$json = $this->assertJsonResponse($response, 201);
-		$this->assertArrayHasKey('data', $json);
-		$this->assertArrayHasKey('id', $json['data']);
-
-		$url = '/api/ads/' . $json['id'];
-
-
-		$response = $this->request('PUT', $url,  array(
-			'name' => 'XXX',
-			'description' => '',
-			'price' => 200,
-			'category' => $categories[$key]->getId(),
-			'contact' => array(
-				'name' => 'Jan Trtik',
-				'place' => array (
-					'lat' => 23,
-					'lng' => 22,
-					'place_id' => 'sadasd',
-					'address_components' => array (
-						'locality' => 'Pribram',
-						'country' => 'CR',
-						'administrative_area_level_1' => 'Stredocesky kraj',
-						'administrative_area_level_2' => 'Pribram',
-					),
-
-				),
-				'email' => 'pepik@novak.cz',
-			),
-		));
-		$json = $this->assertJsonResponse($response, 200);
-
-
-		$response = $this->request('GET', $url);
-		$json = $this->assertJsonResponse($response, 200);
-
-
-		$this->assertArrayHasKey('data', $json);
-		$this->assertArrayHasKey('name', $json['data']);
-		$this->assertEquals('XXX', $json['data']['name']);
-
-	}
+//	public function testPut()
+//	{
+//		$this->setUsername('jan.novak@mailinator.com');
+//
+//		/** @var CategoryService $cs */
+//		$cs = $this->getKernel()->getContainer()->get('muzar_bazaar.model_service.category');
+//		$categories = $cs->getSelectableCategories();
+//
+//		$key = array_rand($categories);
+//
+//		$response = $this->request('POST', '/api/ads', array(
+//			'name' => 'Kytara',
+//			'description' => '',
+//			'price' => 200,
+//			'category' => $categories[$key]->getId(),
+//			'contact' => array(
+//				'name' => 'Jan Trtik',
+//				'place' => array (
+//					'lat' => 23,
+//					'lng' => 22,
+//					'place_id' => 'sadasd',
+//					'address_components' => array (
+//						'locality' => 'Pribram',
+//						'country' => 'CR',
+//						'administrative_area_level_1' => 'Stredocesky kraj',
+//						'administrative_area_level_2' => 'Pribram',
+//					),
+//
+//				),
+//				'email' => 'pepik@novak.cz',
+//			),
+//		));
+//		$json = $this->assertJsonResponse($response, 201);
+//		$this->assertArrayHasKey('data', $json);
+//		$this->assertArrayHasKey('id', $json['data']);
+//
+//		$url = '/api/ads/' . $json['data']['id'];
+//
+//
+//		$response = $this->request('PUT', $url,  array(
+//			'name' => 'XXX',
+//			'description' => '',
+//			'price' => 200,
+//			'category' => $categories[$key]->getId(),
+//			'contact' => array(
+//				'name' => 'Jan Trtik',
+//				'place' => array (
+//					'lat' => 23,
+//					'lng' => 22,
+//					'place_id' => 'sadasd',
+//					'address_components' => array (
+//						'locality' => 'Pribram',
+//						'country' => 'CR',
+//						'administrative_area_level_1' => 'Stredocesky kraj',
+//						'administrative_area_level_2' => 'Pribram',
+//					),
+//
+//				),
+//				'email' => 'pepik@novak.cz',
+//			),
+//		));
+//		$json = $this->assertJsonResponse($response, 200);
+//
+//
+//		$response = $this->request('GET', $url);
+//		$json = $this->assertJsonResponse($response, 200);
+//
+//
+//		$this->assertArrayHasKey('data', $json);
+//		$this->assertArrayHasKey('name', $json['data']);
+//		$this->assertEquals('XXX', $json['data']['name']);
+//
+//	}
 
 //	public function testPutDifferentUser()
 //	{

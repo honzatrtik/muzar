@@ -179,7 +179,7 @@ fos_elastica:
 
                             ngram:
                                type: edgeNGram
-                               min_gram: 3
+                               min_gram: 1
                                max_gram: 15
                                token_chars: [letter,digit,punctuation,symbol]
 
@@ -253,13 +253,17 @@ fos_elastica:
                         id: { type: long }
                         depth: { type: integer }
                         strId:
+                            index_analyzer: ascii_folding
+                            search_analyzer: ascii_folding
                             boost: 5
                         name:
                             boost: 5
-                            analyzer: my_czech
+                            analyzer: ascii_folding
+                            search_analyzer: ascii_folding
                         path:
                             boost: 3
-                            analyzer: my_czech
+                            analyzer: ascii_folding
+                            search_analyzer: ascii_folding
                     persistence:
                         elastica_to_model_transformer:
                             ignore_missing: true
@@ -276,7 +280,7 @@ fos_elastica:
                         query:
                             index_analyzer: ngram
                             search_analyzer: whitespace
-                        count: { type: long }
+                        weight: { type: long }
 
 
 

@@ -21,6 +21,8 @@ class SuggestionController
 {
 	const CACHE_LIFETIME  = 120;
 
+	const MIN_QUERY_SIZE = 3;
+
 	/** @var \Doctrine\Common\Cache\Cache */
 	protected $cache;
 
@@ -63,8 +65,16 @@ class SuggestionController
 			throw new HttpException(400, 'Empty search query.');
 		}
 
-		$categories = $this->getCategories($searchQuery);
-		$queries = $this->getQueries($searchQuery);
+		if (strlen($searchQuery->getQuery()) < self::MIN_QUERY_SIZE)
+		{
+			$queries = array();
+			$categories = array();
+		}
+		else
+		{
+			$categories = $this->getCategories($searchQuery);
+			$queries = $this->getQueries($searchQuery);
+		}
 
 		return array(
 			'meta' => array(),

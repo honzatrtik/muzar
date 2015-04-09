@@ -37,14 +37,15 @@ class WatchdogTest extends ApiTestCase
 
 		/** @var User $user */
 		$user = $um->createUser();
-		$user->setPlainPassword('John');
-		$user->setUsername('John');
-		$user->setEmail('john.doe@example.com');
+		$user->setPlainPassword('John1');
+		$user->setUsername('John1');
+		$user->setEmail('john1.doe@example.com');
 
 		$um->updateUser($user);
 
 		$q = new ItemSearchQuery();
-		$q->setPriceTo(1000)
+		$q->setPriceTo(1)
+			->setPriceFrom(0)
 			->setUser($user);
 
 		$em->persist($q);
@@ -62,9 +63,9 @@ class WatchdogTest extends ApiTestCase
 
 		/** @var User $user */
 		$user = $um->createUser();
-		$user->setPlainPassword('John');
-		$user->setUsername('John');
-		$user->setEmail('john.doe@example.com');
+		$user->setPlainPassword('John2');
+		$user->setUsername('John2');
+		$user->setEmail('john2.doe@example.com');
 		$um->updateUser($user);
 
 
@@ -97,6 +98,7 @@ class WatchdogTest extends ApiTestCase
 		$matchedQueries = $this->watchdog->getMatchedQueries($item1);
 
 		$this->assertInternalType('array', $matchedQueries);
+
 		$this->assertCount(1, $matchedQueries);
 		foreach($matchedQueries as $matchedQuery)
 		{

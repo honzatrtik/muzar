@@ -46,7 +46,8 @@ describe('CategoryMenuLevel', function() {
         var CategoryMenuLevel = require('../category-menu-level.js');
 
         var menu = render(CategoryMenuLevel, ['list', 'detail'], {
-            items: items
+            items: items,
+            path: Imm.List([])
         });
 
         var uls = TestUtils.scryRenderedDOMComponentsWithClass(menu, 'mainMenu-level');
@@ -63,7 +64,7 @@ describe('CategoryMenuLevel', function() {
 
         var menu = render(CategoryMenuLevel, ['list', 'detail'], {
             items: items,
-            path: ['kytarove-nastroje', 'akusticke-a-klasicke-kytary']
+            path: Imm.List(['kytarove-nastroje', 'akusticke-a-klasicke-kytary'])
         });
 
         var active = TestUtils.scryRenderedDOMComponentsWithClass(menu, 'is-active');
@@ -78,7 +79,7 @@ describe('CategoryMenuLevel', function() {
 
         var menu = render(CategoryMenuLevel, ['list', 'detail'], {
             items: items,
-            path: []
+            path: Imm.List([])
         });
 
         var active = TestUtils.scryRenderedDOMComponentsWithClass(menu, 'is-active');

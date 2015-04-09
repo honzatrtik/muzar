@@ -31,10 +31,10 @@ class GeoController
 	}
 
 	/**
-	 * @Route("/geo/tree", name="muzar_bazaar_geo_all")
+	 * @Route("/geo/regions", name="muzar_bazaar_geo_all")
 	 * @Rest\View
 	 */
-	public function allAction(Request $request)
+	public function regionsAction(Request $request)
     {
 		return array(
 			'meta' => array(),
