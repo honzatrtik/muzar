@@ -10,13 +10,15 @@ var keyCodes = require('../utils/event-key-codes.js');
 var cs = React.addons.classSet;
 var Imm = require('immutable');
 
+import { debounce } from '../utils/utils.js';
 
 var Suggester = React.createClass({
 
     mixins: [Router.Navigation],
 
     propTypes: {
-        suggestionsFunction: React.PropTypes.func.isRequired
+        suggestionsFunction: React.PropTypes.func.isRequired,
+        minCharLength: React.PropTypes.number
     },
 
     getInitialState: function() {
@@ -55,7 +57,7 @@ var Suggester = React.createClass({
         this.unbindBodyClickListener();
     },
 
-    loadSuggestions: function(query) {
+    loadSuggestions: debounce(function(query) {
 
         this.setState({
             loading: true
@@ -71,7 +73,7 @@ var Suggester = React.createClass({
                 loading: false
             });
         });
-    },
+    }, 300),
 
     handleSubmit: function(event) {
         event.preventDefault();
@@ -106,14 +108,25 @@ var Suggester = React.createClass({
 
         var self = this;
         var query =  event.target.value;
-        var state = {
-            query: query,
-            show: true,
-            activeTabIndex: 0
-        };
+        var minCharLength = this.props.minCharLength || 3;
+        var state;
+        if (query.length >= minCharLength) {
 
-        if (query) {
+            state = {
+                query: query,
+                show: true,
+                activeTabIndex: 0
+            };
+
             this.loadSuggestions(query);
+
+        } else {
+
+            state = {
+                query: query,
+                show: false,
+                activeTabIndex: 0
+            };
         }
 
         this.setState(state);

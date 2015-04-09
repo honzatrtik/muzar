@@ -15,11 +15,6 @@ var { loginFormToggleAction } = require('../actions/user-actions.js');
 
 import { getSuggestions } from '../utils/api-utils.js';
 
-var getSuggestionsAbortable = function(query) {
-    var req;
-    return getSuggestions(query, req);
-};
-
 
 var Navbar = React.createClass({
 
@@ -88,7 +83,7 @@ var Navbar = React.createClass({
                     </div>
                     <div className="collapse navbar-collapse">
                         <ul className="nav navbar-nav">
-                            <Suggester suggestionsFunction={getSuggestionsAbortable} />
+                            <Suggester suggestionsFunction={getSuggestions} />
                             <div className="navbar-btn navbar-right">
                                 <Link className="btn btn-default" to="create">
                                     <span className="glyphicon glyphicon-plus" />{' '}Přidat inzerát

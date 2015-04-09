@@ -2,8 +2,9 @@ import superagent  from '../superagent.js';
 import HttpError from '../errors/http-error.js';
 import Promise from '../promise.js';
 
+var req;
 
-export function getSuggestions(query, req) {
+export function getSuggestions(query) {
     req && req.abort();
     req = superagent.get('/suggestions');
     req.query({
