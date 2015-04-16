@@ -64,7 +64,7 @@
     "express": "^4.11.2",
     "express-handlebars": "^1.1.0",
     "express-state": "^1.2.0",
-    "immutable": "^3.5.0",
+    "immutable": "~3.6.0",
     "lodash": "^3.0.0",
     "moment": "^2.9.0",
     "morearty": "0.7.9",
@@ -74,6 +74,7 @@
     "rsvp": "^3.0.17",
     "superagent": "^0.21.0",
     "transit-js": "^0.8.759",
-    "tree-model": "^0.4.3"
+    "tree-model": "^0.4.3",
+    "url-parse": "^1.0.0"
   }
 }
