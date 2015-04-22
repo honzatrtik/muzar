@@ -5,6 +5,7 @@ namespace Muzar\BazaarBundle\Tests\Entity;
 use Doctrine\ORM\EntityManager;
 use DoctrineExtensions\NestedSet\Manager;
 use Muzar\BazaarBundle\Entity\Category;
+use Muzar\BazaarBundle\Entity\CategoryService;
 use Muzar\BazaarBundle\Entity\Contact;
 use Muzar\BazaarBundle\Entity\Item;
 use Muzar\BazaarBundle\Entity\ItemService;
@@ -32,8 +33,25 @@ class ItemTest extends ApiTestCase
 
 	public function testPrePersistHooks()
 	{
+
+		/** @var CategoryService $categoryService */
+		$categoryService = $this->getKernel()->getContainer()
+			->get('muzar_bazaar.model_service.category');
+
+		$categories = $categoryService->getSelectableCategories();
+		$category = current($categories);
+
+
+		$contact = new Contact();
+		$contact->setEmail('test@mailinator.com')
+			->setName('test');
+
 		$item = new Item();
-		$item->setName('Fender Telecaster');
+
+		$item
+			->setContact($contact)
+			->setCategory($category)
+			->setName('Fender Telecaster');
 
 		/** @var EntityManager $em */
 		$em = $this->getKernel()->getContainer()

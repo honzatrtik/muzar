@@ -61,7 +61,6 @@ class ElasticaQuerySuggester implements QuerySuggesterInterface
 
 	/**
 	 * Get query suggestions based on query
-	 * http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/search-suggesters-completion.html
 	 *
 	 * @param $query
 	 * @param int $limit
@@ -87,6 +86,7 @@ class ElasticaQuerySuggester implements QuerySuggesterInterface
 
 		$q = new Query($functionScoreQuery);
 		$q->setSize($limit);
+
 
 		$resultSet = $index->search($q);
 		$results = $resultSet->getResults();

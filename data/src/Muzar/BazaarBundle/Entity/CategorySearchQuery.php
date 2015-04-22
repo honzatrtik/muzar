@@ -30,7 +30,7 @@ class CategorySearchQuery
 		/** @var ItemSearchQuery $categorySearchQuery */
 		$categorySearchQuery = new static();
 		$categorySearchQuery
-			->setQuery($request->query->getAlnum('query'));
+			->setQuery($request->query->get('query'));
 
 		return $categorySearchQuery;
 	}

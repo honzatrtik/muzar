@@ -10,7 +10,7 @@ var HttpError = require('../errors/http-error.js');
 var req;
 function load() {
     req && req.abort();
-    req = superagent.get('/geo/tree');
+    req = superagent.get('/geo/regions');
     return new Promise(function(resolve, reject) {
         req.end(function(res) {
             if (res.ok) {
