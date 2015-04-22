@@ -16,6 +16,11 @@ set_time_limit(0);
 require_once __DIR__.'/bootstrap.php.cache';
 require_once __DIR__.'/AppKernel.php';
 
+$skipRebuildData = getenv('TEST_SKIP_REBUILD_DATA') ?: FALSE;
+if ($skipRebuildData)
+{
+	return;
+}
 
 $input = new Input\StringInput('muzar:rebuild-data');
 $env = $input->getParameterOption(array('--env', '-e'), getenv('SYMFONY_ENV') ?: 'test');
