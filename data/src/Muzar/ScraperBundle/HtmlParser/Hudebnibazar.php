@@ -25,14 +25,17 @@ class Hudebnibazar implements HtmlParserInterface
 		$node = $crawler->filter('select[name="kategorie"] option:selected');
 		if ($node->count())
 		{
+			$params['categoryId'] = trim($node->first()->attr('value'));
 			$params['category'] = trim($node->first()->text());
 		}
 
 		$node = $crawler->filter('select[name="kraj"] option:selected');
 		if ($node->count())
 		{
+			$params['regionId'] = trim($node->first()->attr('value'));
 			$params['region'] = trim($node->first()->text());
 		}
+
 
 		$node = $crawler->filter('input[name="nazev"]');
 		if ($node->count())
@@ -78,8 +81,14 @@ class Hudebnibazar implements HtmlParserInterface
 		}
 
 		// Pocet obrazku
-		$node = $crawler->filter('.FormularHodnotaM .InzeratObr');
-		$params['images'] = trim($node->count());
+		$as = $crawler->filter('.InzeratObrd a');
+		$imageUrls = array();
+		$as->each(function(Crawler $a) use (&$imageUrls) {
+			$imageUrls[] = $a->attr('href');
+		});
+
+		$params['images'] = trim($as->count());
+		$params['imageUrls'] = $imageUrls;
 
 		return $params;
 

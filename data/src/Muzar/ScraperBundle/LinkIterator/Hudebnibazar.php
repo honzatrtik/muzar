@@ -115,11 +115,13 @@ class Hudebnibazar implements \Iterator
 			$xml = new \SimpleXMLElement($r->readOuterXml());
 			if ($xml->link && $xml->pubDate)
 			{
-				$this->current = new \DateTime((string) $xml->pubDate);
 
-				// Zjitime si edit link
-				parse_str(parse_url($xml->link, PHP_URL_QUERY), $vars);
-				$this->key = (string) 'http://hudebnibazar.cz/formular.php?ID=' . $vars['ID'];
+				$link = is_array($xml->link)
+					? $xml->link[0]
+					: $xml->link;
+
+				$this->current = new \DateTime((string) $xml->pubDate);
+				$this->key = $this->createUrl($link);
 			}
 		}
 		catch (\RuntimeException $e)
@@ -131,6 +133,21 @@ class Hudebnibazar implements \Iterator
 
 	}
 
+	private function parseId($url)
+	{
+		$parts = array_filter(explode('/', $url));
+		$id = end($parts);
+		return substr($id, 2);
+	}
+
+	/**
+	 * Detail url -> edit form url
+	 * @param $url
+	 */
+	private function createUrl($url)
+	{
+		return 'http://hudebnibazar.cz/formular.php?ID=' . $this->parseId($url);
+	}
 
 	public function key()
 	{

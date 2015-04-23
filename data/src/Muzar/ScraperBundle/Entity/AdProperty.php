@@ -35,9 +35,14 @@ class AdProperty
 	protected $name;
 
 	/**
-	 * @ORM\Column(type="string")
+	 * @ORM\Column(type="string", nullable=true)
 	 */
 	protected $value;
+
+	/**
+	 * @ORM\Column(type="string", nullable=true)
+	 */
+	protected $valueSerialized;
 
 	/**
 	 * @param mixed $id
@@ -97,7 +102,14 @@ class AdProperty
 	 */
 	public function setValue($value)
 	{
-		$this->value = $value;
+		if (is_scalar($value))
+		{
+			$this->value = $value;
+		}
+		else
+		{
+			$this->valueSerialized = serialize($value);
+		}
 		return $this;
 	}
 
@@ -106,12 +118,9 @@ class AdProperty
 	 */
 	public function getValue()
 	{
-		return $this->value;
+
+		return $this->valueSerialized
+			? unserialize($this->valueSerialized)
+			: $this->value;
 	}
-
-
-
-
-
-
 }

@@ -28,6 +28,20 @@ class Midicz implements HtmlParserInterface
 			$params['name'] = trim($node->first()->text());
 		}
 
+		$node = $crawler->filter('.item .image img');
+		if ($node->count())
+		{
+			$params['images'] = 1;;
+
+			$dom = $node->getNode(0);
+			$params['imageUrls'] = array('http://midi.cz' . $node->first()->attr('src')); // Natvrdo ziskavame url
+		}
+		else
+		{
+			$params['images'] = 0;
+			$params['imageUrls'] = array();
+		}
+
 		$node = $crawler->filterXPath('//*[@class="table_info"]//tr[3]/td[2]');
 		if ($node->count())
 		{
