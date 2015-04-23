@@ -14,7 +14,8 @@ AS
     `p5`.`value`  AS `type`,
     `p6`.`value`  AS `images`,
     `p7`.`value`  AS `text`,
-    COALESCE(`p8`.`value`, `p8`.`value_serialized`)  AS `image_urls`
+    COALESCE(`p8`.`value`, `p8`.`value_serialized`)  AS `image_urls`,
+    `p9`.`value`  AS `categoryId`
 
   FROM `scraper_ad` `a`
     JOIN `scraper_ad_property` `p1`
@@ -32,4 +33,6 @@ AS
     LEFT JOIN `scraper_ad_property` `p7`
       ON (`a`.`id` = `p7`.`scraper_ad_id`) AND (`p7`.`name` = 'text')
     LEFT JOIN `scraper_ad_property` `p8`
-      ON (`a`.`id` = `p8`.`scraper_ad_id`) AND (`p8`.`name` = 'imageUrls');
+      ON (`a`.`id` = `p8`.`scraper_ad_id`) AND (`p8`.`name` = 'imageUrls')
+    LEFT JOIN `scraper_ad_property` `p9`
+      ON (`a`.`id` = `p9`.`scraper_ad_id`) AND (`p9`.`name` = 'categoryId');

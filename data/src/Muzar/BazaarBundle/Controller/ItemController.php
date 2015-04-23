@@ -78,8 +78,9 @@ class ItemController
 	 */
 	public function getAction(Request $request, $id)
 	{
+		$item = $this->itemService->getItem($id);
 		return array(
-			'data' => $this->itemService->getItem($id),
+			'data' => $item,
 			'meta' => new \stdClass(),
 		);
 	}

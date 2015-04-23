@@ -50,7 +50,7 @@ var Detail = React.createClass({
                     <div className="col-xs-12 col-sm-8 col-md-8">
 
                         <div className="thumbnail">
-                            <img width="100%" src={ad.get('image_url')} alt={ad.get('name')} />
+                            <img width="100%" src={ad.get('front_image_url')} alt={ad.get('name')} />
                         </div>
                     </div>
 

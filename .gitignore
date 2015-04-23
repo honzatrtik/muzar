@@ -5,6 +5,7 @@ data/vendor/*
 .idea/*
 .DS_Store
 data/web/bundles/
+data/web/media/*
 data/app/bootstrap.php.cache
 data/app/cache/*
 data/app/config/**/parameters.yml

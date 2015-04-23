@@ -11,18 +11,21 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
 use Muzar\BazaarBundle\Entity\Category;
+use Muzar\BazaarBundle\Media\ItemMediaInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @ORM\Entity(repositoryClass="Muzar\BazaarBundle\Entity\ItemRepository")
  * @ORM\Table(name="item",indexes={@ORM\Index(name="item_status_idx",columns={"status"}), @ORM\Index(name="sluq_idx", columns={"slug"})})
+ * @ORM\EntityListeners({"Muzar\BazaarBundle\Entity\ItemListener"})
  * @ORM\HasLifecycleCallbacks
  *
  * @JMS\ExclusionPolicy("all")
  */
 class Item
 {
+
 	const STATUS_ACTIVE = 'active';
 	const STATUS_EXPIRED = 'expired';
 	const STATUS_SOLD = 'sold';
@@ -132,6 +135,10 @@ class Item
 	private $user;
 
 
+	/**
+	 * @var ItemMediaInterface
+	 */
+	private $itemMedia;
 
 
 	function __construct()
@@ -295,12 +302,27 @@ class Item
 
 	/**
 	 * @JMS\VirtualProperty
-	 * @JMS\SerializedName("image_url")
+	 * @JMS\SerializedName("image_urls")
 	 * @return string
 	 */
-	public function getImageUrl()
+	public function getImageUrls()
 	{
-		return sprintf('https://placeimg.com/300/200/people/grayscale?%d', $this->getId());
+		return $this->itemMedia
+			? $this->itemMedia->getUrls()
+			: array();
+	}
+
+	/**
+	 * @JMS\VirtualProperty
+	 * @JMS\SerializedName("front_image_url")
+	 * @return string
+	 */
+	public function getFrontImageUrl()
+	{
+		$urls = $this->getImageUrls();
+		return count($urls)
+			? $urls[0]
+			: null;
 	}
 
 	/**
@@ -401,6 +423,25 @@ class Item
 	{
 		return $this->user;
 	}
+
+	/**
+	 * @return ItemMediaInterface
+	 */
+	public function getItemMedia()
+	{
+		return $this->itemMedia;
+	}
+
+	/**
+	 * @param ItemMediaInterface $itemMedia
+	 */
+	public function setItemMedia(ItemMediaInterface $itemMedia)
+	{
+		$this->itemMedia = $itemMedia;
+		return $this;
+	}
+
+
 
 
 	/** @ORM\PrePersist */

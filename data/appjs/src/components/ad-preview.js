@@ -14,7 +14,7 @@ var AdPreview = React.createClass({
                 <div className="col-xs-12 col-sm-4 col-md-4">
                     <div className="thumbnail">
 
-                        <div style={{ height: 162, overflow: "hidden" }}><img width="100%" alt={item.get('name')} src={item.get('image_url')} /></div>
+                        <div style={{ height: 162, overflow: "hidden" }}><img width="100%" alt={item.get('name')} src={item.get('front_image_url')} /></div>
 
                         <div className="caption">
                             <h4>{item.get('name')}</h4>

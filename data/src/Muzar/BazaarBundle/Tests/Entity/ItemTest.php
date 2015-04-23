@@ -61,12 +61,47 @@ class ItemTest extends ApiTestCase
 		$em->flush();
 
 
+
 		$this->assertNotEmpty($item->getId());
 		$this->assertNotEmpty($item->getSlug());
 		$this->assertNotEmpty($item->getCreated());
 
 		$this->assertEquals('fender-telecaster', $item->getSlug());
 	}
+
+//	public function testPostLoadItemMediaHooks()
+//	{
+//
+//		/** @var CategoryService $categoryService */
+//		$categoryService = $this->getKernel()->getContainer()
+//			->get('muzar_bazaar.model_service.category');
+//
+//		$categories = $categoryService->getSelectableCategories();
+//		$category = current($categories);
+//
+//
+//		$contact = new Contact();
+//		$contact->setEmail('test@mailinator.com')
+//			->setName('test');
+//
+//		$item = new Item();
+//
+//		$item
+//			->setContact($contact)
+//			->setCategory($category)
+//			->setName('Fender Telecaster');
+//
+//		/** @var EntityManager $em */
+//		$em = $this->getKernel()->getContainer()
+//			->get('doctrine')
+//			->getManager();
+//		$em->persist($item);
+//		$em->flush();
+//
+//		/** @var Item $item */
+//		$item = $em->find('Muzar\BazaarBundle\Entity\Item', $item->getId());
+//		$this->assertNotNull($item->getItemMedia());
+//	}
 
 	public function testValidate()
 	{

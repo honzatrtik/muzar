@@ -9,6 +9,17 @@ services:
         tags:
             -  { name: console.command }
 
+    muzar_bazaar.command.import_scraped:
+        class: Muzar\BazaarBundle\Command\ImportScrapedCommand
+        arguments: [@doctrine.orm.entity_manager, @muzar_bazaar.command.importer.hudebnibazar]
+        tags:
+            -  { name: console.command }
+
+    muzar_bazaar.command.importer.hudebnibazar:
+        class: Muzar\BazaarBundle\Importer\Hudebnibazar
+        arguments: [@doctrine.orm.entity_manager, @fos_user.user_manager]
+
+
     muzar_bazaar.query_suggester:
         class: Muzar\BazaarBundle\Suggestion\ElasticaQuerySuggester
         arguments: [@fos_elastica.client.default, 'website', 'query']
@@ -21,6 +32,10 @@ services:
     muzar_bazaar.model.entity_listener.category:
         class: Muzar\BazaarBundle\Entity\CategoryListener
         arguments: [@muzar_bazaar.nsm.category]
+
+    muzar_bazaar.model.entity_listener.item:
+        class: Muzar\BazaarBundle\Entity\ItemListener
+        arguments: [@muzar_bazaar.item_media_factory]
 
     muzar_bazaar.model.entity_listener.item_search_query:
         class: Muzar\BazaarBundle\Entity\ItemSearchQueryListener
@@ -38,7 +53,17 @@ services:
         class: DoctrineExtensions\NestedSet\Manager
         arguments: [@muzar_bazaar.nsm.category.config]
 
+    muzar_bazaar.item_media_factory:
+        class: Muzar\BazaarBundle\Media\ItemMediaFactory
+        arguments: [@muzar_bazaar.filesystem, 'http://192.168.99.100:8080/media/']
 
+    muzar_bazaar.filesystem:
+        class: League\Flysystem\Filesystem
+        arguments: [@muzar_bazaar.filesystem_adapter]
+
+    muzar_bazaar.filesystem_adapter:
+        class: League\Flysystem\Adapter\Local
+        arguments: ['%media_root%']
 
 
     muzar_bazaar.property_accessor:

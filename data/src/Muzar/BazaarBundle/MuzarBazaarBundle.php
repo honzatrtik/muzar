@@ -16,6 +16,7 @@ class MuzarBazaarBundle extends Bundle
 
 		$em->getConfiguration()->getEntityListenerResolver()->register($this->container->get('muzar_bazaar.model.entity_listener.category'));
 		$em->getConfiguration()->getEntityListenerResolver()->register($this->container->get('muzar_bazaar.model.entity_listener.item_search_query'));
+		$em->getConfiguration()->getEntityListenerResolver()->register($this->container->get('muzar_bazaar.model.entity_listener.item'));
 	}
 
 

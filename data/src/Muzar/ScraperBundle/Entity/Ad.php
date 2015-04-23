@@ -193,6 +193,18 @@ class Ad
 
 	/**
 	 * @param $name
+	 * @return mixed
+	 */
+	public function getPropertyValueByName($name, $default = NULL)
+	{
+		$property = $this->getPropertyByName($name);
+		return $property
+			? $property->getValue()
+			: $default;
+	}
+
+	/**
+	 * @param $name
 	 * @param $value
 	 * @return $this
 	 */
