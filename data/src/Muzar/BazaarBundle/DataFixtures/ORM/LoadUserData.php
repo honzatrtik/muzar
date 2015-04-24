@@ -15,6 +15,7 @@ use FOS\UserBundle\Doctrine\UserManager;
 use Muzar\BazaarBundle\Entity\User;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Yaml\Parser;
 use Symfony\Component\Yaml\Yaml;
 
 class LoadUserData extends AbstractFixture implements FixtureInterface, ContainerAwareInterface, OrderedFixtureInterface
@@ -44,7 +45,8 @@ class LoadUserData extends AbstractFixture implements FixtureInterface, Containe
 
 
 		$path = __DIR__ . '/../../Resources/fixtures/user.yml';
-		$data = Yaml::parse(file_get_contents($path));
+		$parser = new Parser();
+		$data = $parser->parse(file_get_contents($path));
 
 		foreach($data as $userData)
 		{

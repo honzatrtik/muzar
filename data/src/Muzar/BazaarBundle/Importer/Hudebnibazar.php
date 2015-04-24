@@ -77,7 +77,7 @@ class Hudebnibazar implements ImporterInterface
 			->setPhone($ad->getPropertyValueByName('phone'))
 			->setPlace($place);
 
-		$price = $ad->getPropertyValueByName('price');
+		$price = $ad->getPropertyValueByName('price') . ' ' . $ad->getPropertyValueByName('currency');
 
 		$item
 			->setCategory($category)

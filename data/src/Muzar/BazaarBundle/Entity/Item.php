@@ -314,19 +314,6 @@ class Item
 
 	/**
 	 * @JMS\VirtualProperty
-	 * @JMS\SerializedName("front_image_url")
-	 * @return string
-	 */
-	public function getFrontImageUrl()
-	{
-		$urls = $this->getImageUrls();
-		return count($urls)
-			? $urls[0]
-			: null;
-	}
-
-	/**
-	 * @JMS\VirtualProperty
 	 * @JMS\SerializedName("category_str_ids")
 	 * @JMS\Groups({"elastica"})
 	 * @return array

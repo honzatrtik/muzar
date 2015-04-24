@@ -8,19 +8,20 @@
     },
     "require": {
         "php": ">=5.3.3",
+        "symfony/dependency-injection": "~2.6.6",
         "symfony/symfony": "~2.6",
-        "doctrine/orm": "2.5.0",
+        "doctrine/orm": "~2.5",
 		"doctrine/doctrine-bundle": "1.3.*",
         "symfony/assetic-bundle": "~2.3",
         "symfony/swiftmailer-bundle": "~2.3",
         "symfony/monolog-bundle": "~2.4",
-        "sensio/distribution-bundle": "~2.3",
+        "sensio/distribution-bundle": "~3.0",
         "sensio/framework-extra-bundle": "~3.0",
 		"sensio/generator-bundle": "2.3.*@dev",
         "incenteev/composer-parameter-handler": "~2.0",
         "phpunit/phpunit": "3.7.28",
 		"fabpot/goutte": "v1.0.3",
-		"friendsofsymfony/elastica-bundle": "3.0.*",
+		"friendsofsymfony/elastica-bundle": "~3.1",
 		"cbsi/doctrine2-nestedset": "dev-master",
 		"doctrine/doctrine-fixtures-bundle": "2.2.*",
         "doctrine/doctrine-cache-bundle": "*",
@@ -32,7 +33,9 @@
         "cocur/slugify": "~1.0",
         "nelmio/cors-bundle": "1.4.0",
         "respect/validation": "1.0.x-dev",
-        "league/flysystem": "1.0.3"
+        "league/flysystem": "1.0.3",
+        "league/flysystem-cached-adapter": "~1.0",
+        "predis/predis": "~1.0"
     },
     "scripts": {
         "post-install-cmd": [
@@ -59,9 +62,6 @@
         "symfony-web-dir": "web",
         "incenteev-parameters": {
             "file": "app/config/parameters.yml"
-        },
-        "branch-alias": {
-            "dev-master": "2.4-dev"
         }
     }
 }

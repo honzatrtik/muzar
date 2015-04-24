@@ -10,7 +10,9 @@ framework:
 
 fos_elastica:
     clients:
-        default: { host: %docker_ip%, port: 9200 }
+        default:
+            host: %redis_host%
+            port: 9200
 
 
 doctrine_cache:
@@ -18,7 +20,7 @@ doctrine_cache:
         app_cache:
             namespace: app_cache_ns
             redis:
-                host: %docker_ip%
+                host: %redis_host%
 
 doctrine:
     orm:

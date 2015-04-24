@@ -20,6 +20,7 @@ use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Muzar\BazaarBundle\Entity\Category;
 use Symfony\Component\Validator\Constraints\DateTime;
+use Symfony\Component\Yaml\Parser;
 use Symfony\Component\Yaml\Yaml;
 
 class LoadContactData extends AbstractFixture implements FixtureInterface, ContainerAwareInterface, OrderedFixtureInterface
@@ -45,23 +46,6 @@ class LoadContactData extends AbstractFixture implements FixtureInterface, Conta
 	 */
 	public function load(ObjectManager $manager)
 	{
-
-		$path = __DIR__ . '/../../Resources/fixtures/contact.yml';
-		$data = Yaml::parse(file_get_contents($path));
-
-		$em = $this->getManager();
-		$utils = $this->getEntityUtils();
-		
-		foreach($data as $contactData)
-		{
-			$contact = new Contact();
-			$utils->fromArray($contact, $contactData);
-			$em->persist($contact);
-			$em->flush();
-			$this->addReference('contact.' . $contact->getId(), $contact);
-		}
-
-
 	}
 
 	/**

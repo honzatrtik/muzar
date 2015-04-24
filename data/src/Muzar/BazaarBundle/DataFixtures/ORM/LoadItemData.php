@@ -20,6 +20,7 @@ use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Muzar\BazaarBundle\Entity\Category;
 use Symfony\Component\Validator\Constraints\DateTime;
+use Symfony\Component\Yaml\Parser;
 use Symfony\Component\Yaml\Yaml;
 
 class LoadItemData extends AbstractFixture implements FixtureInterface, ContainerAwareInterface, OrderedFixtureInterface
@@ -46,63 +47,6 @@ class LoadItemData extends AbstractFixture implements FixtureInterface, Containe
 	public function load(ObjectManager $manager)
 	{
 
-		// Ziskame si reference na Category, ktere jsou listy
-		$categoryReferenceNames = array_filter(array_keys($this->referenceRepository->getReferences()), function($name) {
-			return strpos($name, 'category.leaf') !== FALSE;
-		});
-
-
-		// Ziskame si reference na Users
-		$userReferenceNames = array_filter(array_keys($this->referenceRepository->getReferences()), function($name) {
-			return strpos($name, 'user') !== FALSE;
-		});
-
-		// Ziskame si reference na Users
-		$contactReferenceNames = array_filter(array_keys($this->referenceRepository->getReferences()), function($name) {
-			return strpos($name, 'contact') !== FALSE;
-		});
-
-
-		$path = __DIR__ . '/../../Resources/fixtures/item.yml';
-		$data = Yaml::parse(file_get_contents($path));
-
-		$em = $this->getManager();
-		$utils = $this->getEntityUtils();
-
-		foreach($data as $itemData)
-		{
-			$created = new \DateTime();
-			$itemData['created'] = $created->setTimestamp($itemData['created']);
-
-			$item = new Item();
-			$utils->fromArray($item, $itemData);
-
-
-			$item->setCreated($created);
-
-			if (count($categoryReferenceNames) && ($index = array_rand($categoryReferenceNames)) !== NULL)
-			{
-				$category = $this->getReference($categoryReferenceNames[$index]);
-				$item->setCategory($category);
-			}
-
-			if (count($userReferenceNames) && ($index = array_rand($userReferenceNames)) !== NULL)
-			{
-				$user = $this->getReference($userReferenceNames[$index]);
-				$item->setUser($user);
-			}
-
-			if (count($contactReferenceNames) && ($index = array_rand($contactReferenceNames)) !== NULL)
-			{
-				$contact = $this->getReference($contactReferenceNames[$index]);
-				$item->setContact($contact);
-			}
-
-			$item->setSlugOnPrePersist();
-			$em->persist($item);
-		}
-
-		$em->flush();
 	}
 
 	/**

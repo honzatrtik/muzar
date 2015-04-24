@@ -5,14 +5,16 @@ imports:
 
 fos_elastica:
     clients:
-        default: { host: elasticsearch, port: 9200 }
+        default:
+            host: %elasticsearch_host%
+            port: 9200
 
 doctrine_cache:
     providers:
         app_cache:
             namespace: app_cache_ns
             redis:
-                host: redis
+                host: %redis_host%
 
 framework:
     profiler: { only_exceptions: false }
@@ -27,10 +29,10 @@ doctrine:
         auto_generate_proxy_classes: true
         metadata_cache_driver:
             type: redis
-            host: redis
+            host: %redis_host%
         query_cache_driver:
             type: redis
-            host: redis
+            host: %redis_host%
         result_cache_driver:
             type: redis
-            host: redis
+            host: %redis_host%

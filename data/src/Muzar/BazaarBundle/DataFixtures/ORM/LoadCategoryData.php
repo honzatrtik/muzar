@@ -18,6 +18,7 @@ use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Muzar\BazaarBundle\Entity\Category;
 use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Component\Yaml\Parser;
 use Symfony\Component\Yaml\Yaml;
 
 class LoadCategoryData extends AbstractFixture implements FixtureInterface, ContainerAwareInterface, OrderedFixtureInterface
@@ -46,7 +47,8 @@ class LoadCategoryData extends AbstractFixture implements FixtureInterface, Cont
 		$nsm = $this->getNsm();
 
 		$path = __DIR__ . '/../../Resources/fixtures/category.yml';
-		$data = Yaml::parse(file_get_contents($path));
+		$parser = new Parser();
+		$data = $parser->parse(file_get_contents($path));
 
 		$category = new Category();
 		$category->setStrId($data['strId']);

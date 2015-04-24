@@ -15,6 +15,14 @@ var Detail = React.createClass({
 
     mixins: [Morearty.Mixin, DispatcherMixin],
 
+    renderImages(src) {
+        return (
+            <div className="thumbnail col-xs-12 col-sm-6 col-md-4">
+                <img src={src} />
+            </div>
+        );
+    },
+
     render() {
 
         this.observeBinding(this.getStoreBinding(AdDetailStore));
@@ -36,6 +44,9 @@ var Detail = React.createClass({
 
         var path = categoryStore.getPath(ad.getIn(['category', 'str_id']));
 
+        const src = ad.getIn(['image_urls', 0]);
+        const phone = ad.getIn(['contact', 'phone']);
+
         return (
             <div>
 
@@ -49,9 +60,17 @@ var Detail = React.createClass({
                 <div className="row">
                     <div className="col-xs-12 col-sm-8 col-md-8">
 
-                        <div className="thumbnail">
-                            <img width="100%" src={ad.get('front_image_url')} alt={ad.get('name')} />
+                        <div style={{ backgroundColor: '#eee' }} className="thumbnail">
+                            {src && <img width="100%" src={src} alt={ad.get('name')} />}
                         </div>
+
+                        <p>{ad.getIn(['description'])}</p>
+
+
+                        <div className="row">
+                            {ad.getIn(['image_urls']).map(this.renderImages).toJS()}
+                        </div>
+
                     </div>
 
 
@@ -67,12 +86,12 @@ var Detail = React.createClass({
                             <div className="clearfix"></div>
 
                             <h4>Prodávající:</h4>
-                            <p>
+                            <div>
                             {ad.getIn(['user', 'username'])}<br />
                                 {ad.getIn(['contact', 'district'])}<br />
-                                <span className="text-muted">{ad.getIn(['contact', 'region'])}</span><br />
-                                Tel: {ad.getIn(['contact', 'phone'])}<br />
-                            </p>
+                                <div className="text-muted">{ad.getIn(['contact', 'region'])}</div>
+                                {phone && <div>Tel: {phone}</div>}
+                            </div>
 
                             <p>
                                 <span className="glyphicon glyphicon-time"></span> {moment(ad.get('created')).fromNow()}<br />

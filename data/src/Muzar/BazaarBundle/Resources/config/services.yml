@@ -3,6 +3,10 @@ parameters:
 
 services:
 
+    predis:
+        class: Predis\Client
+        arguments: [{ host: %redis_host% }]
+
     muzar_bazaar.command.create_client_command:
         class: Muzar\BazaarBundle\Command\CreateClientCommand
         arguments: [@fos_oauth_server.client_manager.default]
@@ -61,9 +65,17 @@ services:
         class: League\Flysystem\Filesystem
         arguments: [@muzar_bazaar.filesystem_adapter]
 
-    muzar_bazaar.filesystem_adapter:
+    muzar_bazaar.filesystem_adapter_cache:
+        class: League\Flysystem\Cached\Storage\Predis
+        arguments: [@predis]
+
+    muzar_bazaar.filesystem_adapter.local:
         class: League\Flysystem\Adapter\Local
         arguments: ['%media_root%']
+
+    muzar_bazaar.filesystem_adapter:
+        class: League\Flysystem\Cached\CachedAdapter
+        arguments: [@muzar_bazaar.filesystem_adapter.local, @muzar_bazaar.filesystem_adapter_cache]
 
 
     muzar_bazaar.property_accessor:
