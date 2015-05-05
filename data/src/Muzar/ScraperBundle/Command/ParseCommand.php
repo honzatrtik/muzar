@@ -102,7 +102,7 @@ class ParseCommand extends ContainerAwareCommand
 		foreach($ads as $ad)
 		{
 			$ad->setParsed(new \DateTime());
-			$ad->setStatus(0);
+			$ad->setStatus(Ad::STATUS_PARSING_FAILURE);
 
 			try
 			{
@@ -114,7 +114,7 @@ class ParseCommand extends ContainerAwareCommand
 					$ad->addPropertyByName($name, $value);
 				}
 
-				$ad->setStatus(1);
+				$ad->setStatus(Ad::STATUS_PARSING_SUCCESS);
 				$em->persist($ad);
 
 				$output->writeln(sprintf('<info>Parsed: "%s"</info>', $ad->getLink()));

@@ -59,11 +59,18 @@ class ImportScrapedCommand extends ContainerAwareCommand
 			$item = $this->importer->createItem($ad);
 			if ($item === NULL)
 			{
+				$ad->setStatus(Ad::STATUS_IMPORT_FAILURE);
+				$this->em->persist($ad);
+				$this->em->flush();
 				continue;
 			}
 
+			$ad->setStatus(Ad::STATUS_IMPORT_SUCCESS);
+
 			$this->em->persist($item);
+			$this->em->persist($ad);
 			$this->em->flush();
+
 
 			$i = 0;
 			$urls = $ad->getPropertyValueByName('imageUrls') ?: array();

@@ -77,7 +77,8 @@ class Hudebnibazar implements ImporterInterface
 			->setPhone($ad->getPropertyValueByName('phone'))
 			->setPlace($place);
 
-		$price = $ad->getPropertyValueByName('price') . ' ' . $ad->getPropertyValueByName('currency');
+		$price = $ad->getPropertyValueByName('price');
+		$currency = $ad->getPropertyValueByName('currency');
 
 		$item
 			->setCategory($category)
@@ -89,6 +90,7 @@ class Hudebnibazar implements ImporterInterface
 		if (is_numeric($price))
 		{
 			$item->setPrice($price);
+			$item->setCurrency($currency);
 		}
 		else
 		{
@@ -98,7 +100,7 @@ class Hudebnibazar implements ImporterInterface
 		return $item;
 	}
 
-	protected function getCategory($categoryId)
+	protected function getCategory($importedCategoryId)
 	{
 		static $categories;
 		static $translate = array(
@@ -125,8 +127,8 @@ class Hudebnibazar implements ImporterInterface
 				->getResult();
 		}
 
-		return isset($translate[$categoryId]) && isset($categories[$translate[$categoryId]])
-			? $categories[$translate[$categoryId]]
+		return isset($translate[$importedCategoryId]) && isset($categories[$translate[$importedCategoryId]])
+			? $categories[$translate[$importedCategoryId]]
 			: NULL;
 
 	}
