@@ -6,6 +6,7 @@ data/vendor/*
 .DS_Store
 data/web/bundles/
 data/web/media/*
+data/web/media-cache/*
 data/app/bootstrap.php.cache
 data/app/cache/*
 data/app/config/**/parameters.yml

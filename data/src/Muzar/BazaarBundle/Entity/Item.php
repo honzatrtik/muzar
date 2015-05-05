@@ -84,6 +84,13 @@ class Item
 	protected $price;
 
 	/**
+	 * @ORM\Column(type="string", length=8, nullable=true)
+	 * @JMS\Expose()
+	 * @JMS\Groups({"elastica"})
+	 */
+	protected $currency;
+
+	/**
 	 * @ORM\Column(type="boolean")
 	 * @JMS\Expose()
 	 */
@@ -263,6 +270,25 @@ class Item
 	{
 		return $this->price;
 	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getCurrency()
+	{
+		return $this->currency;
+	}
+
+	/**
+	 * @param mixed $currency
+	 */
+	public function setCurrency($currency)
+	{
+		$this->currency = $currency;
+		return $this;
+	}
+
+
 
 	/**
 	 * @param boolean $allowSendingByMail

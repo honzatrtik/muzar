@@ -15,6 +15,12 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Ad
 {
+
+	const STATUS_PARSING_FAILURE = -1;
+	const STATUS_PARSING_SUCCESS = 1;
+	const STATUS_IMPORT_FAILURE = -2;
+	const STATUS_IMPORT_SUCCESS = 2;
+
 	/**
 	 * @ORM\Column(type="integer")
 	 * @ORM\Id
