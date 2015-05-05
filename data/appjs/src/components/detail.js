@@ -8,7 +8,7 @@ var CategoryStore = require('../stores/category-store.js');
 var CategoryBreadcrumbs = require('./category-breadcrumbs.js');
 
 import moment from 'moment';
-require('moment/locale/cs');
+moment.locale('cs');
 
 
 var Detail = React.createClass({
@@ -61,7 +61,7 @@ var Detail = React.createClass({
                     <div className="col-xs-12 col-sm-8 col-md-8">
 
                         <div style={{ backgroundColor: '#eee' }} className="thumbnail">
-                            {src && <img width="100%" src={src} alt={ad.get('name')} />}
+                            {src && <img width="100%" src={src + '?variant=detail'} alt={ad.get('name')} />}
                         </div>
 
                         <p>{ad.getIn(['description'])}</p>
