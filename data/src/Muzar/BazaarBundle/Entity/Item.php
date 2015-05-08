@@ -143,6 +143,13 @@ class Item
 
 
 	/**
+	 * @ORM\Column(type="string", length=8, nullable=true)
+	 * @JMS\Expose()
+	 */
+	private $backgroundColor;
+
+
+	/**
 	 * @var ItemMediaInterface
 	 */
 	private $itemMedia;
@@ -436,6 +443,26 @@ class Item
 	{
 		return $this->user;
 	}
+
+	/**
+	 *
+	 * @return mixed
+	 */
+	public function getBackgroundColor()
+	{
+		return $this->backgroundColor;
+	}
+
+	/**
+	 * @param mixed $backgroundColor
+	 */
+	public function setBackgroundColor($backgroundColor)
+	{
+		$this->backgroundColor = $backgroundColor;
+		return $this;
+	}
+
+
 
 	/**
 	 * @return ItemMediaInterface

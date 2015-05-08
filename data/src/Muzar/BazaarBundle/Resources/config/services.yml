@@ -7,6 +7,20 @@ services:
         class: Predis\Client
         arguments: [{ host: %redis_host% }]
 
+
+    league.color_extractor:
+        class: League\ColorExtractor\Client
+
+    muzar_bazaar.color_extractor:
+        class: Muzar\BazaarBundle\ColorExtractor\League
+        arguments: [@league.color_extractor]
+
+    muzar_bazaar.command.extract_colors_command:
+        class: Muzar\BazaarBundle\Command\ExtractColorsCommand
+        arguments: [@doctrine.orm.entity_manager, @muzar_bazaar.color_extractor]
+        tags:
+            -  { name: console.command }
+
     muzar_bazaar.command.create_client_command:
         class: Muzar\BazaarBundle\Command\CreateClientCommand
         arguments: [@fos_oauth_server.client_manager.default]

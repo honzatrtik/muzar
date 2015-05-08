@@ -46,7 +46,6 @@ class LoadItemData extends AbstractFixture implements FixtureInterface, Containe
 	 */
 	public function load(ObjectManager $manager)
 	{
-
 	}
 
 	/**
