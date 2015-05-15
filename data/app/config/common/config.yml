@@ -137,7 +137,8 @@ fos_elastica:
         callback_class: FOS\ElasticaBundle\Serializer\Callback
         serializer: serializer
     indexes:
-        website:
+        %elasticsearch_index_name%:
+            index_name: "%elasticsearch_index_name%"
             client: default
             settings:
                 index:

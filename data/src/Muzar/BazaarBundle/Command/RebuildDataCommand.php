@@ -44,6 +44,7 @@ class RebuildDataCommand extends ContainerAwareCommand
 		$application->find('muzar:import-scraped')->run(new Input\StringInput('muzar:import-scraped'), $output);
 
 		$application->find('oauth:client:create')->run(new Input\StringInput('oauth:client:create --grant-type="password" -p web'), $output);
+		$application->find('redis:flush')->run(new Input\StringInput('redis:flush'), $output);
 		$application->find('cache:clear')->run(new Input\StringInput('cache:clear'), $output);
 	}
 }

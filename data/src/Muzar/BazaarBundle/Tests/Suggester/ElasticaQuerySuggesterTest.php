@@ -18,15 +18,18 @@ class ElasticaQuerySuggesterTest extends ApiTestCase
 	protected function setUp()
 	{
 		parent::setUp();
+
+		$indexName = $this->getKernel()->getContainer()->getParameter('elasticsearch_index_name');
+
 		$this->runCommand('fos:elastica:reset', array(
 			'--no-debug' => TRUE,
-			'--index' => 'website',
+			'--index' => $indexName,
 			'--type' => 'query',
 			'--force' => true,
 		));
 		$this->suggester = new ElasticaQuerySuggester(
 			$this->getClient(),
-			'website',
+			$indexName,
 			'query'
 		);
 	}

@@ -21,6 +21,7 @@ doctrine_cache:
             namespace: app_cache_ns
             redis:
                 host: %redis_host%
+                database: %redis_database%
 
 doctrine:
     orm:

@@ -19,7 +19,8 @@ class WatchdogTest extends ApiTestCase
 	{
 		parent::setUp();
 
-		$persister = $this->get('fos_elastica.object_persister.website.item');
+		$indexName = $this->getKernel()->getContainer()->getParameter('elasticsearch_index_name');
+		$persister = $this->get(sprintf('fos_elastica.object_persister.%s.item', $indexName));
 
 		$em = $this->get('doctrine')->getManager();
 		$index = $this->get('fos_elastica.index');

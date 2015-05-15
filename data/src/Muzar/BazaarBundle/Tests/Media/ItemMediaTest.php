@@ -124,6 +124,5 @@ class ItemMediaTest extends ApiTestCase
 
 		$urls = $this->im->getUrls();
 		$this->assertInternalType('array', $urls);
-		var_dump($urls);
 	}
 }

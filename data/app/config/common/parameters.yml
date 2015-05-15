@@ -11,3 +11,5 @@ parameters:
     locale: cs
     secret: 059ce2dd8a3d7dbae7084202893f633b0c2842f5
     media_root: "%kernel.root_dir%/../web/media"
+    elasticsearch_index_name: "website"
+    redis_database: 0
