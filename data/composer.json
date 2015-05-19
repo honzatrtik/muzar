@@ -36,7 +36,8 @@
         "league/flysystem": "1.0.3",
         "league/flysystem-cached-adapter": "~1.0",
         "predis/predis": "~1.0",
-        "league/glide": "0.3.*"
+        "league/glide": "0.3.*",
+        "league/color-extractor": "0.1.7"
     },
     "scripts": {
         "post-install-cmd": [

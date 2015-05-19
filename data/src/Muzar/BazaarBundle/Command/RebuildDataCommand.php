@@ -33,9 +33,16 @@ class RebuildDataCommand extends ContainerAwareCommand
 
 		$input = new Input\StringInput('doctrine:fixtures:load');
 		$input->setInteractive(FALSE);
-		$application->find('doctrine:fixtures:load')->run($input, $output);
 
+
+
+		$application->find('doctrine:fixtures:load')->run($input, $output);
 		$application->find('fos:elastica:populate')->run(new Input\StringInput('fos:elastica:populate'), $output);
+
+		$application->find('muzar:scraper:links')->run(new Input\StringInput('muzar:scraper:links'), $output);
+		$application->find('muzar:scraper:parse')->run(new Input\StringInput('muzar:scraper:parse -m 100'), $output);
+		$application->find('muzar:import-scraped')->run(new Input\StringInput('muzar:import-scraped'), $output);
+
 		$application->find('oauth:client:create')->run(new Input\StringInput('oauth:client:create --grant-type="password" -p web'), $output);
 		$application->find('cache:clear')->run(new Input\StringInput('cache:clear'), $output);
 	}

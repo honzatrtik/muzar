@@ -9,12 +9,17 @@ var AdPreview = React.createClass({
 
         var item = this.props.item;
         const src = item.getIn(['image_urls', 0]);
+        const style = {
+            backgroundColor: item.get('background_color') || '#eee',
+            height: 162,
+            overflow: "hidden"
+        };
         return (
             <Link to="detail" params={{ id: item.get('id') }}>
                 <div className="col-xs-12 col-sm-4 col-md-4">
                     <div className="thumbnail">
 
-                        <div style={{ height: 162, overflow: "hidden", backgroundColor: '#eee' }}>
+                        <div style={style}>
                             {src && <img width="100%" alt={item.get('name')} src={src} />}
                         </div>
 

@@ -6,6 +6,7 @@
 
 namespace Muzar\ScraperBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 
@@ -61,6 +62,14 @@ class Ad
 	 * @var \Doctrine\Common\Collections\ArrayCollection
 	 */
 	protected $properties;
+
+	/**
+	 * Ad constructor.
+	 */
+	public function __construct()
+	{
+		$this->properties = new ArrayCollection();
+	}
 
 
 	/**

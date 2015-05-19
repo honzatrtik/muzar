@@ -74,7 +74,6 @@ class ImportScrapedCommand extends ContainerAwareCommand
 
 			$i = 0;
 			$urls = $ad->getPropertyValueByName('imageUrls') ?: array();
-			var_dump($urls);
 			foreach($urls as $url)
 			{
 				$name = $i . '-' . pathinfo($url, PATHINFO_BASENAME);
