@@ -31,12 +31,15 @@ doctrine:
         metadata_cache_driver:
             type: redis
             host: %redis_host%
-            database: %redis_database%
+
+# https://github.com/doctrine/DoctrineCacheBundle/issues/46
+
+#            database: %redis_database%
         query_cache_driver:
             type: redis
             host: %redis_host%
-            database: %redis_database%
+#            database: %redis_database%
         result_cache_driver:
             type: redis
             host: %redis_host%
-            database: %redis_database%
+#            database: %redis_database%
