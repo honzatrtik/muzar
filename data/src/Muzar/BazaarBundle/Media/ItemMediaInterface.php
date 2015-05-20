@@ -12,7 +12,8 @@ interface ItemMediaInterface
 
 	public function add($name, $path);
 	public function delete($name);
+	public function has($name);
 	public function getNames();
-	public function getUrls();
+	public function getUrl($name);
 
 }

@@ -341,7 +341,7 @@ class Item
 	public function getImageUrls()
 	{
 		return $this->itemMedia
-			? $this->itemMedia->getUrls()
+			? array_map(array($this->itemMedia, 'getUrl'), $this->itemMedia->getNames())
 			: array();
 	}
 

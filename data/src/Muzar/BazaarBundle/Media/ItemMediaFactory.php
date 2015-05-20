@@ -9,18 +9,20 @@ namespace Muzar\BazaarBundle\Media;
 
 use League\Flysystem\Filesystem;
 use Muzar\BazaarBundle\Entity\Item;
+use Muzar\BazaarBundle\Filesystem\UrlMapperInterface;
 
 class ItemMediaFactory implements ItemMediaFactoryInterface
 {
 	/** @var  Filesystem */
 	protected $fs;
 
-	protected $baseUrl;
+	/** @var UrlMapperInterface  */
+	protected $urlMapper;
 
-	function __construct(Filesystem $fs, $baseUrl = '/')
+	function __construct(Filesystem $fs, UrlMapperInterface $urlMapper)
 	{
 		$this->fs = $fs;
-		$this->baseUrl = $baseUrl;
+		$this->urlMapper = $urlMapper;
 	}
 
 	/**
@@ -29,7 +31,7 @@ class ItemMediaFactory implements ItemMediaFactoryInterface
 	 */
 	public function getItemMedia(Item $item)
 	{
-		return new ItemMedia($this->fs, $this->getBasePath($item), $this->baseUrl);
+		return new ItemMedia($this->fs, $this->urlMapper, $this->getBasePath($item));
 	}
 
 	protected function getBasePath(Item $item)

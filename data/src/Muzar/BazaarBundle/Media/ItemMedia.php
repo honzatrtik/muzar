@@ -8,6 +8,7 @@ namespace Muzar\BazaarBundle\Media;
 
 
 use League\Flysystem\Filesystem;
+use Muzar\BazaarBundle\Filesystem\UrlMapperInterface;
 
 class ItemMedia implements ItemMediaInterface, \IteratorAggregate
 {
@@ -17,13 +18,15 @@ class ItemMedia implements ItemMediaInterface, \IteratorAggregate
 	protected $fs;
 
 	protected $basePath;
-	protected $baseUrl;
 
-	function __construct(Filesystem $fs, $basePath = NULL, $baseUrl = '/')
+	/** @var UrlMapperInterface  */
+	protected $urlMapper;
+
+	function __construct(Filesystem $fs, UrlMapperInterface $urlMapper, $basePath = NULL)
 	{
 		$this->fs = $fs;
+		$this->urlMapper = $urlMapper;
 		$this->basePath = $basePath;
-		$this->baseUrl = $baseUrl;
 	}
 
 	public function add($name, $path)
@@ -38,23 +41,41 @@ class ItemMedia implements ItemMediaInterface, \IteratorAggregate
 		$this->fs->delete($this->createPath($name));
 	}
 
+	public function has($name)
+	{
+		return $this->fs->has($this->createPath($name));
+	}
+
 	public function getNames()
 	{
-		return array_map(function($file) {
-			return $file['path'];
+		$basePath = $this->basePath;
+		return array_map(function($file) use ($basePath) {
+
+			$path = $file['path'];
+			if (strpos($path, $basePath) === 0)
+			{
+				$path = substr($path, strlen($basePath));
+			}
+			return trim($path, '/');
+
 		}, array_filter($this->fs->listContents($this->basePath, TRUE), function($file) {
 			return $file['type'] === 'file';
 		}));
 	}
 
-	public function getUrls()
+	public function getUrl($name)
 	{
-		return array_map(function($file) {
-			return $this->baseUrl . $file['path'];
-		}, array_filter($this->fs->listContents($this->basePath, TRUE), function($file) {
-			return $file['type'] === 'file';
-		}));
+		if ($this->has($name))
+		{
+			return $this->urlMapper->map($this->createPath($name));
+		}
+		else
+		{
+			throw new \OutOfBoundsException(sprintf('Media does not exist: "%s".', $name));
+		}
+
 	}
+
 
 	public function getIterator()
 	{

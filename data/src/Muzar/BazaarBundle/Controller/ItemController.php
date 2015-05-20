@@ -181,7 +181,9 @@ class ItemController
 	protected function processRequest(Item $item, Request $request)
 	{
 		$this->transformRequest($request);
+
 		$data = $request->request->all();
+
 		$this->utils->fromArray($item, $data);
 
 		$violations = $this->validator->validate($item);

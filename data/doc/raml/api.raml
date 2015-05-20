@@ -492,3 +492,37 @@ version: 0.1
                     }
                   ]
                 }
+
+/image:
+  post:
+    description: Create image resource on server
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              {
+                "meta": {
+                },
+                "data": {
+                  "id": "id",
+                  "image_url": "http://path/to/image"
+                }
+              }
+
+  /{id}:
+    get:
+      description: Get info about uploaded file
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  "meta": {
+                  },
+                  "data": {
+                    "id": "id",
+                    "image_url": "http://path/to/image"
+                  }
+                }

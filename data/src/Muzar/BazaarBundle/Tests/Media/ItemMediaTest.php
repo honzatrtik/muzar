@@ -11,6 +11,7 @@ use Muzar\BazaarBundle\Entity\CategoryService;
 use Muzar\BazaarBundle\Entity\Contact;
 use Muzar\BazaarBundle\Entity\Item;
 use Muzar\BazaarBundle\Entity\ItemService;
+use Muzar\BazaarBundle\Filesystem\BaseUrlMapper;
 use Muzar\BazaarBundle\Media\ItemMedia;
 use Muzar\BazaarBundle\Media\ItemMediaInterface;
 use Muzar\BazaarBundle\Tests\ApiTestCase;
@@ -68,8 +69,15 @@ class ItemMediaTest extends ApiTestCase
 		touch(__DIR__ . '/foo');
 		touch(__DIR__ . '/bar');
 
+		$urlMapper = $this->getMock('\Muzar\BazaarBundle\Filesystem\UrlMapperInterface', array('map'));
+		$urlMapper->expects($this->any())
+			->method('map')
+			->will($this->returnCallback(function($path) {
+				return '/' . $path;
+			}));
+
 		$fs = new Filesystem(new Local(__DIR__ . '/root'));
-		$this->im = new ItemMedia($fs);
+		$this->im = new ItemMedia($fs, $urlMapper);
 	}
 
 	/**
@@ -117,12 +125,34 @@ class ItemMediaTest extends ApiTestCase
 		$this->assertInternalType('array', iterator_to_array($this->im));
 	}
 
-	public function testGetUrls()
+
+	public function testHas()
+	{
+		$this->im->add('test/foo', __DIR__ . '/foo');
+		$this->im->add('bar', __DIR__ . '/bar');
+		$this->assertTrue($this->im->has('test/foo'));
+		$this->assertTrue($this->im->has('bar'));
+		$this->assertFalse($this->im->has('nonexistent'));
+	}
+
+
+	public function testGetUrl()
 	{
 		$this->im->add('test/foo', __DIR__ . '/foo');
 		$this->im->add('bar', __DIR__ . '/bar');
 
-		$urls = $this->im->getUrls();
-		$this->assertInternalType('array', $urls);
+		$this->assertEquals('/bar', $this->im->getUrl('bar'));
+		$this->assertEquals('/test/foo', $this->im->getUrl('test/foo'));
+
+		try
+		{
+			$this->im->getUrl('nonexistent');
+			$this->fail('Must throw on nonexistent name.');
+		}
+		catch(\Exception $e)
+		{
+			$this->assertInstanceOf('\OutOfBoundsException', $e);
+		}
+
 	}
 }

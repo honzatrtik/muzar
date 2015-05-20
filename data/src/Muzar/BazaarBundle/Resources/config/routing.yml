@@ -27,3 +27,9 @@ muzar_bazaar_user:
     prefix:   /api
     defaults: { _format: json }
     type:     annotation
+
+muzar_bazaar_image:
+    resource: "@MuzarBazaarBundle/Controller/ImageController.php"
+    prefix:   /api
+    defaults: { _format: json }
+    type:     annotation
