@@ -15,21 +15,18 @@ var AdPreview = React.createClass({
             overflow: "hidden"
         };
         return (
-            <Link to="detail" params={{ id: item.get('id') }}>
-                <div className="col-xs-12 col-sm-4 col-md-4">
-                    <div className="thumbnail">
+            <Link className="item" to="detail" params={{ id: item.get('id') }}>
 
-                        <div style={style}>
-                            {src && <img width="100%" alt={item.get('name')} src={src} />}
-                        </div>
-
-                        <div className="caption">
-                            <h4>{item.get('name')}</h4>
-                            <span className="text-muted">{item.getIn(['contact', 'region'])}</span>
-                            <span className="pull-right"><strong>{item.get('price')}</strong></span>
-                        </div>
-                    </div>
+                <div className="item-image" style={style}>
+                    {src && <img width="100%" alt={item.get('name')} src={src} />}
                 </div>
+
+                <div className="item-caption">
+                    <h4 className="item-caption-heading">{item.get('name')}</h4>
+                    <span className="item-caption-location text-muted">{item.getIn(['contact', 'region'])}</span>
+                    <span className="item-caption-price pull-right"><strong>{item.get('price')}</strong></span>
+                </div>
+                
             </Link>
         );
     }

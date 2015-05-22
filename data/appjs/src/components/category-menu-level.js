@@ -29,7 +29,7 @@ var CategoryMenuLevel = React.createClass({
             var active = item.get('str_id') === path.first();
             var classNames = cs({
                 'is-active': active,
-                'mainMenu-level-item': true
+                'main-menu-level-item': true
             });
 
             var children = item.get('children');
@@ -38,7 +38,7 @@ var CategoryMenuLevel = React.createClass({
             return (
                 <li className={classNames} key={item.get('str_id')}>
                     <Link to="list" params={{category: item.get('str_id')}} query={query.toJS()}>{item.get('name')}</Link>
-                    <ReactCSSTransitionGroup component="div" transitionLeave={false} transitionName="mainMenu">
+                    <ReactCSSTransitionGroup component="div" transitionLeave={false} transitionName="main-menu">
                         {expanded ? <CategoryMenuLevel items={item.get('children')} path={active ? path.slice(1) : Imm.List()} query={query}/> : null}
                     </ReactCSSTransitionGroup>
                 </li>
@@ -46,7 +46,7 @@ var CategoryMenuLevel = React.createClass({
         });
 
         return (
-            <ul className="mainMenu-level">{items.toArray()}</ul>
+            <ul className="main-menu-level">{items.toArray()}</ul>
         );
 
     }

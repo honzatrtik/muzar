@@ -77,10 +77,10 @@ describe('Suggester', function() {
 
         setTimeout(function() {
 
-            var box = TestUtils.scryRenderedDOMComponentsWithClass(suggester, 'suggester-suggestionsBox');
+            var box = TestUtils.scryRenderedDOMComponentsWithClass(suggester, 'suggester-suggestions');
             assert.equal(box.length, 1);
 
-            var items = TestUtils.scryRenderedDOMComponentsWithClass(suggester, 'suggester-suggestionsBox-item');
+            var items = TestUtils.scryRenderedDOMComponentsWithClass(suggester, 'suggester-suggestions-item');
             assert.equal(items.length, 8);
 
             done();
@@ -105,7 +105,7 @@ describe('Suggester', function() {
 
         setTimeout(function() {
 
-            var box = TestUtils.scryRenderedDOMComponentsWithClass(suggester, 'suggester-suggestionsBox');
+            var box = TestUtils.scryRenderedDOMComponentsWithClass(suggester, 'suggester-suggestions');
             assert.equal(box.length, 1);
 
             done();
@@ -132,7 +132,7 @@ describe('Suggester', function() {
 
             TestUtils.Simulate.keyDown(input[0].getDOMNode(), { keyCode: 27 });
 
-            var box = TestUtils.scryRenderedDOMComponentsWithClass(suggester, 'suggester-suggestionsBox');
+            var box = TestUtils.scryRenderedDOMComponentsWithClass(suggester, 'suggester-suggestions');
             assert.equal(box.length, 0);
             assert.equal(input[0].getDOMNode().value, 0);
 

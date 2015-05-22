@@ -205,7 +205,7 @@ var Suggester = React.createClass({
         var index = this.tabIndices.length + 1;
         this.tabIndices.push(index);
         var classNames = cs({
-            'suggester-suggestionsBox-item': true,
+            'suggester-suggestions-item': true,
             'is-active': index === this.state.activeTabIndex
         });
         return (
@@ -219,7 +219,7 @@ var Suggester = React.createClass({
         var index = this.tabIndices.length + 1;
         this.tabIndices.push(index);
         var classNames = cs({
-            'suggester-suggestionsBox-item': true,
+            'suggester-suggestions-item': true,
             'is-active': index === this.state.activeTabIndex
         });
         return (
@@ -233,7 +233,7 @@ var Suggester = React.createClass({
         var index = this.tabIndices.length + 1;
         this.tabIndices.push(index);
         var classNames = cs({
-            'suggester-suggestionsBox-item': true,
+            'suggester-suggestions-item': true,
             'is-active': index === this.state.activeTabIndex
         });
 
@@ -250,7 +250,7 @@ var Suggester = React.createClass({
             return (
                 <div>
                     <small>Nalezeny kategorie</small>
-                    <ul className="suggester-suggestionsBox-group">
+                    <ul className="suggester-suggestions-group">
                         {this.state.categories.map(this.renderCategoryItem).toJS()}
                     </ul>
                 </div>
@@ -265,7 +265,7 @@ var Suggester = React.createClass({
         return (
             <div>
                 <small>Hledat</small>
-                <ul className="suggester-suggestionsBox-group">
+                <ul className="suggester-suggestions-group">
                     {queries.map(this.renderQueryItem).toJS()}
                 </ul>
             </div>
@@ -277,7 +277,7 @@ var Suggester = React.createClass({
             return (
                 <div>
                     <small>Nalezeno v inzerátech</small>
-                    <ul className="suggester-suggestionsBox-group">
+                    <ul className="suggester-suggestions-group">
                         {this.state.ads.map(this.renderAdItem).toJS()}
                     </ul>
                 </div>
@@ -295,7 +295,7 @@ var Suggester = React.createClass({
 
         if (show) {
             var box = (
-                <div className="suggester-suggestionsBox">
+                <div className="suggester-suggestions">
                     {this.renderQueries()}
                     {this.renderCategories()}
                     {this.renderAds()}

@@ -43,6 +43,14 @@ $variants = [
 		'h' => '375',
 		'sharp' => '10',
 	],
+	'thumbRect' => [
+		'fm' => 'jpg',
+		'q' => '30', // Must be string https://github.com/thephpleague/glide/issues/59
+		'fit' => 'crop',
+		'w' => '300',
+		'h' => '300',
+		'sharp' => '10',
+	],
 	'detail' => [
 		'fm' => 'jpg',
 		'q' => '50', // Must be string https://github.com/thephpleague/glide/issues/59

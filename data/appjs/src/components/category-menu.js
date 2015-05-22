@@ -31,13 +31,13 @@ var CategoryMenu = React.createClass({
 
         var classNames = cs({
             'is-active': !path.count(),
-            'mainMenu-level-item': true
+            'main-menu-level-item': true
         });
 
         return (
-            <nav className="mainMenu">
+            <nav className="main-menu">
 
-                <ul className="mainMenu-level">
+                <ul className="main-menu-level">
                     <li className={classNames}>
                         <Link to="listAll" query={query.toJS()}>Vše</Link>
                     </li>

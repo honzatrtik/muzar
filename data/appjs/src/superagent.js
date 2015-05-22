@@ -12,12 +12,12 @@ superagent.Request.prototype.end = function() {
 
 superagent.Request.prototype.promise = function() {
     var self = this;
-    return new Promise(function(resolve, reject) {
-        self.end(function(res) {
-            if (res.ok) {
+    return new Promise((resolve, reject) => {
+        self.end((err, res) => {
+            if (!err && res.ok) {
                 resolve(res.body);
             } else {
-                reject(res);
+                reject(err || res);
             }
         });
     });

@@ -29,9 +29,9 @@ class ItemMedia implements ItemMediaInterface, \IteratorAggregate
 		$this->basePath = $basePath;
 	}
 
-	public function add($name, $path)
+	public function add($name, $stream)
 	{
-		$stream = $this->getStream($path);
+		$stream = $this->assertStream($stream);
 		$this->fs->writeStream($this->createPath($name), $stream);
 		fclose($stream);
 	}
@@ -90,13 +90,21 @@ class ItemMedia implements ItemMediaInterface, \IteratorAggregate
 		)));
 	}
 
-	protected function getStream($path)
+	protected function assertStream($stream)
 	{
-		if ($stream = @fopen($path, 'r'))
+		if (is_resource($stream) && (get_resource_type($stream) == 'file' || get_resource_type($stream) == 'stream'))
 		{
 			return $stream;
 		}
-		throw new \InvalidArgumentException(sprintf('"%s" is not readable file.', $path));
+		elseif (is_string($stream))
+		{
+			if ($stream = @fopen($stream, 'r'))
+			{
+				return $stream;
+			}
+		}
+
+		throw new \InvalidArgumentException(sprintf('Parameter is not readable stream or file path.'));
 	}
 
 }

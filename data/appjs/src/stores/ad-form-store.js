@@ -43,9 +43,6 @@ AdFormStore.handlers = {
             .set('loading', false)
             .set('createdAd', Imm.fromJS(data.data))
             .commit();
-
-        var routerContainer = require('../router-container.js').get();
-        routerContainer.transitionTo('createSuccess');
     }
 };
 

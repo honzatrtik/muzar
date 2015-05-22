@@ -13,6 +13,9 @@ var { adCreateAction } = require('../actions/ad-actions.js');
 var Wrapper = require('./form-error-wrapper.js')(AdFormStore);
 var getGooglePlace = require('../utils/get-google-place.js')(require('../../config').google.mapsApiKey);
 
+import Imm from 'immutable';
+import Uploader from './uploader.js';
+
 var AdForm = React.createClass({
 
     mixins: [Morearty.Mixin, DispatcherMixin],
@@ -93,6 +96,10 @@ var AdForm = React.createClass({
 
     },
 
+    onFileChange() {
+        console.log(arguments);
+    },
+
     render: function () {
 
         this.observeBinding(this.getStoreBinding(AdFormStore));
@@ -153,6 +160,13 @@ var AdForm = React.createClass({
                     </Wrapper>
                 </div>
 
+
+                <div className="col-xs-12 col-sm-12 col-md-12">
+                    <Wrapper name="name" className="form-group">
+                        <label className="control-label" htmlFor="images">Obrázky</label>
+                        <Uploader htmlId="images" value={store.get('images') || Imm.Set()} onChange={store.getHandler('images')} />
+                    </Wrapper>
+                </div>
 
 
                 <div className="col-xs-12 col-sm-12 col-md-12">

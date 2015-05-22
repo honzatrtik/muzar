@@ -10,7 +10,7 @@ namespace Muzar\BazaarBundle\Media;
 interface ItemMediaInterface
 {
 
-	public function add($name, $path);
+	public function add($name, $stream);
 	public function delete($name);
 	public function has($name);
 	public function getNames();

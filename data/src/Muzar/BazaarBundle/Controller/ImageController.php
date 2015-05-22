@@ -25,7 +25,7 @@ class ImageController
 	const MAX_PIXELS = 16777216; // 4096 * 4096
 
 	/** @var  FilesystemInterface */
-	private $fs;
+	private $uploadFs;
 
 	/** @var  GarbageCollectorInterface */
 	private $gc;
@@ -33,9 +33,9 @@ class ImageController
 	/** @var  UrlMapperInterface */
 	private $urlMapper;
 
-	public function __construct(FilesystemInterface $fs, UrlMapperInterface $urlMapper, GarbageCollectorInterface $gc)
+	public function __construct(FilesystemInterface $uploadFs, UrlMapperInterface $urlMapper, GarbageCollectorInterface $gc)
 	{
-		$this->fs = $fs;
+		$this->uploadFs = $uploadFs;
 		$this->gc = $gc;
 		$this->urlMapper = $urlMapper;
 	}
@@ -69,8 +69,13 @@ class ImageController
 		$id = join('/', str_split(substr(md5(uniqid()), 0, 4), 2))
 			. '/' . md5($file->getBasename()) . '.' . $file->getExtension();
 
-		$this->fs->putStream($id, $stream);
+		$ok = $this->uploadFs->putStream($id, $stream);
 		fclose($stream);
+
+		if (!$ok)
+		{
+			throw new \RuntimeException('Can not put stream.');
+		}
 
 		unlink($pathname);
 
@@ -91,7 +96,7 @@ class ImageController
 	public function getAction(Request $request, $id)
 	{
 
-		if (!$this->fs->has($id))
+		if (!$this->uploadFs->has($id))
 		{
 			throw new HttpException(404);
 		}
@@ -120,7 +125,7 @@ class ImageController
 
 	protected function runGarbageCollector()
 	{
-		$this->gc->run($this->fs, '');
+		$this->gc->run($this->uploadFs, '');
 	}
 
 }

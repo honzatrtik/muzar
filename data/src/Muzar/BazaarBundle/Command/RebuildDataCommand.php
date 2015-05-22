@@ -27,6 +27,9 @@ class RebuildDataCommand extends ContainerAwareCommand
 	{
 		$application = $this->getApplication();
 
+		$application->find('cache:clear')->run(new Input\StringInput('cache:clear'), $output);
+		$application->find('redis:flush')->run(new Input\StringInput('redis:flush'), $output);
+		$application->find('media-dir:clean')->run(new Input\StringInput('media-dir:clean'), $output);
 		$application->find('doctrine:schema:drop')->run(new Input\StringInput('doctrine:schema:drop --force'), $output);
 		$application->find('doctrine:schema:create')->run(new Input\StringInput('doctrine:schema:create'), $output);
 

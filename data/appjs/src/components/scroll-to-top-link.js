@@ -50,7 +50,7 @@ var ScrollToTopLink = React.createClass({
 
     render: function() {
         return this.state.visible
-            ? <button onClick={this.handleButtonClick} className="btn btn-default btn-lg scrollToTopLink">Skoč nahoru{'  '}<span className="glyphicon glyphicon-chevron-up" aria-hidden="true"></span></button>
+            ? <button onClick={this.handleButtonClick} className="btn btn-default btn-lg scroll-to-top-link">Skoč nahoru{'  '}<span className="glyphicon glyphicon-chevron-up" aria-hidden="true"></span></button>
             : null;
     }
 });

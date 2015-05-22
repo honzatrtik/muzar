@@ -19,12 +19,18 @@ RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf && \
     sed -i "s/variables_order.*/variables_order = \"EGPCS\"/g" /etc/php5/apache2/php.ini && \
     echo "realpath_cache_size = 4096k" >> /etc/php5/apache2/php.ini && \
     echo "realpath_cache_ttl = 7200" >> /etc/php5/apache2/php.ini && \
+    echo "upload_max_filesize = 64M" >> /etc/php5/apache2/php.ini && \
+    echo "post_max_size = 64M" >> /etc/php5/apache2/php.ini && \
     echo "xdebug.remote_autostart=0\nxdebug.remote_enable=0\nxdebug.profiler_enable=0\n" >> /etc/php5/apache2/php.ini
+
+# Permission fuckup
+RUN usermod -u 1000 www-data
 
 # Add image configuration and scripts
 ADD initialize.sh /initialize.sh
 ADD run.sh /run.sh
 RUN chmod 755 /*.sh
+
 
 EXPOSE 80
 

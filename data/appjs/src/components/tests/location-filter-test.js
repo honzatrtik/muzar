@@ -49,8 +49,8 @@ describe('LocationFilter', function() {
             params: Imm.Map({})
         });
 
-        var regionList = TestUtils.scryRenderedDOMComponentsWithClass(locationFilter, 'locationFilter-regionList');
-        var districtList = TestUtils.scryRenderedDOMComponentsWithClass(locationFilter, 'locationFilter-districtList');
+        var regionList = TestUtils.scryRenderedDOMComponentsWithClass(locationFilter, 'location-filter-region-list');
+        var districtList = TestUtils.scryRenderedDOMComponentsWithClass(locationFilter, 'location-filter-district-list');
         assert.equal(regionList.length, 1);
         assert.equal(districtList.length, 2);
 

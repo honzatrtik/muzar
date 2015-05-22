@@ -13,14 +13,16 @@ var allowedTypes = [
 function normalizeAddressComponents(addressComponents) {
 
     var result = {};
-    addressComponents.forEach(function(component) {
-        let value = component['long_name'];
-        let type = component.types[0];
+    if (addressComponents.forEach) {
+        addressComponents.forEach(function(component) {
+            let value = component['long_name'];
+            let type = component.types[0];
 
-        if (allowedTypes.indexOf(type) !== -1) {
-            result[type] = value;
-        }
-    });
+            if (allowedTypes.indexOf(type) !== -1) {
+                result[type] = value;
+            }
+        });
+    }
     return Imm.Map(result);
 }
 

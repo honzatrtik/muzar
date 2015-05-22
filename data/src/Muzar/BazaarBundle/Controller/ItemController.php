@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManager;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\View\ExceptionWrapperHandler;
 use FOS\RestBundle\View\View;
+use League\Flysystem\FilesystemInterface;
 use Muzar\BazaarBundle\Entity\Contact;
 use Muzar\BazaarBundle\Entity\Item;
 use DoctrineExtensions\NestedSet;
@@ -52,12 +53,16 @@ class ItemController
 	/** @var  QuerySuggesterInterface */
 	protected $querySuggester;
 
+	/** @var  FilesystemInterface */
+	protected $uploadFs;
+
 	public function __construct(
 		Router $router,
 		RecursiveValidator $validator,
 		EntityManager $em,
 		Utils $utils,
 		ItemService $itemService,
+		FilesystemInterface $uploadFs,
 		QuerySuggesterInterface $querySuggester,
 		TokenStorageInterface $securityContext
 	)
@@ -67,6 +72,7 @@ class ItemController
 		$this->em = $em;
 		$this->utils = $utils;
 		$this->itemService = $itemService;
+		$this->uploadFs = $uploadFs;
 		$this->querySuggester = $querySuggester;
 		$this->securityContext = $securityContext;
 	}
@@ -183,6 +189,8 @@ class ItemController
 		$this->transformRequest($request);
 
 		$data = $request->request->all();
+		$images = isset($data['images']) ? $data['images'] : array();
+		unset($data['images']);
 
 		$this->utils->fromArray($item, $data);
 
@@ -197,6 +205,18 @@ class ItemController
 
 		$this->em->persist($item);
 		$this->em->flush();
+
+		$i = 0;
+		foreach($images as $name)
+		{
+			if ($this->uploadFs->has($name))
+			{
+				$id = $i ?: 'default';
+				$item->getItemMedia()->add($id, $this->uploadFs->readStream($name));
+				$i++;
+			}
+		}
+
 		return array(
 			'data' => $item,
 			'meta' => new \stdClass(),

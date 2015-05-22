@@ -13,8 +13,8 @@ parameters:
     media_root: "%kernel.root_dir%/../web/media"
     upload_root: "%kernel.root_dir%/../web/media/upload"
 
-    media_base_url: "/"
-    upload_base_url: "/upload/"
+    media_base_url: "/media/"
+    upload_base_url: "/media/upload/"
 
     elasticsearch_index_name: "website"
     redis_database: 0

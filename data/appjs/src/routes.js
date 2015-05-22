@@ -11,6 +11,7 @@ var RouteHandler = Router.RouteHandler;
 
 var App = require('./components/app.js');
 var List = require('./components/list.js');
+var Login = require('./components/login.js');
 var Search = require('./components/search.js');
 var Detail = require('./components/detail.js');
 var Create = require('./components/create.js');
@@ -25,6 +26,7 @@ module.exports = (
         <Route name="search" path="search" handler={Search}/>
         <Route name="create" path="create" handler={Create}/>
         <Route name="createSuccess" path="create-success" handler={CreateSuccess}/>
+        <Route name="login" path="login" handler={Login}/>
         <Redirect from="/" to="listAll" />
         <NotFoundRoute name="404" handler={ErrorPage} />
     </Route>

@@ -16,7 +16,12 @@ module.exports.adCreateAction = function adCreateAction(dispatcher, payload) {
     var promise = superagent.post('/ads').send(payload).promise();
 
     return promise.then(function(body) {
-        return dispatcher.dispatch('AD_CREATE_SUCCESS', body);
+
+        return dispatcher.dispatch('AD_CREATE_SUCCESS', body).then(function() {
+            var routerContainer = require('../router-container.js').get();
+            routerContainer.transitionTo('createSuccess');
+        });
+
     }).catch(function(res) {
 
         if (res instanceof Error) {

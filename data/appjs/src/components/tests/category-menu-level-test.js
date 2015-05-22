@@ -50,8 +50,8 @@ describe('CategoryMenuLevel', function() {
             path: Imm.List([])
         });
 
-        var uls = TestUtils.scryRenderedDOMComponentsWithClass(menu, 'mainMenu-level');
-        var lis = TestUtils.scryRenderedDOMComponentsWithClass(menu, 'mainMenu-level-item');
+        var uls = TestUtils.scryRenderedDOMComponentsWithClass(menu, 'main-menu-level');
+        var lis = TestUtils.scryRenderedDOMComponentsWithClass(menu, 'main-menu-level-item');
 
         assert.equal(uls.length, 1);
         assert.equal(lis.length, 2);

@@ -45,7 +45,7 @@ export default React.createClass({
             <li key={region.get('name')}>
                 <h3><a onClick={this.handleClick.bind(this, region, null)}>{region.get('name')}</a></h3>
 
-                <ul className="locationFilter-districtList">
+                <ul className="location-filter-district-list">
                     {!!districts.size && districts.map(this.renderDistrict.bind(this, region)).toArray()}
                 </ul>
             </li>
@@ -65,8 +65,8 @@ export default React.createClass({
     render: function() {
 
         return (
-            <div className="locationFilter">
-                <ul className="locationFilter-regionList">
+            <div className="location-filter">
+                <ul className="location-filter-region-list">
                     {this.props.regions.map(this.renderRegion).toArray()}
                 </ul>
             </div>
