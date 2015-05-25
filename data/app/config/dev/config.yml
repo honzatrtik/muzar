@@ -31,3 +31,7 @@ doctrine:
             type: array
         result_cache_driver:
             type: array
+
+swiftmailer:
+    delivery_address: honza.trtik@gmail.com
+
