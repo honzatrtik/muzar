@@ -86,6 +86,9 @@ services:
             - [setRootFieldName, [null]]
 
 
+    muzar_bazaar.mailer:
+        class: Muzar\BazaarBundle\MailerService
+        arguments: [@mailer, @templating]
 
     muzar_bazaar.nsm.category:
         class: DoctrineExtensions\NestedSet\Manager
@@ -159,6 +162,10 @@ services:
         arguments: [@router, @muzar_bazaar.model_service.category, @muzar_bazaar.query_suggester]
         calls:
             - [setCache, [@doctrine_cache.providers.app_cache]]
+
+    muzar_bazaar.controller.item_reply:
+        class: Muzar\BazaarBundle\Controller\ItemReplyController
+        arguments: [@router, @validator, @muzar_bazaar.model_service.item, @muzar_bazaar.mailer]
 
 
     muzar_bazaar.controller.user:

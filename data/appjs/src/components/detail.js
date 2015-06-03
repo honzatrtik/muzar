@@ -6,6 +6,8 @@ var DispatcherMixin = require('../dispatcher-mixin.js');
 var AdDetailStore = require('../stores/ad-detail-store.js');
 var CategoryStore = require('../stores/category-store.js');
 var CategoryBreadcrumbs = require('./category-breadcrumbs.js');
+var Router = require('react-router');
+var Link = Router.Link;
 
 import moment from 'moment';
 moment.locale('cs');
@@ -17,7 +19,7 @@ var Detail = React.createClass({
 
     renderImages(src) {
         return (
-            <div className="thumbnail col-xs-12 col-sm-6 col-md-4">
+            <div key={src} className="thumbnail col-xs-12 col-sm-6 col-md-4">
                 <img src={src} />
             </div>
         );
@@ -81,7 +83,7 @@ var Detail = React.createClass({
 
                             <h3 className="pull-left">Cena: {ad.get('price')}</h3>
 
-                            <a href="" className="btn btn-primary btn-lg pull-right">Kontaktovat</a>
+                            <Link className="btn btn-primary btn-lg pull-right" to="detailReply" params={{ id: ad.get('id') }}>Kontaktovat</Link>
 
                             <div className="clearfix"></div>
 

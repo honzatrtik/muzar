@@ -7,13 +7,12 @@ class AppKernel extends Kernel
 {
     public function registerBundles()
     {
-        $bundles = array(
+		$bundles = array(
             new Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
             new Symfony\Bundle\SecurityBundle\SecurityBundle(),
             new Symfony\Bundle\TwigBundle\TwigBundle(),
             new Symfony\Bundle\MonologBundle\MonologBundle(),
             new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(),
-            new Symfony\Bundle\AsseticBundle\AsseticBundle(),
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
 			new Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
@@ -27,13 +26,13 @@ class AppKernel extends Kernel
 			new FOS\UserBundle\FOSUserBundle(),
 			new FOS\OAuthServerBundle\FOSOAuthServerBundle(),
 			new Nelmio\CorsBundle\NelmioCorsBundle(),
+			new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
         );
 
-        if (in_array($this->getEnvironment(), array('dev', 'test', 'docker'))) {
-            $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
-            $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
-            $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
-			$bundles[] = new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle();
+		if (in_array($this->getEnvironment(), array('dev', 'test'))) {
+			$bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
+			$bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
+			$bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
         }
 
         return $bundles;
@@ -47,7 +46,7 @@ class AppKernel extends Kernel
 	public function getCacheDir() {
 		if (in_array($this->getEnvironment(), array('docker')))
 		{
-			return sprintf('/data-cache/%s/cache/%s', $this->getName(),  $this->getEnvironment());
+			return sprintf('/dev/shm/%s/cache/%s', $this->getName(),  $this->getEnvironment());
 		}
 		return parent::getCacheDir();
 	}
@@ -55,7 +54,7 @@ class AppKernel extends Kernel
 	public function getLogDir() {
 		if (in_array($this->getEnvironment(), array('docker')))
 		{
-			return sprintf('/data-cache/%s/logs/%s', $this->getName(),  $this->getEnvironment());
+			return sprintf('/dev/shm/%s/logs/%s', $this->getName(),  $this->getEnvironment());
 		}
 		return parent::getLogDir();
 	}

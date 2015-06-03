@@ -36,7 +36,7 @@ AdDetailStore.handlers = {
         return this.dispatcher.waitForPromises(RouteStore, function() {
 
             var store = self.getStore(RouteStore);
-            if (store.getRoute() == 'detail') {
+            if (store.getRoute() == 'detail' || store.getRoute() == 'detailReply') {
 
                 var id = store.getParam('id');
 

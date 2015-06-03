@@ -19,11 +19,10 @@ doctrine_cache:
                 database: %redis_database%
 
 framework:
-    profiler: { only_exceptions: false }
+    profiler:
+        enabled: false
+        collect: false
 
-web_profiler:
-    toolbar: false
-    intercept_redirects: false
 
 doctrine:
 

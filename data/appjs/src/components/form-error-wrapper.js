@@ -5,12 +5,14 @@ var DispatcherMixin = require('../dispatcher-mixin.js');
 var cs = React.addons.classSet;
 var { Tooltip } = require('react-bootstrap');
 
+import Dispatcher from '../bootstrap-dispatcher.js';
 
 
-module.exports = function formErrorWrapperFactory(StoreClass) {
+export default function formErrorWrapperFactory(StoreClass) {
+
     return React.createClass({
 
-        displayName: 'FormErrorWrapper',
+        displayName: 'FormErrorWrapper' + Dispatcher.getStoreName(StoreClass),
 
         mixins: [DispatcherMixin],
 
@@ -48,4 +50,5 @@ module.exports = function formErrorWrapperFactory(StoreClass) {
             return React.createElement(element, props, result);
         }
     });
+
 };

@@ -83,15 +83,13 @@ class ItemReplyController
 
 		$this->mailerService->send($message);
 
-		return new Response('', Response::HTTP_ACCEPTED);
+		return new Response('', Response::HTTP_NO_CONTENT);
 	}
 
 	protected function getConstraint()
 	{
 		$fields = array(
 			'email' => new Constraints\Email(),
-			'name'  => new Constraints\NotBlank(),
-			'phone'  => new Constraints\NotBlank(),
 			'message'  => new Constraints\NotBlank(),
 		);
 
