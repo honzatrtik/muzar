@@ -16,7 +16,7 @@ data/app/logs/*
 !data/app/logs/.gitkeep
 data/vendor/
 data/bin/
-
+docker/.vagrant
 data/appjs/node_modules/*
 data/appjs/build/*
 npm-debug.log
