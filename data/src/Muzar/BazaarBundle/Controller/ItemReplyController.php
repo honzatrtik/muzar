@@ -95,6 +95,7 @@ class ItemReplyController
 
 		return new Constraints\Collection(array(
 			'fields' => $fields,
+			'allowExtraFields' => TRUE,
 		));
 	}
 

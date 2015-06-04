@@ -17,22 +17,30 @@ class OAuthTest extends ApiTestCase
 		/** @var ClientManagerInterface $clientManager */
 		$clientManager = $this->getKernel()->getContainer()->get('fos_oauth_server.client_manager.default');
 
+		$uniq = uniqid();
+
 		/** @var Client $client */
 		$client = $clientManager->createClient();
 		$client->setPublic();
-		$client->setName('Test client');
+		$client->setName($uniq);
 		$client->setAllowedGrantTypes(array('password'));
 		$clientManager->updateClient($client);
 
+
+		$user = $uniq;
+		$password = $uniq;
+		$email = $uniq . '@muzar.cz';
+
+
 		/** @var UserManipulator $manipulator */
 		$manipulator = $this->getKernel()->getContainer()->get('fos_user.util.user_manipulator');
-		$user = $manipulator->create('test', 'testpass', 'test@bandzone.cz', TRUE, FALSE);
+		$user = $manipulator->create($user, $password, $email, TRUE, FALSE);
 
 
 		$response = $this->request('GET', '/api/oauth/v2/token', array(
 			'grant_type' => 'password',
-			'username' => 'test@bandzone.cz',
-			'password' => 'testpass',
+			'username' => $user,
+			'password' => $password,
 			'client_id' => $client->getPublicId(),
 		));
 
