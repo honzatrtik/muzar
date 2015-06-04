@@ -32,13 +32,14 @@ class CreateClientCommand extends ContainerAwareCommand
 			->setName('oauth:client:create')
 			->setDescription('Creates a new client')
 			->addArgument('name', InputArgument::REQUIRED, 'Sets the client name.')
+			->addOption('custom-id', null, InputOption::VALUE_REQUIRED, 'Sets custom id.')
 			->addOption('public', 'p', InputOption::VALUE_NONE, 'Is public client?')
 			->addOption('redirect-uri', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Sets redirect uri for client. Use this option multiple times to set multiple redirect URIs.')
 			->addOption('grant-type', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Sets allowed grant type for client. Use this option multiple times to set multiple grant types.')
 			->setHelp(<<<EOT
 The <info>%command.name%</info>command creates a new client.
 
-  <info>php %command.full_name% [--redirect-uri=...] [--grant-type=...] [--public] name</info>
+  <info>php %command.full_name% [--redirect-uri=...] [--grant-type=...] [--custom-id=...] [--public] name</info>
 
 EOT
         );
@@ -53,6 +54,10 @@ EOT
 		$client = $clientManager->createClient();
 
 		$client->setName($input->getArgument('name'));
+		if ($id = $input->getOption('custom-id'))
+		{
+			$client->setRandomId($id);
+		}
 		$client->setRedirectUris($input->getOption('redirect-uri'));
 		$client->setAllowedGrantTypes($input->getOption('grant-type'));
 

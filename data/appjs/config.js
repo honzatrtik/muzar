@@ -2,7 +2,7 @@ module.exports = {
 
     api: {
         urlPrefix:  'http://' + process.env.DOCKER_IP + ':8080/api',
-        clientId: '1_4d2s2e5atjk0w8kcsc0cwo8c048c00s484sscgwogo80cs4kw0'
+        clientId: '1_test'
     },
 
     google: {

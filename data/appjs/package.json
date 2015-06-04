@@ -5,13 +5,12 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha --debug --compilers \"js:babel/register\"  \"./src/**/tests/*.js\"",
-    "start": "./node_modules/.bin/nodemon ./server.js",
+    "start": "./node_modules/.bin/nodemon --exec npm run babel-node -- ./server.js",
     "prestart": "gulp less && gulp browserify",
     "apitest": "./node_modules/.bin/abao -t 5000 -f ./apitest-hooks.js ./../doc/raml/api.raml \"http://${DOCKER_IP}:8080/api\"",
     "apidoc": "./node_modules/.bin/raml2html ./../doc/raml/api.raml > ./../doc/api.html",
-    "precommit": [
-      "test"
-    ]
+    "babel-node": "./node_modules/.bin/babel-node"
+
   },
   "jest": {
     "scriptPreprocessor": "./jest-preprocessor.js",
@@ -70,7 +69,7 @@
     "morearty": "0.7.9",
     "react": "^0.12",
     "react-bootstrap": "^0.16.1",
-    "react-document-title": "^1.0.2",
+    "react-document-title": "https://registry.npmjs.org/react-document-title/-/react-document-title-1.0.2.tgz",
     "react-router": "^0.11.6",
     "rsvp": "^3.0.17",
     "superagent": "^0.21.0",

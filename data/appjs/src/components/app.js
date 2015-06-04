@@ -10,6 +10,9 @@ var ScrollToTopLink = require('./scroll-to-top-link.js');
 
 var morearty = require('../bootstrap-morearty.js')();
 
+
+import DocumentTitle from 'react-document-title';
+
 var App = React.createClass({
 
     componentWillMount: function() {
@@ -20,20 +23,22 @@ var App = React.createClass({
 
         return (
 
-            <div id="wrap">
+            <DocumentTitle title="Muzar.cz">
+                <div id="wrap">
 
-                <Navbar />
+                    <Navbar />
 
-                <FlashMessages />
+                    <FlashMessages />
 
-                <div className="container">
+                    <div className="container">
 
-                    <Router.RouteHandler/>
+                        <Router.RouteHandler/>
 
+                    </div>
+
+                    <ScrollToTopLink />
                 </div>
-
-                <ScrollToTopLink />
-            </div>
+            </DocumentTitle>
 
         );
     }

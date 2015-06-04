@@ -7,13 +7,28 @@ var RouteStore = require('./route-store.js');
 var HttpError = require('../errors/http-error.js');
 var Imm = require('immutable');
 
+
+var cache = Imm.Map({});
 var req;
+
+function clearCache(id) {
+    cache = id
+        ? cache.remove(id)
+        : cache.clear();
+}
+
 function load(id) {
+
+    if (cache.has(id)) {
+        return Promise.resolve(cache.get(id));
+    }
+
     req && req.abort();
     req = superagent.get('/ads/' + id);
     return new Promise(function(resolve, reject) {
         req.end(function(res) {
             if (res.ok) {
+                cache = cache.set(id, res.body);
                 resolve(res.body);
             } else {
                 reject(new HttpError(res.error.status, res.error.text));
@@ -50,6 +65,8 @@ AdDetailStore.handlers = {
                 }).catch(function(e) {
                     throw e;
                 });
+            } else {
+                clearCache();
             }
 
         });

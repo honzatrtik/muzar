@@ -21,6 +21,9 @@ var Dispatcher = require('./src/bootstrap-dispatcher.js');
 var HttpError = require('./src/errors/http-error.js');
 var ErrorPage = React.createFactory(require('./src/components/error-page.js'));
 
+
+import DocumentTitle from 'react-document-title';
+
 var routes = require('./src/routes.js');
 
 var express = require('express');
@@ -111,7 +114,7 @@ app.get('*', function(req, res) {
                     res.render('default', {
                         html: html,
                         state: '<script>' + res.locals.state + '</script>',
-                        title: 'Some title',
+                        title: DocumentTitle.rewind(),
                         config: config
                     });
 

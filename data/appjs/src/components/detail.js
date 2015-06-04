@@ -9,6 +9,7 @@ var CategoryBreadcrumbs = require('./category-breadcrumbs.js');
 var Router = require('react-router');
 var Link = Router.Link;
 
+import DocumentTitle from 'react-document-title';
 import moment from 'moment';
 moment.locale('cs');
 
@@ -50,62 +51,64 @@ var Detail = React.createClass({
         const phone = ad.getIn(['contact', 'phone']);
 
         return (
-            <div>
+            <DocumentTitle title={['Inzerát', ad.get('name'), '|', 'Muzar.cz'].join(' ')}>
+                <div>
 
-                <div className="row">
-                    <div className="col-xs-12 col-sm-12 col-md-12">
-                        <CategoryBreadcrumbs path={path} />
-                        <h1>{ad.get('name')}</h1>
-                    </div>
-                </div>
-
-                <div className="row">
-                    <div className="col-xs-12 col-sm-8 col-md-8">
-
-                        <div style={{ backgroundColor: '#eee' }} className="thumbnail">
-                            {src && <img width="100%" src={src + '?variant=detail'} alt={ad.get('name')} />}
+                    <div className="row">
+                        <div className="col-xs-12 col-sm-12 col-md-12">
+                            <CategoryBreadcrumbs path={path} />
+                            <h1>{ad.get('name')}</h1>
                         </div>
-
-                        <p>{ad.getIn(['description'])}</p>
-
-
-                        <div className="row">
-                            {ad.getIn(['image_urls']).map(this.renderImages).toJS()}
-                        </div>
-
                     </div>
 
+                    <div className="row">
+                        <div className="col-xs-12 col-sm-8 col-md-8">
 
-
-                    <div className="col-xs-12 col-sm-4 col-md-4">
-
-                        <div className="thumbnail">
-
-                            <h3 className="pull-left">Cena: {ad.get('price')}</h3>
-
-                            <Link className="btn btn-primary btn-lg pull-right" to="detailReply" params={{ id: ad.get('id') }}>Kontaktovat</Link>
-
-                            <div className="clearfix"></div>
-
-                            <h4>Prodávající:</h4>
-                            <div>
-                            {ad.getIn(['user', 'username'])}<br />
-                                {ad.getIn(['contact', 'district'])}<br />
-                                <div className="text-muted">{ad.getIn(['contact', 'region'])}</div>
-                                {phone && <div>Tel: {phone}</div>}
+                            <div style={{ backgroundColor: '#eee' }} className="thumbnail">
+                                {src && <img width="100%" src={src + '?variant=detail'} alt={ad.get('name')} />}
                             </div>
 
-                            <p>
-                                <span className="glyphicon glyphicon-time"></span> {moment(ad.get('created')).fromNow()}<br />
-                                {/*<span className="glyphicon glyphicon-eye-open"></span> zobrazeno 250x*/}
-                            </p>
+                            <p>{ad.getIn(['description'])}</p>
+
+
+                            <div className="row">
+                                {ad.getIn(['image_urls']).map(this.renderImages).toJS()}
+                            </div>
+
+                        </div>
+
+
+
+                        <div className="col-xs-12 col-sm-4 col-md-4">
+
+                            <div className="thumbnail">
+
+                                <h3 className="pull-left">Cena: {ad.get('price')}</h3>
+
+                                <Link className="btn btn-primary btn-lg pull-right" to="detailReply" params={{ id: ad.get('id') }}>Kontaktovat</Link>
+
+                                <div className="clearfix"></div>
+
+                                <h4>Prodávající:</h4>
+                                <div>
+                                {ad.getIn(['user', 'username'])}<br />
+                                    {ad.getIn(['contact', 'district'])}<br />
+                                    <div className="text-muted">{ad.getIn(['contact', 'region'])}</div>
+                                    {phone && <div>Tel: {phone}</div>}
+                                </div>
+
+                                <p>
+                                    <span className="glyphicon glyphicon-time"></span> {moment(ad.get('created')).fromNow()}<br />
+                                    {/*<span className="glyphicon glyphicon-eye-open"></span> zobrazeno 250x*/}
+                                </p>
+                            </div>
+
                         </div>
 
                     </div>
 
                 </div>
-
-            </div>
+            </DocumentTitle>
         );
     }
 });
