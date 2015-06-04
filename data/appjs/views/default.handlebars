@@ -1,0 +1,17 @@
+<html>
+<head>
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="/build/all.css" />
+	{{{state}}}
+</head>
+<body>
+
+<div id="content">
+	{{{html}}}
+</div>
+
+<script src="http://maps.googleapis.com/maps/api/js?libraries=places&sensor=true&key={{{config.google.mapsApiKey}}}"></script>
+<script type="text/javascript" src="/build/client.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,33 @@
+.main-menu {
+}
+
+.main-menu-level {
+}
+
+.main-menu-level-item {
+	> a {
+		display: block;
+		padding: 5px 10px;
+	}
+}
+
+.main-menu-level-item.is-active {
+	> a {
+		background: @linkColor;
+		color: #fff;
+	}
+}
+
+
+/** animations **/
+
+.main-menu-enter {
+	max-height: 0;
+	opacity: .75;
+	transition: all .3s ease-in;
+}
+
+.main-menu-enter.main-menu-enter-active {
+	max-height: 500px;
+	opacity: 1;
+}

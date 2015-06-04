@@ -1,7 +1,0 @@
-imports:
-    - { resource: '../dev/config.yml' }
-    - { resource: parameters.yml }
-
-fos_elastica:
-    clients:
-        default: { host: elasticsearch, port: 9200 }

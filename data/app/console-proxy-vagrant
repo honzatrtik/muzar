@@ -1,0 +1,2 @@
+#!/bin/sh
+cd ../../docker && vagrant docker-run apache-php -- "php" "/data/app/console" $@

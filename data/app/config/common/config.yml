@@ -1,0 +1,289 @@
+imports:
+    - { resource: parameters.yml }
+    - { resource: security.yml }
+
+framework:
+    #esi:             ~
+    translator:      { fallback: "%locale%" }
+    secret:          "%secret%"
+    router:
+        resource: "%kernel.root_dir%/config/common/routing.yml"
+        strict_requirements: ~
+    form:            ~
+    csrf_protection: ~
+    validation:      { enable_annotations: true }
+    templating:
+        engines: ['twig']
+        #assets_version: SomeVersionScheme
+    default_locale:  "%locale%"
+    trusted_hosts:   ~
+    trusted_proxies: ~
+    session:
+        # handler_id set to null will use default session handler from php.ini
+        handler_id:  ~
+    fragments:       ~
+    http_method_override: true
+
+
+# Twig Configuration
+twig:
+    debug:            "%kernel.debug%"
+    strict_variables: "%kernel.debug%"
+
+
+# Doctrine Configuration
+doctrine:
+    dbal:
+        driver:   "%database_driver%"
+        host:     "%database_host%"
+        port:     "%database_port%"
+        dbname:   "%database_name%"
+        user:     "%database_user%"
+        password: "%database_password%"
+        charset:  UTF8
+        # if using pdo_sqlite as your database driver, add the path in parameters.yml
+        # e.g. database_path: "%kernel.root_dir%/data/data.db3"
+        # path:     "%database_path%"
+
+    orm:
+        auto_generate_proxy_classes: "%kernel.debug%"
+        auto_mapping: true
+        naming_strategy: doctrine.orm.naming_strategy.underscore
+
+        metadata_cache_driver:
+            type: redis
+            host: localhost
+        query_cache_driver:
+            type: redis
+            host: localhost
+        result_cache_driver:
+            type: redis
+            host: localhost
+
+# Swiftmailer Configuration
+swiftmailer:
+    transport: "%mailer_transport%"
+    host:      "%mailer_host%"
+    username:  "%mailer_user%"
+    password:  "%mailer_password%"
+    spool:     { type: memory }
+
+
+sensio_framework_extra:
+    view:
+        annotations: false
+
+fos_rest:
+    serializer:
+        serialize_null: true
+    body_listener: true
+    format_listener: true
+    view:
+        view_response_listener: true
+
+services:
+    goutte:
+        class:  Goutte\Client
+    json_schema_validator:
+        class: JsonSchema\Validator
+
+nelmio_cors:
+    defaults:
+        allow_credentials: false
+        allow_origin: []
+        allow_headers: []
+        allow_methods: []
+        expose_headers: []
+        max_age: 0
+        hosts: []
+        origin_regex: false
+    paths:
+        '^/api/':
+            allow_origin: ['*']
+            allow_headers: ['X-Requested-With', 'Content-Type', 'Content-Length']
+            allow_methods: ['POST', 'PUT', 'GET', 'DELETE']
+            max_age: 3600
+
+fos_user:
+    db_driver: orm
+    firewall_name: main
+    user_class: Muzar\BazaarBundle\Entity\User
+
+fos_oauth_server:
+    db_driver: orm       # Driver availables: orm, mongodb, or propel
+    client_class:        Muzar\BazaarBundle\Entity\Client
+    access_token_class:  Muzar\BazaarBundle\Entity\AccessToken
+    refresh_token_class: Muzar\BazaarBundle\Entity\RefreshToken
+    auth_code_class:     Muzar\BazaarBundle\Entity\AuthCode
+    service:
+        user_provider: fos_user.user_provider.username_email
+
+fos_elastica:
+    clients:
+        default: { host: 127.0.0.1, port: 9200 }
+    serializer:
+        callback_class: FOS\ElasticaBundle\Serializer\Callback
+        serializer: serializer
+    indexes:
+        %elasticsearch_index_name%:
+            index_name: "%elasticsearch_index_name%"
+            client: default
+            settings:
+                index:
+                    analysis:
+                        analyzer:
+                            my_czech:
+                                type: custom
+                                tokenizer: standard
+                                filter: [ stopwords_CZ, cs_CZ, lowercase, stopwords_CZ, remove_duplicities ]
+
+                            ascii_folding:
+                                type: custom
+                                tokenizer: whitespace
+                                filter:  [ lowercase, asciifolding ]
+
+                            ascii_folding_geo:
+                                type: custom
+                                tokenizer: whitespace
+                                filter:  [ stopwords_geo, lowercase, asciifolding ]
+
+                            ngram:
+                                type: custom
+                                tokenizer: whitespace
+                                filter:
+                                  - lowercase
+                                  - asciifolding
+                                  - ngram
+                            whitespace:
+                                type: custom
+                                tokenizer: whitespace
+                                filter:
+                                  - lowercase
+                                  - asciifolding
+
+                        filter:
+                            my_stemmer:
+                                type: stemmer
+                                name: czech
+
+                            ngram:
+                               type: edgeNGram
+                               min_gram: 1
+                               max_gram: 15
+                               token_chars: [letter,digit,punctuation,symbol]
+
+                            stopwords_geo:
+                                type: stop
+                                stopwords: [ region, kraj, okres ]
+                                ignore_case: true
+
+                            stopwords_CZ:
+                                type: stop
+                                stopwords: [ právě, že, _czech_ ]
+                                ignore_case: true
+                            cs_CZ:
+                                type: hunspell
+                                locale: cs_CZ
+                                dedup: true
+                                recursion_level: 0
+                            remove_duplicities:
+                                type: unique
+                                only_on_same_position: true
+            types:
+                item:
+                    mappings:
+                        id: { type: long }
+                        status:
+                            type: string
+                            index: not_analyzed
+                        price: { type: float }
+                        category_str_ids:
+                            type: string
+                            index: not_analyzed
+                        contact:
+                            type: object
+                            properties:
+                                region:
+                                    type: string
+                                    index_analyzer: ascii_folding_geo
+                                    search_analyzer: ascii_folding_geo
+                                district:
+                                    type: string
+                                    index_analyzer: ascii_folding_geo
+                                    search_analyzer: ascii_folding_geo
+                                city:
+                                    type: string
+                                    index_analyzer: ascii_folding_geo
+                                    search_analyzer: ascii_folding_geo
+                                country:
+                                    type: string
+                                    index_analyzer: ascii_folding_geo
+                                    search_analyzer: ascii_folding_geo
+                        name:
+                            boost: 5
+                            analyzer: my_czech
+                        description:
+                            boost: 3
+                            analyzer: my_czech
+                        created:
+                    persistence:
+                        elastica_to_model_transformer:
+                            ignore_missing: true
+                        driver: orm
+                        model: Muzar\BazaarBundle\Entity\Item
+                        provider: ~
+                        listener: ~
+                        finder: ~
+                    serializer:
+                        groups: [elastica]
+
+                category:
+                    mappings:
+                        id: { type: long }
+                        depth: { type: integer }
+                        strId:
+                            index_analyzer: ascii_folding
+                            search_analyzer: ascii_folding
+                            boost: 5
+                        name:
+                            boost: 5
+                            analyzer: ascii_folding
+                            search_analyzer: ascii_folding
+                        path:
+                            boost: 3
+                            analyzer: ascii_folding
+                            search_analyzer: ascii_folding
+                    persistence:
+                        elastica_to_model_transformer:
+                            ignore_missing: true
+                        driver: orm
+                        model: Muzar\BazaarBundle\Entity\Category
+                        provider: ~
+                        listener: ~
+                        finder: ~
+                    serializer:
+                        groups: [elastica]
+
+                query:
+                    mappings:
+                        query:
+                            index_analyzer: ngram
+                            search_analyzer: whitespace
+                        weight: { type: long }
+
+
+
+doctrine_cache:
+    providers:
+        app_cache:
+            namespace: app_cache_ns
+            array: ~
+
+
+jms_serializer:
+    metadata:
+        auto_detection: true
+        directories:
+            FOSUserBundle:
+                namespace_prefix: "FOS\\UserBundle"
+                path: "@MuzarBazaarBundle/Resources/config/serializer/fos"

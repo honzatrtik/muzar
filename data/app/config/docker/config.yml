@@ -1,0 +1,45 @@
+imports:
+    - { resource: '../common/config.yml' }
+    - { resource: parameters.php }
+    - { resource: parameters.yml }
+    - { resource: services.yml }
+
+fos_elastica:
+    clients:
+        default:
+            host: %elasticsearch_host%
+            port: 9200
+
+doctrine_cache:
+    providers:
+        app_cache:
+            namespace: app_cache_ns
+            redis:
+                host: %redis_host%
+                database: %redis_database%
+
+framework:
+    profiler:
+        enabled: false
+        collect: false
+
+
+doctrine:
+
+    orm:
+        auto_generate_proxy_classes: true
+        metadata_cache_driver:
+            type: redis
+            host: %redis_host%
+
+# https://github.com/doctrine/DoctrineCacheBundle/issues/46
+
+#            database: %redis_database%
+        query_cache_driver:
+            type: redis
+            host: %redis_host%
+#            database: %redis_database%
+        result_cache_driver:
+            type: redis
+            host: %redis_host%
+#            database: %redis_database%

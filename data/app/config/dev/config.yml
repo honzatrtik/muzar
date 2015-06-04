@@ -1,0 +1,37 @@
+imports:
+    - { resource: parameters.php }
+    - { resource: '../common/config.yml' }
+    - { resource: parameters.yml }
+
+framework:
+    router:
+        resource: "%kernel.root_dir%/config/dev/routing.yml"
+
+
+fos_elastica:
+    clients:
+        default:
+            host: %redis_host%
+            port: 9200
+
+
+doctrine_cache:
+    providers:
+        app_cache:
+            namespace: app_cache_ns
+            redis:
+                host: %redis_host%
+                database: %redis_database%
+
+doctrine:
+    orm:
+        metadata_cache_driver:
+            type: array
+        query_cache_driver:
+            type: array
+        result_cache_driver:
+            type: array
+
+swiftmailer:
+    delivery_address: honza.trtik@gmail.com
+

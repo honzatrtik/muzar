@@ -1,0 +1,196 @@
+parameters:
+
+
+services:
+
+    predis:
+        class: Predis\Client
+        arguments: [{ host: %redis_host%, database: %redis_database% }]
+
+
+    league.color_extractor:
+        class: League\ColorExtractor\Client
+
+    muzar_bazaar.color_extractor:
+        class: Muzar\BazaarBundle\ColorExtractor\League
+        arguments: [@league.color_extractor]
+
+    muzar_bazaar.filesystem_url_mapper:
+        class: Muzar\BazaarBundle\Filesystem\BaseUrlMapper
+        arguments: [%media_base_url%]
+
+    muzar_bazaar.filesystem_url_mapper.upload:
+        class: Muzar\BazaarBundle\Filesystem\BaseUrlMapper
+        arguments: [%upload_base_url%]
+
+    muzar_bazaar.command.extract_colors_command:
+        class: Muzar\BazaarBundle\Command\ExtractColorsCommand
+        arguments: [@doctrine.orm.entity_manager, @muzar_bazaar.color_extractor]
+        tags:
+            -  { name: console.command }
+
+    muzar_bazaar.command.redis_flush_command:
+        class: Muzar\BazaarBundle\Command\RedisFlushCommand
+        arguments: [@predis]
+        tags:
+            -  { name: console.command }
+
+    muzar_bazaar.command.media_dir_clean_command:
+        class: Muzar\BazaarBundle\Command\MediaDirCleanCommand
+        arguments: [@muzar_bazaar.filesystem_garbage_collector.all, [@muzar_bazaar.filesystem, @muzar_bazaar.filesystem.upload]]
+        tags:
+            -  { name: console.command }
+
+    muzar_bazaar.command.create_client_command:
+        class: Muzar\BazaarBundle\Command\CreateClientCommand
+        arguments: [@fos_oauth_server.client_manager.default]
+        tags:
+            -  { name: console.command }
+
+    muzar_bazaar.command.import_scraped:
+        class: Muzar\BazaarBundle\Command\ImportScrapedCommand
+        arguments: [@doctrine.orm.entity_manager, @muzar_bazaar.command.importer.hudebnibazar]
+        tags:
+            -  { name: console.command }
+
+    muzar_bazaar.command.importer.hudebnibazar:
+        class: Muzar\BazaarBundle\Importer\Hudebnibazar
+        arguments: [@doctrine.orm.entity_manager, @fos_user.user_manager]
+
+
+    muzar_bazaar.query_suggester:
+        class: Muzar\BazaarBundle\Suggestion\ElasticaQuerySuggester
+        arguments: [@fos_elastica.client.default, %elasticsearch_index_name%, 'query']
+
+
+    muzar_bazaar.watchdog:
+        class: Muzar\BazaarBundle\Watchdog
+        arguments: [@fos_elastica.index, @doctrine.orm.entity_manager]
+
+    muzar_bazaar.model.entity_listener.category:
+        class: Muzar\BazaarBundle\Entity\CategoryListener
+        arguments: [@muzar_bazaar.nsm.category]
+
+    muzar_bazaar.model.entity_listener.item:
+        class: Muzar\BazaarBundle\Entity\ItemListener
+        arguments: [@muzar_bazaar.item_media_factory]
+
+    muzar_bazaar.model.entity_listener.item_search_query:
+        class: Muzar\BazaarBundle\Entity\ItemSearchQueryListener
+        arguments: [@muzar_bazaar.watchdog]
+
+    muzar_bazaar.nsm.category.config:
+        class: DoctrineExtensions\NestedSet\Config
+        arguments: [@doctrine.orm.entity_manager, Muzar\BazaarBundle\Entity\Category]
+        calls:
+            - [setRootFieldName, [null]]
+
+
+    muzar_bazaar.mailer:
+        class: Muzar\BazaarBundle\MailerService
+        arguments: [@mailer, @templating]
+
+    muzar_bazaar.nsm.category:
+        class: DoctrineExtensions\NestedSet\Manager
+        arguments: [@muzar_bazaar.nsm.category.config]
+
+    muzar_bazaar.item_media_factory:
+        class: Muzar\BazaarBundle\Media\ItemMediaFactory
+        arguments: [@muzar_bazaar.filesystem, @muzar_bazaar.filesystem_url_mapper]
+
+    muzar_bazaar.filesystem:
+        class: League\Flysystem\Filesystem
+        arguments: [@muzar_bazaar.filesystem_adapter]
+
+    muzar_bazaar.filesystem.upload:
+        class: League\Flysystem\Filesystem
+        arguments: [@muzar_bazaar.filesystem_adapter.upload]
+
+    muzar_bazaar.filesystem_adapter_cache:
+        class: League\Flysystem\Cached\Storage\Predis
+        arguments: [@predis]
+
+    muzar_bazaar.filesystem_adapter.local:
+        class: League\Flysystem\Adapter\Local
+        arguments: ['%media_root%']
+
+    muzar_bazaar.filesystem_adapter.upload:
+            class: League\Flysystem\Adapter\Local
+            arguments: ['%upload_root%']
+
+    muzar_bazaar.filesystem_adapter:
+        class: League\Flysystem\Cached\CachedAdapter
+        arguments: [@muzar_bazaar.filesystem_adapter.local, @muzar_bazaar.filesystem_adapter_cache]
+
+    muzar_bazaar.filesystem_garbage_collector.all:
+        class: Muzar\BazaarBundle\Filesystem\ClearAll
+
+    muzar_bazaar.filesystem_garbage_collector.upload:
+        class: Muzar\BazaarBundle\Filesystem\GarbageCollector
+        arguments: ['+2 HOURS']
+
+    muzar_bazaar.property_accessor:
+        class: Muzar\BazaarBundle\PropertyAccessor
+
+    muzar_bazaar.entity_utils:
+        class: Muzar\BazaarBundle\Entity\Utils
+        arguments: [@muzar_bazaar.property_accessor]
+
+    muzar_bazaar.model_service.item:
+        class: Muzar\BazaarBundle\Entity\ItemService
+        arguments: [@doctrine.orm.entity_manager, @fos_elastica.manager, @muzar_bazaar.model_service.category]
+
+    muzar_bazaar.model_service.category:
+        class: Muzar\BazaarBundle\Entity\CategoryService
+        arguments: [@doctrine.orm.entity_manager, @fos_elastica.manager, @muzar_bazaar.nsm.category]
+
+    muzar_bazaar.model_service.geo:
+        class: Muzar\BazaarBundle\Entity\GeoService
+        arguments: [@doctrine.orm.entity_manager]
+
+
+    muzar_bazaar.controller.item:
+        class: Muzar\BazaarBundle\Controller\ItemController
+        arguments: [@router, @validator, @doctrine.orm.entity_manager, @muzar_bazaar.entity_utils, @muzar_bazaar.model_service.item, @muzar_bazaar.filesystem.upload, @muzar_bazaar.query_suggester, @security.context]
+
+    muzar_bazaar.controller.image:
+        class: Muzar\BazaarBundle\Controller\ImageController
+        arguments: [@muzar_bazaar.filesystem.upload, @muzar_bazaar.filesystem_url_mapper.upload, @muzar_bazaar.filesystem_garbage_collector.upload]
+
+    muzar_bazaar.controller.suggestion:
+        class: Muzar\BazaarBundle\Controller\SuggestionController
+        arguments: [@router, @muzar_bazaar.model_service.category, @muzar_bazaar.query_suggester]
+        calls:
+            - [setCache, [@doctrine_cache.providers.app_cache]]
+
+    muzar_bazaar.controller.item_reply:
+        class: Muzar\BazaarBundle\Controller\ItemReplyController
+        arguments: [@router, @validator, @muzar_bazaar.model_service.item, @muzar_bazaar.mailer]
+
+
+    muzar_bazaar.controller.user:
+        class: Muzar\BazaarBundle\Controller\UserController
+        arguments: [@router, @form.factory, @doctrine.orm.entity_manager, @security.context]
+
+
+    muzar_bazaar.controller.category:
+        class: Muzar\BazaarBundle\Controller\CategoryController
+        arguments: [@router, @doctrine.orm.entity_manager, @muzar_bazaar.model_service.category]
+
+    muzar_bazaar.controller.geo:
+        class: Muzar\BazaarBundle\Controller\GeoController
+        arguments: [@router, @muzar_bazaar.model_service.geo]
+
+
+
+    muzar_bazaar.form_type.contact:
+        class: Muzar\BazaarBundle\Form\ContactType
+
+
+
+
+    muzar_bazaar.serializer.event_subscriber:
+        class: Muzar\BazaarBundle\Serializer\EventSubscriber
+        arguments: [@router]
+        tags:
+            - { name: jms_serializer.event_subscriber, connection: default }

@@ -1,7 +1,0 @@
-imports:
-    - { resource: '../common/config.yml' }
-    - { resource: parameters.yml }
-
-framework:
-    router:
-        resource: "%kernel.root_dir%/config/dev/routing.yml"

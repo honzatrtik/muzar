@@ -1,0 +1,1 @@
+module.exports = !(global && Object.prototype.toString.call(global.process) === '[object process]');
