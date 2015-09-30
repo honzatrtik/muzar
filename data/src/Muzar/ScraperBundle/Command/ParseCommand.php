@@ -108,6 +108,10 @@ class ParseCommand extends ContainerAwareCommand
 			{
 				$parser = $this->getParser($ad->getSource());
 				$crawler = $goutte->request('GET', $ad->getLink());
+
+				$em->persist($ad);
+				$em->flush();
+
 				$params = $parser->parse($crawler);
 				foreach(array_filter($params) as $name => $value)
 				{

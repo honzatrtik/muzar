@@ -21,5 +21,6 @@ docker run -d -e MYSQL_PASS=muzar -e MYSQL_USER=muzar -e STARTUP_SQL=/docker/sta
 docker run -d -e "REDIS_PASS=**None**" -p 6379:6379  --name redis tutum/redis
 docker run -d --volumes-from=cache -e "SYMFONY_ENV=docker" -v "$(cd ..;pwd)/data:/data" --link "elasticsearch:elasticsearch" --link "mysql:mysql" --link "redis:redis" -p 8080:80 --name apache-php apache-php
 docker exec apache-php chmod a+rw /data-cache
+docker exec apache-php php /data/app/console muzar:rebuild-data
 
 
